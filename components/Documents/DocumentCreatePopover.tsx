@@ -53,33 +53,31 @@ export function DocumentCreatePopover({
       content={
         <div className={styles.popover}>
           <Button
-            disabled
             icon={<PlusIcon />}
             onClick={() => {
-              createNewDocument(documentName, "text");
+              createNewDocument(documentName, "play");
             }}
             variant="subtle"
           >
-            Text
+            Play
           </Button>
           <Button
             icon={<PlusIcon />}
             onClick={() => {
-              createNewDocument(documentName, "whiteboard");
+              createNewDocument(documentName, "sitcom");
             }}
             variant="subtle"
           >
-            Whiteboard
+            Sitcom
           </Button>
           <Button
-            disabled
             icon={<PlusIcon />}
             onClick={() => {
-              createNewDocument(documentName, "spreadsheet");
+              createNewDocument(documentName, "movie");
             }}
             variant="subtle"
           >
-            Spreadsheet
+            Movie
           </Button>
         </div>
       }

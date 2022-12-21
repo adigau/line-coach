@@ -10,12 +10,18 @@
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@liveblocks/client": "^0.19.0",
     "@liveblocks/node": "^0.19.0",
     "@liveblocks/react": "^0.19.0",
+    "@mui/material": "^5.11.1",
+    "@radix-ui/react-accordion": "^1.0.1",
     "@radix-ui/react-dialog": "^1.0.2",
+    "@radix-ui/react-icons": "^1.1.1",
     "@radix-ui/react-popover": "^1.0.2",
     "@radix-ui/react-select": "^1.1.1",
+    "@radix-ui/react-separator": "^1.0.1",
     "@radix-ui/react-tabs": "^1.0.1",
     "@radix-ui/react-tooltip": "^1.0.2",
     "base-64": "^1.0.0",
