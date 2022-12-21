@@ -1,7 +1,8 @@
-import { createClient, LiveMap, LiveObject } from "@liveblocks/client";
+import { createClient, LiveList, LiveMap, LiveObject } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
 import Router from "next/router";
 import { User } from "./types";
+import { CharacterType, SectionType } from "./types/script";
 import { AnnotationType, CharacterSelectionType, OptionsSelectionType, SectionSelectionType } from "./types/storage";
 
 // The location of the liveblocks custom API endpoints
@@ -61,6 +62,8 @@ type Storage = {
   characterSelections: LiveMap<string, CharacterSelectionType>
   sectionSelections: LiveMap<string, SectionSelectionType>
   optionsSelections: LiveMap<string, OptionsSelectionType>
+  cast: LiveList<CharacterType>
+  sections: LiveList<SectionType>
   annotations: LiveMap<string, AnnotationType>
 };
 
