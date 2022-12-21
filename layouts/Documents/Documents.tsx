@@ -138,9 +138,9 @@ export function DocumentsLayout({
             initialValue="all"
             items={[
               { value: "all", title: "All" },
-              { value: "sitcom", title: "Sitcom", disabled: true },
+              { value: "sitcom", title: "Sitcom" },
               { value: "play", title: "Play" },
-              { value: "movie", title: "Movie", disabled: true },
+              { value: "movie", title: "Movie" },
             ]}
             onChange={(value: "all" | DocumentType) => {
               setDocumentType(value);
