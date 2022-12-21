@@ -30,10 +30,12 @@ export default function Index() {
       <Container className={styles.section}>
         <div className={styles.heroInfo}>
           <h1 className={styles.heroTitle}>
-            LineCoach: The&nbsp;Actor's Best&nbsp;Friend
+            LineCoach: The&nbsp;Actor&apos;s Best&nbsp;Friend
           </h1>
           <p className={styles.heroLead}>
-            With its user-friendly interface and powerful features, MemorizingBuddy is the perfect tool for actors of all levels to perfect their craft and deliver standout performances.
+            With its user-friendly interface and powerful features,
+            MemorizingBuddy is the perfect tool for actors of all levels to
+            perfect their craft and deliver standout performances.
           </p>
         </div>
         <div className={styles.heroActions}>
@@ -41,7 +43,7 @@ export default function Index() {
             Sign in
           </Button>
           <LinkButton
-            href="https://github.com/liveblocks/liveblocks/tree/main/starter-kit"
+            href="https://github.com/adigau/line-coach-by-liveblocks"
             icon={<GitHubIcon />}
             target="_blank"
             variant="secondary"
@@ -56,7 +58,8 @@ export default function Index() {
           <Feature
             description={
               <>
-                Highlight the lines you need to memorize in order to focus on them more easily.
+                Highlight the lines you need to memorize in order to focus on
+                them more easily.
               </>
             }
             title="Highlight your lines"
@@ -64,7 +67,8 @@ export default function Index() {
           <Feature
             description={
               <>
-                Hide your lines from view so that you can test your memorization skills without the assistance of the app.
+                Hide your lines from view so that you can test your memorization
+                skills without the assistance of the app.
               </>
             }
             title="Hide your lines"
@@ -72,14 +76,18 @@ export default function Index() {
           <Feature
             description={
               <>
-                See which other actors are using the app at the same time, allowing for collaboration and support.              </>
+                See which other actors are using the app at the same time,
+                allowing for collaboration and support.
+              </>
             }
             title="See who's online"
           />
           <Feature
             description={
               <>
-                Make notes on each line you are learning, as well as see notes made by other actors. This can be helpful for understanding character motivations or making connections between lines.
+                Make notes on each line you are learning, as well as see notes
+                made by other actors. This can be helpful for understanding
+                character motivations or making connections between lines.
               </>
             }
             title="Take notes on each line"
@@ -87,7 +95,9 @@ export default function Index() {
           <Feature
             description={
               <>
-                See the count the number of words in each line, allowing you to track your progress and ensure you are memorizing your lines accurately.
+                See the count the number of words in each line, allowing you to
+                track your progress and ensure you are memorizing your lines
+                accurately.
               </>
             }
             title="Know the number of lines and words"
@@ -95,7 +105,8 @@ export default function Index() {
           <Feature
             description={
               <>
-                If no one is connected, practice by yourself thasnks to our AI who will be very happy to play the other characters for you
+                If no one is connected, practice by yourself thasnks to our AI
+                who will be very happy to play the other characters for you.
               </>
             }
             title="Practice at anytime"

@@ -418,3 +418,4 @@ Can read & edit the document; can invite & delete users; can add & remove teams.
 _Only available for user (e.g. email) level permissions._
 
 To sum up—you must be added to the document by id (e.g. by email), and not be set to read-only, to change document permissions.
+# line-coach-by-liveblocks
