@@ -7,7 +7,6 @@ import {
   DocumentHeader,
   DocumentHeaderSkeleton,
 } from "../../components/Document";
-import { Whiteboard } from "../../components/Whiteboard";
 import { DocumentLayout } from "../../layouts/Document";
 import { ErrorLayout } from "../../layouts/Error";
 import { updateDocumentName } from "../../lib/client";
@@ -15,7 +14,7 @@ import * as Server from "../../lib/server";
 import { RoomProvider } from "../../liveblocks.config";
 import { Document, ErrorData } from "../../types";
 
-export default function WhiteboardDocumentView({
+export default function ScriptDocumentView({
   initialDocument,
   initialError,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -68,7 +67,8 @@ export default function WhiteboardDocumentView({
           <DocumentHeader document={document} onDocumentRename={updateName} />
         }
       >
-        <Whiteboard />
+        HELLO
+        {/* <Script /> */}
       </DocumentLayout>
     </RoomProvider>
   );

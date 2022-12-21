@@ -66,7 +66,8 @@ export function DocumentRow({
   const [isMoreOpen, setMoreOpen] = useState(false);
 
   const date = new Date(lastConnection);
-  const url = DOCUMENT_URL(type, id);
+  //TODO: create folders per type, even if it calles the same layout for each
+  const url = DOCUMENT_URL("script", id);
 
   const handleDeleteDialogOpenChange = useCallback((isOpen: boolean) => {
     if (!isOpen) {

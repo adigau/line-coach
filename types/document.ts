@@ -32,7 +32,7 @@ export type Document = {
   type: DocumentType;
 };
 
-export type DocumentType = "text" | "whiteboard" | "spreadsheet";
+export type DocumentType = "play" | "sitcom" | "movie" | "script";
 
 export type DocumentGroup = Group & {
   access: DocumentAccess;
