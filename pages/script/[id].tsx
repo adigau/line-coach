@@ -74,16 +74,9 @@ export default function ScriptDocumentView({
       initialPresence={{} as Presence}
       initialStorage={initialStorage}
     >
-      <DocumentLayout
-        header={
-          <DocumentHeader document={document} onDocumentRename={updateName} />
-        }
-      >
-        <ClientSideSuspense fallback={<Spinner />}>
-          {() =>
-            <Practice />}
-        </ClientSideSuspense>
-      </DocumentLayout>
+      <ClientSideSuspense fallback={<Spinner />}>
+        {() => <DocumentLayout header={<DocumentHeader document={document} onDocumentRename={updateName} />} />}
+      </ClientSideSuspense>
     </RoomProvider>
   );
 }

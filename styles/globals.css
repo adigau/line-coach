@@ -1,9 +1,19 @@
 @import "./normalize.css";
 
 :root {
+
   --color-black: 0 0 0;
   --color-white: 255 255 255;
   --color-red: 239 67 67;
+
+  --color-red-light: 246 137 135;
+  --color-red-dark: 181 102 100;
+
+  --color-yellow-light: 244 210 79;
+  --color-yellow-dark: 174 152 57;
+
+  --color-bluepale-light: 145 205 244;
+  --color-bluepale-dark: 106 149 179;
   --color-green: 132 204 22;
   --color-gray-50: 250 250 250;
   --color-gray-100: 244 244 245;
