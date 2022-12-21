@@ -1,0 +1,97 @@
+.replica,
+.highlighted {
+
+    list-style: none outside none;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+    word-spacing: 1px;
+}
+
+.character,
+.character a {
+    text-transform: uppercase;
+    /* color: grey; */
+    text-decoration: none;
+    font-weight: bold;
+    padding: 1px;
+}
+
+.highlighted .character {
+    background-color: rgb(var(--color-red-light));
+    font-weight: bold;
+}
+
+.highlighted .text {
+    background-color: rgb(var(--color-yellow-light));
+    font-weight: bold;
+    padding: 3px;
+}
+
+.lineAnnotations {
+    border: 1px dashed rgb(var(--color-yellow-dark));
+    color: var(--color-black);
+    font-style: italic;
+}
+
+
+.annotationText {
+    background-color: var(--color-red-light);
+    ;
+    color: grey;
+    font-size: small;
+    font-style: italic;
+}
+
+.lineAnnotationsOthers textarea {
+    border: 1px solid grey;
+    background-color: lightgrey;
+}
+
+.lineAnnotationsCurrentUser textarea {
+    border: 1px solid coral;
+    background-color: lightskyblue;
+}
+
+.characterInfo {
+    display: inline-flex;
+}
+
+.hide {
+    display: none;
+}
+
+.characterInfo .avatarStack {
+    display: flex;
+}
+
+.characterInfo .avatarStack :last-child {
+    margin-right: 2px;
+}
+
+.characterInfo .avatarStack div {
+    display: inline;
+}
+
+.characterInfo .avatarStack img {
+    height: 12px;
+    display: inline;
+}
+
+.line {
+    list-style-type: none;
+    margin-left: 0px;
+}
+
+.text {
+    margin-left: 6px;
+}
+
+@media print {
+    .characterInfo .avatarStack {
+        display: none;
+    }
+
+    .revealer {
+        display: none;
+    }
+}

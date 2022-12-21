@@ -1,0 +1,12 @@
+.sectionName {
+  font-weight: bold;
+}
+
+.dataUl {
+  flex-direction: column;
+}
+
+.dataUl li {
+  list-style: none;
+  margin-left: 10px;
+}

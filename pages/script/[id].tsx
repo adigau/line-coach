@@ -1,4 +1,5 @@
 import { LiveMap } from "@liveblocks/client";
+import { ClientSideSuspense } from "@liveblocks/react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { Session } from "next-auth";
 import { useRouter } from "next/router";
@@ -7,12 +8,16 @@ import {
   DocumentHeader,
   DocumentHeaderSkeleton,
 } from "../../components/Document";
+import { Practice } from "../../components/Practice";
+import { Script } from "../../components/Script";
 import { DocumentLayout } from "../../layouts/Document";
 import { ErrorLayout } from "../../layouts/Error";
 import { updateDocumentName } from "../../lib/client";
 import * as Server from "../../lib/server";
-import { RoomProvider } from "../../liveblocks.config";
+import { Presence, RoomProvider } from "../../liveblocks.config";
+import { Spinner } from "../../primitives/Spinner";
 import { Document, ErrorData } from "../../types";
+import { AnnotationType, CharacterSelectionType, OptionsSelectionType, SectionSelectionType } from "../../types/storage";
 
 export default function ScriptDocumentView({
   initialDocument,
@@ -56,19 +61,28 @@ export default function ScriptDocumentView({
     return <DocumentLayout header={<DocumentHeaderSkeleton />} />;
   }
 
+  const initialStorage = () => ({
+    characterSelections: new LiveMap<string, CharacterSelectionType>([]),
+    sectionSelections: new LiveMap<string, SectionSelectionType>([]),
+    optionsSelections: new LiveMap<string, OptionsSelectionType>([]),
+    annotations: new LiveMap<string, AnnotationType>([])
+  });
+
   return (
     <RoomProvider
       id={id as string}
-      initialPresence={{ cursor: null }}
-      initialStorage={{ notes: new LiveMap() }}
+      initialPresence={{} as Presence}
+      initialStorage={initialStorage}
     >
       <DocumentLayout
         header={
           <DocumentHeader document={document} onDocumentRename={updateName} />
         }
       >
-        HELLO
-        {/* <Script /> */}
+        <ClientSideSuspense fallback={<Spinner />}>
+          {() =>
+            <Practice />}
+        </ClientSideSuspense>
       </DocumentLayout>
     </RoomProvider>
   );

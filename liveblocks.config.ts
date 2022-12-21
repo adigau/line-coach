@@ -2,6 +2,7 @@ import { createClient, LiveMap, LiveObject } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
 import Router from "next/router";
 import { User } from "./types";
+import { AnnotationType, CharacterSelectionType, OptionsSelectionType, SectionSelectionType } from "./types/storage";
 
 // The location of the liveblocks custom API endpoints
 export const ENDPOINT_BASE_URL = "/api/liveblocks";
@@ -48,25 +49,19 @@ const client = createClient({
 // and that will automatically be kept in sync. Accessible through the
 // `user.presence` property. Must be JSON-serializable.
 export type Presence = {
-  cursor: { x: number; y: number } | null;
+  characterIds: string[]
 };
 
-export type Note = LiveObject<{
-  x: number;
-  y: number;
-  text: string;
-  selectedBy: UserMeta["info"] | null;
-  id: string;
-}>;
-
-export type Notes = LiveMap<string, Note>;
 
 // Optionally, Storage represents the shared document that persists in the
 // Room, even after all Users leave. Fields under Storage typically are
 // LiveList, LiveMap, LiveObject instances, for which updates are
 // automatically persisted and synced to all connected clients.
 type Storage = {
-  notes: Notes;
+  characterSelections: LiveMap<string, CharacterSelectionType>
+  sectionSelections: LiveMap<string, SectionSelectionType>
+  optionsSelections: LiveMap<string, OptionsSelectionType>
+  annotations: LiveMap<string, AnnotationType>
 };
 
 export type UserInfo = Pick<User, "name" | "avatar" | "color">;
@@ -75,6 +70,7 @@ export type UserInfo = Pick<User, "name" | "avatar" | "color">;
 // provided by your own custom auth backend (if used). Useful for data that
 // will not change during a session, like a User's name or avatar.
 export type UserMeta = {
+  id: string;
   info: UserInfo;
 };
 
@@ -87,6 +83,7 @@ type RoomEvent = {
 export const {
   suspense: {
     RoomProvider,
+    useRoom,
     useBroadcastEvent,
     useEventListener,
     useHistory,
