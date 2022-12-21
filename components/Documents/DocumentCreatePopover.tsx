@@ -65,7 +65,7 @@ export function DocumentCreatePopover({
           <Button
             icon={<PlusIcon />}
             onClick={() => {
-              createNewDocument(documentName, "whiteboard");
+              createNewDocument(documentName, "Script");
             }}
             variant="subtle"
           >
