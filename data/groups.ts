@@ -6,15 +6,15 @@ import { Group } from "../types";
  */
 export const groups: Group[] = [
   {
-    id: "product",
-    name: "Product",
+    id: "theatre.parenthese",
+    name: "Théâtre Parenthèse",
   },
   {
-    id: "engineering",
-    name: "Engineering",
+    id: "warner.bros",
+    name: "Warner Bros",
   },
   {
-    id: "design",
-    name: "Design",
+    id: "the.old.vic",
+    name: "The Old Vic",
   },
 ];

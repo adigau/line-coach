@@ -97,7 +97,7 @@
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
     --color-red: 248 113 113;
     --color-green: 162 230 53;
@@ -115,7 +115,7 @@
     --color-text-lighter: rgb(var(--color-gray-400));
     --color-text-lightest: rgb(var(--color-gray-500));
 
-    color-scheme: dark;
+    color-scheme: light;
   }
 }
 
