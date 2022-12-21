@@ -8,8 +8,6 @@ import {
   DocumentHeader,
   DocumentHeaderSkeleton,
 } from "../../components/Document";
-import { Practice } from "../../components/Practice";
-import { Script } from "../../components/Script";
 import { DocumentLayout } from "../../layouts/Document";
 import { ErrorLayout } from "../../layouts/Error";
 import { updateDocumentName } from "../../lib/client";
