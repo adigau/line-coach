@@ -1,11 +1,11 @@
 import React from "react";
-import { Line } from "../Line";
+import { Line as LineComponent } from "../Line";
 import styles from "./Script.module.css";
 import {
+    Character,
     ScriptType,
-    SectionType,
-    LineType,
-    CharacterType,
+    Section,
+    Line,
 } from "../../types/script";
 import { AnnotationType } from "../../types/storage";
 import { User } from "../../types";
@@ -13,7 +13,7 @@ import * as RadixSeparator from "@radix-ui/react-separator";
 
 type ScriptProps = {
     script: ScriptType;
-    cast: CharacterType[];
+    cast: Character[];
     annotations: AnnotationType[];
     users: Omit<User, "color">[];
     searchTerm: string;
@@ -41,7 +41,7 @@ export function Script({
     const onAddOrUpdateAnnotation = (annotation: AnnotationType) =>
         addOrUpdateAnnotation(annotation);
 
-    const renderSections = (sections: SectionType[]) => {
+    const renderSections = (sections: Section[]) => {
         const sectionsToDisplay = sections
             .map((element) => {
                 return {
@@ -73,7 +73,7 @@ export function Script({
         );
     };
 
-    const renderLine = (line: LineType) => {
+    const renderLine = (line: Line) => {
         const currentCharacter = cast.filter((character) => {
             return character.id == line.characterId;
         })[0];
@@ -94,7 +94,7 @@ export function Script({
 
         return (
             <li key={line.id}>
-                <Line
+                <LineComponent
                     line={line}
                     currentUserId={currentUserId}
                     isHiddenLines={isHiddenLines}

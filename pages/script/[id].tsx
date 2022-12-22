@@ -15,7 +15,7 @@ import * as Server from "../../lib/server";
 import { Presence, RoomProvider } from "../../liveblocks.config";
 import { Spinner } from "../../primitives/Spinner";
 import { Document, ErrorData } from "../../types";
-import { CharacterStorage, CharacterType, LineStorage, SectionStorage, SectionType } from "../../types/script";
+import { CharacterStorage, LineStorage, SectionStorage } from "../../types/script";
 import { AnnotationType, CharacterSelectionType, OptionsSelectionType, SectionSelectionType } from "../../types/storage";
 
 export default function ScriptDocumentView({

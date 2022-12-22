@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Line.module.css";
 import Switch from "@mui/material/Switch";
-import { LineType } from "../../types/script";
+import { Line } from "../../types/script";
 import { AnnotationType, CharacterSelectionType } from "../../types/storage";
 import { useOthers, useSelf, useStorage } from "../../liveblocks.config";
 import clsx from "clsx";
@@ -9,7 +9,7 @@ import { User } from "../../types";
 import { shallow } from "@liveblocks/react";
 
 type LineProps = {
-  line: LineType;
+  line: Line;
 
   currentUserId: string;
 
@@ -23,7 +23,7 @@ type LineProps = {
   onAddOrUpdateAnnotation: Function;
 };
 
-function renderCharacterInfo(line: LineType) {
+function renderCharacterInfo(line: Line) {
   return (
     <span className={styles.characterInfo}>
       <span className={styles.character}>

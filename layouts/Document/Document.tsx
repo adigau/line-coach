@@ -131,16 +131,15 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
             ...x
           } as Section))
 
-        const currentScript: ScriptType =
+        const script: ScriptType =
           {
             id: room.id,
             cast: castEnriched,
             sections: sectionsEnriched,
-
           } as ScriptType
 
-        setScript(currentScript)
-        setCast(currentScript.cast)
+        setScript(script)
+        setCast(script.cast)
       }, [cast, characterSelections, characters, lines, room.id, sectionSelections, sections])
 
     const loadUser = useCallback(
