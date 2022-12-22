@@ -2,7 +2,7 @@ import { createClient, LiveList, LiveMap, LiveObject } from "@liveblocks/client"
 import { createRoomContext } from "@liveblocks/react";
 import Router from "next/router";
 import { User } from "./types";
-import { CharacterStorage, CharacterType, LineStorage, SectionStorage, SectionType } from "./types/script";
+import { CharacterStorage, LineStorage, SectionStorage } from "./types/script";
 import { AnnotationType, CharacterSelectionType, OptionsSelectionType, SectionSelectionType } from "./types/storage";
 
 // The location of the liveblocks custom API endpoints

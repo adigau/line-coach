@@ -6,12 +6,11 @@ import { users } from "../../data/users";
 import { useMutation, useRoom, useSelf, useStorage } from "../../liveblocks.config";
 import { shallow } from "@liveblocks/client";
 import { User } from "../../types";
-import { CharacterStorage, CharacterType, LineStorage, ScriptType, SectionStorage } from "../../types/script";
-import { scripts } from "../../data/scripts";
+import { CharacterStorage, LineStorage, ScriptType, SectionStorage, Section, Character } from "../../types/script";
+// import { scripts } from "../../data/scripts";
 import { Spinner } from "../../primitives/Spinner";
 import { Sidebar } from "../../components/Sidebar";
 import { Script } from "../../components/Script";
-import { display } from "@mui/system";
 
 interface Props extends ComponentProps<"div"> {
   header: ReactNode;
@@ -76,7 +75,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     const [allUsers, setAllUsers] = useState<Omit<User, "color">[]>([])
     const [currentUser, setCurrentUser] = useState<Omit<User, "color">>({} as Omit<User, "color">)
     const [script, setScript] = useState<ScriptType>(null as any)
-    const [cast, setCast] = useState<CharacterType[]>([])
+    const [cast, setCast] = useState<Character[]>([])
     const [isHiddenLines, setIsHiddenLines] = useState(optionsSelections != null ? optionsSelections.isHiddenLines : false)
     const [isAnnotationMode, setIsAnnotationMode] = useState(optionsSelections != null ? optionsSelections.isAnnotationMode : false)
     const [isAnnotationModeOnlyMine, setIsAnnotationModeOnlyMine] = useState(optionsSelections != null ? optionsSelections.isAnnotationModeOnlyMine : false)
@@ -99,7 +98,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
       }
       addOrUpdateSectionSelection(userToSections)
     }
-    const castChanged = (data: CharacterType[]) => {
+    const castChanged = (data: Character[]) => {
       setCast(data)
 
       const userToCharacters: CharacterSelectionType =
@@ -112,9 +111,23 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
 
     //////// useCallBack
     const loadScript = useCallback(
-      (scriptId: string) => {
+      () => {
 
-        const currentScript: ScriptType = scripts.filter(s => s.id == scriptId)[0]
+
+        const yaya = sections.map(x => (
+          {
+            lines: lines.filter(y => y.sectionId == x.id),
+            isDisplayed: true,
+            ...x
+          } as Section))
+
+        const currentScript: ScriptType =
+          {
+            id: room.id,
+            cast: characters,
+            sections: yaya,
+
+          } as ScriptType
 
         currentScript.cast.map(c => c.isHighlighted = getIsCharacterHighlightedFromStorage(characterSelections, c.id))
         currentScript.sections.map(s => s.isDisplayed = getIsSectionDisplayedFromStorage(sectionSelections, s.id))
@@ -150,7 +163,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
 
       setAllUsers(users)
       loadUser(self.id)
-      loadScript(room.id)
+      loadScript()
     }, [addOrUpdateOptionsSelection, self.id, isAnnotationMode, isDisplayPresenceMode, isHiddenLines, loadScript, loadUser, isAnnotationModeOnlyMine, room.id])
 
     if (script == null || cast == null) {
@@ -201,7 +214,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
 );
 
 function getCharacterDisplayNameFromUserId(
-  cast: CharacterType[],
+  cast: Character[],
   userId: string
 ) {
   const character = cast.find((x) => x.id === userId)
