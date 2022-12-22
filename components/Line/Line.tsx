@@ -16,7 +16,6 @@ type LineProps = {
   isHiddenLines: boolean;
   isAnnotationMode: boolean;
   isAnnotationModeOnlyMine: boolean;
-  isDisplayPresenceMode: boolean;
 
   currentUserAnnotation: AnnotationType;
   otherUsersAnnotations: AnnotationType[];

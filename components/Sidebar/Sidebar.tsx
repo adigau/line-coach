@@ -26,16 +26,10 @@ type SidebarProps = {
     isAnnotationMode: boolean,
     isAnnotationModeChanged: (isChecked: boolean) => void,
     isAnnotationModeOnlyMine: boolean,
-    isAnnotationModeOnlyMineChanged: Function,
-    isDisplayPresenceMode: boolean,
-    isDisplayPresenceModeChanged: Function,
-
-    characterSelections: CharacterSelectionType | undefined,
-    sectionSelections: SectionSelectionType | undefined,
-    optionsSelections: OptionsSelectionType | undefined
+    isAnnotationModeOnlyMineChanged: Function
 }
 
-export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, searchTermChanged, isHiddenLines, isHiddenLinesChanged, isAnnotationMode, isAnnotationModeChanged, isDisplayPresenceMode, isDisplayPresenceModeChanged, characterSelections, sectionSelections, optionsSelections, isAnnotationModeOnlyMine, isAnnotationModeOnlyMineChanged, ...props }: SidebarProps) {
+export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, searchTermChanged, isHiddenLines, isHiddenLinesChanged, isAnnotationMode, isAnnotationModeChanged, isAnnotationModeOnlyMine, isAnnotationModeOnlyMineChanged }: SidebarProps) {
 
     const self = useSelf()
     const others = useOthers()
@@ -102,9 +96,6 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
     }
 
     const displayAvatarStack = (characterId: string) => {
-        if (!isDisplayPresenceMode)
-            return
-
         if (charactersToWatchers == null)
             return
 

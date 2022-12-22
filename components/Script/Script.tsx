@@ -21,7 +21,6 @@ type ScriptProps = {
     isHiddenLines: boolean;
     isAnnotationMode: boolean;
     isAnnotationModeOnlyMine: boolean;
-    isDisplayPresenceMode: boolean;
     addOrUpdateAnnotation: Function;
 };
 
@@ -34,7 +33,6 @@ export function Script({
     isHiddenLines,
     isAnnotationMode,
     isAnnotationModeOnlyMine,
-    isDisplayPresenceMode,
     addOrUpdateAnnotation }: ScriptProps) {
     let lineIncrement = 0;
 
@@ -100,7 +98,6 @@ export function Script({
                     isHiddenLines={isHiddenLines}
                     isAnnotationMode={isAnnotationMode}
                     isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
-                    isDisplayPresenceMode={isDisplayPresenceMode}
                     currentUserAnnotation={currentUserAnnotation}
                     otherUsersAnnotations={otherUsersAnnotations}
                     onAddOrUpdateAnnotation={onAddOrUpdateAnnotation}

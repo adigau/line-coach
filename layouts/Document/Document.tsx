@@ -79,7 +79,6 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     const [isHiddenLines, setIsHiddenLines] = useState(optionsSelections != null ? optionsSelections.isHiddenLines : false)
     const [isAnnotationMode, setIsAnnotationMode] = useState(optionsSelections != null ? optionsSelections.isAnnotationMode : false)
     const [isAnnotationModeOnlyMine, setIsAnnotationModeOnlyMine] = useState(optionsSelections != null ? optionsSelections.isAnnotationModeOnlyMine : false)
-    const [isDisplayPresenceMode, setIsDisplayPresenceMode] = useState(optionsSelections != null ? optionsSelections.isDisplayPresenceMode : true)
     const [searchTerm, setSearchTerm] = useState<string>("")
 
     //////// Events
@@ -87,7 +86,6 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     const isHiddenLinesChanged = (data: boolean) => setIsHiddenLines(data)
     const isAnnotationModeChanged = (data: boolean) => setIsAnnotationMode(data)
     const isAnnotationModeOnlyMineChanged = (data: boolean) => setIsAnnotationModeOnlyMine(data)
-    const isDisplayPresenceModeChanged = (data: boolean) => setIsDisplayPresenceMode(data)
     const handleMenuClick = useCallback(() => { setMenuOpen((isOpen) => !isOpen); }, []);
     const scriptChanged = (data: ScriptType) => {
       setScript(data)
@@ -156,14 +154,13 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
         isHiddenLines: isHiddenLines,
         isAnnotationMode: isAnnotationMode,
         isAnnotationModeOnlyMine: isAnnotationModeOnlyMine,
-        isDisplayPresenceMode: isDisplayPresenceMode,
       }
       addOrUpdateOptionsSelection(optionsSelection)
 
       setAllUsers(users)
       loadUser(self.id)
       loadScript()
-    }, [addOrUpdateOptionsSelection, self.id, isAnnotationMode, isDisplayPresenceMode, isHiddenLines, loadScript, loadUser, isAnnotationModeOnlyMine, room.id])
+    }, [addOrUpdateOptionsSelection, self.id, isAnnotationMode, isHiddenLines, loadScript, loadUser, isAnnotationModeOnlyMine, room.id])
 
     if (script == null || cast == null) {
       return (<Spinner />)
@@ -184,13 +181,9 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
             isHiddenLinesChanged={isHiddenLinesChanged}
             isAnnotationMode={isAnnotationMode}
             isAnnotationModeChanged={isAnnotationModeChanged}
-            isDisplayPresenceMode={isDisplayPresenceMode}
-            isDisplayPresenceModeChanged={isDisplayPresenceModeChanged}
             isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
             isAnnotationModeOnlyMineChanged={isAnnotationModeOnlyMineChanged}
-            characterSelections={characterSelections}
-            sectionSelections={sectionSelections}
-            optionsSelections={optionsSelections} />
+          />
         </aside>
         <main className={styles.main}>
           <Script
@@ -204,7 +197,6 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
             isHiddenLines={isHiddenLines}
             isAnnotationMode={isAnnotationMode}
             isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
-            isDisplayPresenceMode={isDisplayPresenceMode}
           />
         </main>
       </div>
