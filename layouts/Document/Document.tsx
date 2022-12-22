@@ -6,7 +6,7 @@ import { users } from "../../data/users";
 import { useMutation, useRoom, useSelf, useStorage } from "../../liveblocks.config";
 import { shallow } from "@liveblocks/client";
 import { User } from "../../types";
-import { CharacterStorage, LineStorage, ScriptType, SectionStorage, Section, Character } from "../../types/script";
+import { CharacterStorage, LineStorage, ScriptType, SectionStorage, Section, Character, Line } from "../../types/script";
 // import { scripts } from "../../data/scripts";
 import { Spinner } from "../../primitives/Spinner";
 import { Sidebar } from "../../components/Sidebar";
@@ -112,36 +112,36 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     //////// useCallBack
     const loadScript = useCallback(
       () => {
-
-
-        const yaya = sections.map(x => (
+        const castEnriched = characters.map(x => (
           {
-            lines: lines.filter(y => y.sectionId == x.id),
-            isDisplayed: true,
+            isHighlighted: getIsCharacterHighlightedFromStorage(characterSelections, x.id),
+            ...x
+          }))
+
+        const sectionsEnriched = sections.map(x => (
+          {
+            isDisplayed: getIsSectionDisplayedFromStorage(sectionSelections, x.id),
+            lines: lines.filter(y => y.sectionId == x.id)
+              .map(x => (
+                {
+                  href: "#" + x.characterId + "_" + x.id,
+                  character: getCharacterById(x.characterId, cast),
+                  ...x
+                } as Line)),
             ...x
           } as Section))
 
         const currentScript: ScriptType =
           {
             id: room.id,
-            cast: characters,
-            sections: yaya,
+            cast: castEnriched,
+            sections: sectionsEnriched,
 
           } as ScriptType
 
-        currentScript.cast.map(c => c.isHighlighted = getIsCharacterHighlightedFromStorage(characterSelections, c.id))
-        currentScript.sections.map(s => s.isDisplayed = getIsSectionDisplayedFromStorage(sectionSelections, s.id))
-        currentScript.sections.map(s => s.lines.map(l => l.character = {
-          id: l.characterId,
-          displayName: getCharacterDisplayNameFromUserId(cast, l.characterId),
-          isHighlighted: false //DANGER HERE
-        }))
-
-        currentScript.sections.map(x => x.lines).flat().map(x => x.href = "#" + x.characterId + "_" + x.id)
-
         setScript(currentScript)
         setCast(currentScript.cast)
-      }, [cast, characterSelections, sectionSelections])
+      }, [cast, characterSelections, characters, lines, room.id, sectionSelections, sections])
 
     const loadUser = useCallback(
       (userId: string) => {
@@ -240,4 +240,11 @@ function getIsSectionDisplayedFromStorage(
     sectionSelections != null &&
     sectionSelections.hiddenSectionIds.some((x) => x == sectionId)
   )
+}
+
+
+function getCharacterById(id: string, list: Character[]): Character {
+  const result = list.find(x => x.id == id)
+  return result != null ? result : {} as Character
+
 }
