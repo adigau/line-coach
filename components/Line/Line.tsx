@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Line.module.css";
 import Switch from "@mui/material/Switch";
 import { Line } from "../../types/script";
-import { AnnotationType, CharacterSelectionType } from "../../types/storage";
+import { AnnotationStorage, CharacterSelectionStorage } from "../../types/storage";
 import { useOthers, useSelf, useStorage } from "../../liveblocks.config";
 import clsx from "clsx";
 import { User } from "../../types";
@@ -17,14 +17,14 @@ type LineProps = {
   isAnnotationMode: boolean;
   isAnnotationModeOnlyMine: boolean;
 
-  currentUserAnnotation: AnnotationType;
-  otherUsersAnnotations: AnnotationType[];
+  currentUserAnnotation: AnnotationStorage;
+  otherUsersAnnotations: AnnotationStorage[];
   onAddOrUpdateAnnotation: Function;
 };
 
 function renderOtherAnnotation(
   lineId: string,
-  annotations: AnnotationType[],
+  annotations: AnnotationStorage[],
   isAnnotationModeOnlyMine: boolean
 ) {
   if (annotations == null || isAnnotationModeOnlyMine) return;
@@ -58,7 +58,7 @@ export function Line(props: LineProps) {
   const self = useSelf();
   const others = useOthers();
 
-  const othersCharacterSelections: CharacterSelectionType[] = useStorage(
+  const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
     (root) =>
       Array.from(root.characterSelections.values())
         .filter(
@@ -91,17 +91,19 @@ export function Line(props: LineProps) {
 
   const [isTextForcedVisible, setIsTextForcedVisible] = useState(false);
 
-  let updatedUserAnnotation = currentUserAnnotation;
 
-  if (updatedUserAnnotation == null) {
-    updatedUserAnnotation = {
-      key: currentUserId + "_" + line.id,
-      lineId: line.id,
-      text: "",
-      userId: currentUserId,
-    };
-  }
-  const renderYourAnnotation = (lineId: string, annotation: AnnotationType) => {
+  const renderYourAnnotation = (lineId: string, annotation: AnnotationStorage) => {
+    let updatedUserAnnotation = annotation;
+
+    if (updatedUserAnnotation == null) {
+      updatedUserAnnotation = {
+        key: currentUserId + "_" + line.id,
+        lineId: line.id,
+        text: "",
+        userId: currentUserId,
+      };
+    }
+
     return (
       <fieldset
         id={"yourAnnotationFieldset-" + lineId}
@@ -111,9 +113,9 @@ export function Line(props: LineProps) {
         <textarea
           className={styles.annotationText}
           onChange={(event) => {
-            onAnnotationChange(event, annotation);
+            onAnnotationChange(event, updatedUserAnnotation);
           }}
-          defaultValue={annotation.text}
+          defaultValue={updatedUserAnnotation.text}
         ></textarea>
       </fieldset>
     );
@@ -147,7 +149,7 @@ export function Line(props: LineProps) {
 
   const onAnnotationChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
-    a: AnnotationType
+    a: AnnotationStorage
   ) => {
     a.text = e.target.value;
     onAddOrUpdateAnnotation(a);
@@ -173,7 +175,7 @@ export function Line(props: LineProps) {
           otherUsersAnnotations,
           isAnnotationModeOnlyMine
         )}
-        {renderYourAnnotation(line.id, updatedUserAnnotation)}
+        {renderYourAnnotation(line.id, currentUserAnnotation)}
       </div>
       <div
         className={clsx(

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Character, ScriptType, Section } from "../../types/script"
-import { CharacterSelectionType } from "../../types/storage"
+import { CharacterSelectionStorage } from "../../types/storage"
 import styles from "./Sidebar.module.css"
 import { User } from '../../types';
 import { useOthers, useSelf, useStorage } from '../../liveblocks.config';
@@ -37,7 +37,7 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
         [self, others]
     );
 
-    const othersCharacterSelections: CharacterSelectionType[] = useStorage(
+    const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
         root => Array.from(root.characterSelections.values()).filter((x) => users.some(y => y.id == x.userId)),
         shallow,
     );

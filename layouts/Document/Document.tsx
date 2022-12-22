@@ -1,7 +1,7 @@
 import { ComponentProps, forwardRef, ReactNode, useCallback, useEffect, useState } from "react";
 import clsx from "clsx";
 import styles from "./Document.module.css";
-import { AnnotationType, CharacterSelectionType, OptionsSelectionType, SectionSelectionType } from "../../types/storage";
+import { AnnotationStorage, CharacterSelectionStorage, OptionsSelectionStorage, SectionSelectionStorage } from "../../types/storage";
 import { users } from "../../data/users";
 import { useMutation, useRoom, useSelf, useStorage } from "../../liveblocks.config";
 import { shallow } from "@liveblocks/client";
@@ -36,16 +36,16 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     );
 
     //////// Liveblocks - Mutation
-    const addOrUpdateOptionsSelection = useMutation(({ storage }, options: OptionsSelectionType) => {
+    const addOrUpdateOptionsSelection = useMutation(({ storage }, options: OptionsSelectionStorage) => {
       storage.get("optionsSelections").set(options.userId, options)
     }, []);
-    const addOrUpdateAnnotation = useMutation(({ storage }, annotation: AnnotationType) => {
+    const addOrUpdateAnnotation = useMutation(({ storage }, annotation: AnnotationStorage) => {
       storage.get("annotations").set(annotation.key, annotation)
     }, []);
-    const addOrUpdateCharacterSelection = useMutation(({ storage }, characterSelection: CharacterSelectionType) => {
+    const addOrUpdateCharacterSelection = useMutation(({ storage }, characterSelection: CharacterSelectionStorage) => {
       storage.get("characterSelections").set(characterSelection.userId, characterSelection)
     }, []);
-    const addOrUpdateSectionSelection = useMutation(({ storage }, sectionSelection: SectionSelectionType) => {
+    const addOrUpdateSectionSelection = useMutation(({ storage }, sectionSelection: SectionSelectionStorage) => {
       storage.get("sectionSelections").set(sectionSelection.userId, sectionSelection)
     }, []);
 
@@ -66,7 +66,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     const isAnnotationModeOnlyMineChanged = (data: boolean) => setIsAnnotationModeOnlyMine(data)
     const scriptChanged = (data: ScriptType) => {
       setScript(data)
-      const userToSections: SectionSelectionType =
+      const userToSections: SectionSelectionStorage =
       {
         userId: currentUser.id,
         hiddenSectionIds: data.sections.filter(c => !c.isDisplayed).map(c => c.id)
@@ -76,7 +76,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     const castChanged = (data: Character[]) => {
       setCast(data)
 
-      const userToCharacters: CharacterSelectionType =
+      const userToCharacters: CharacterSelectionStorage =
       {
         userId: currentUser.id,
         characterIds: data.filter(c => c.isHighlighted).map(c => c.id)
@@ -127,7 +127,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
 
     //////// useEffect
     useEffect(() => {
-      const optionsSelection: OptionsSelectionType = {
+      const optionsSelection: OptionsSelectionStorage = {
         userId: self.id,
         isHiddenLines: isHiddenLines,
         isAnnotationMode: isAnnotationMode,
@@ -183,7 +183,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
 );
 
 function getIsCharacterHighlightedFromStorage(
-  characterSelections: CharacterSelectionType | undefined,
+  characterSelections: CharacterSelectionStorage | undefined,
   characterId: string
 ): boolean {
   return (
@@ -193,7 +193,7 @@ function getIsCharacterHighlightedFromStorage(
 }
 
 function getIsSectionDisplayedFromStorage(
-  sectionSelections: SectionSelectionType | undefined,
+  sectionSelections: SectionSelectionStorage | undefined,
   sectionId: string
 ): boolean {
   return !(

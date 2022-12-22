@@ -1,27 +1,37 @@
 import { User } from "./data";
 
-export type AnnotationType = {
+export type AnnotationStorage = {
     key: string;
     userId: string;
     lineId: string;
     text: string;
-    user?: User;
-};
+}
+export interface Annotation extends AnnotationStorage {
+    user: User;
+}
 
-export type CharacterSelectionType = {
+export type CharacterSelectionStorage = {
     userId: string;
-    user?: User;
     characterIds: string[];
-};
+}
+export interface CharacterSelection extends CharacterSelectionStorage {
+    user: User;
+}
 
-export type SectionSelectionType = {
+export type SectionSelectionStorage = {
     userId: string;
     hiddenSectionIds: string[];
-};
+}
+export interface SectionSelection extends SectionSelectionStorage {
+    user: User;
+}
 
-export type OptionsSelectionType = {
+export type OptionsSelectionStorage = {
     userId: string;
     isHiddenLines: boolean;
     isAnnotationMode: boolean;
     isAnnotationModeOnlyMine: boolean;
-};
+}
+export interface OptionsSelection extends OptionsSelectionStorage {
+    user: User;
+}

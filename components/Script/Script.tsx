@@ -4,14 +4,14 @@ import {
     ScriptType,
     Section,
 } from "../../types/script";
-import { AnnotationType } from "../../types/storage";
+import { AnnotationStorage } from "../../types/storage";
 import { User } from "../../types";
 import { Section as SectionComponent } from "../Section";
 
 type ScriptProps = {
     script: ScriptType;
     cast: Character[];
-    annotations: AnnotationType[];
+    annotations: AnnotationStorage[];
     users: Omit<User, "color">[];
     searchTerm: string;
     currentUserId: string;

@@ -16,7 +16,7 @@ import { Presence, RoomProvider } from "../../liveblocks.config";
 import { Spinner } from "../../primitives/Spinner";
 import { Document, ErrorData } from "../../types";
 import { CharacterStorage, LineStorage, SectionStorage } from "../../types/script";
-import { AnnotationType, CharacterSelectionType, OptionsSelectionType, SectionSelectionType } from "../../types/storage";
+import { AnnotationStorage, CharacterSelectionStorage, OptionsSelectionStorage, SectionSelectionStorage } from "../../types/storage";
 
 export default function ScriptDocumentView({
   initialDocument,
@@ -62,12 +62,12 @@ export default function ScriptDocumentView({
 
   const initialStorage = () => ({
     characters: new LiveList<CharacterStorage>([]),
-    characterSelections: new LiveMap<string, CharacterSelectionType>([]),
+    characterSelections: new LiveMap<string, CharacterSelectionStorage>([]),
     sections: new LiveList<SectionStorage>([]),
-    sectionSelections: new LiveMap<string, SectionSelectionType>([]),
-    optionsSelections: new LiveMap<string, OptionsSelectionType>([]),
+    sectionSelections: new LiveMap<string, SectionSelectionStorage>([]),
+    optionsSelections: new LiveMap<string, OptionsSelectionStorage>([]),
     lines: new LiveList<LineStorage>([]),
-    annotations: new LiveMap<string, AnnotationType>([])
+    annotations: new LiveMap<string, AnnotationStorage>([])
   });
 
   return (
