@@ -1,3 +1,13 @@
+.linesul {
+    padding-inline-start: 0px;
+}
+
+.sectionName {
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
 .separatorContainer {
     display: flex;
     align-items: center;
@@ -11,17 +21,6 @@
     height: 1px;
     width: 90%;
 }
-
-.linesul {
-    padding-inline-start: 0px;
-}
-
-.sectionName {
-    font-size: 22px;
-    margin-bottom: 20px;
-    font-weight: bold;
-}
-
 
 @media print {
     .separatorContainer {

@@ -138,7 +138,7 @@ export function Line(props: LineProps) {
         <span className={styles.character}>
           <>
             <a href={line.href}>{line.character?.displayName}
-              {displayPresenceIndicatorCharacter()} </a>
+              {displayPresenceIndicatorCharacter()}: </a>
           </>
         </span>
       </span>
