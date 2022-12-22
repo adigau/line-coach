@@ -6,11 +6,12 @@ import { users } from "../../data/users";
 import { useMutation, useRoom, useSelf, useStorage } from "../../liveblocks.config";
 import { shallow } from "@liveblocks/client";
 import { User } from "../../types";
-import { CharacterType, ScriptType } from "../../types/script";
+import { CharacterStorage, CharacterType, LineStorage, ScriptType, SectionStorage } from "../../types/script";
 import { scripts } from "../../data/scripts";
 import { Spinner } from "../../primitives/Spinner";
 import { Sidebar } from "../../components/Sidebar";
 import { Script } from "../../components/Script";
+import { display } from "@mui/system";
 
 interface Props extends ComponentProps<"div"> {
   header: ReactNode;
@@ -24,10 +25,13 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     const room = useRoom();
 
     //////// Liveblocks - Storage
-    const characterSelections: CharacterSelectionType | undefined = useStorage((root) => root.characterSelections.get(self.id));
-    const sectionSelections: SectionSelectionType | undefined = useStorage((root) => root.sectionSelections.get(self.id));
-    const optionsSelections: OptionsSelectionType | undefined = useStorage((root) => root.optionsSelections.get(self.id));
-    const annotations: AnnotationType[] = useStorage(
+    const characterSelections = useStorage((root) => root.characterSelections.get(self.id));
+    const sectionSelections = useStorage((root) => root.sectionSelections.get(self.id));
+    const optionsSelections = useStorage((root) => root.optionsSelections.get(self.id));
+    const characters = useStorage((root) => root.characters);
+    const sections = useStorage((root) => root.sections);
+    const lines = useStorage((root) => root.lines);
+    const annotations = useStorage(
       root => Array.from(root.annotations.values()),
       shallow,
     );
@@ -36,17 +40,35 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     const addOrUpdateOptionsSelection = useMutation(({ storage }, options: OptionsSelectionType) => {
       storage.get("optionsSelections").set(options.userId, options)
     }, []);
-
     const addOrUpdateAnnotation = useMutation(({ storage }, annotation: AnnotationType) => {
       storage.get("annotations").set(annotation.key, annotation)
     }, []);
-
     const addOrUpdateCharacterSelection = useMutation(({ storage }, characterSelection: CharacterSelectionType) => {
       storage.get("characterSelections").set(characterSelection.userId, characterSelection)
     }, []);
-
     const addOrUpdateSectionSelection = useMutation(({ storage }, sectionSelection: SectionSelectionType) => {
       storage.get("sectionSelections").set(sectionSelection.userId, sectionSelection)
+    }, []);
+    const addOrUpdateCharacter = useMutation(({ storage }, character: CharacterStorage) => {
+      const index = storage.get("characters").findIndex(x => x.id == character.id);
+      if (index < 0)
+        storage.get("characters").push(character)
+      else
+        storage.get("characters").set(index, character)
+    }, []);
+    const addOrUpdateSection = useMutation(({ storage }, section: SectionStorage) => {
+      const index = storage.get("sections").findIndex(x => x.id == section.id);
+      if (index < 0)
+        storage.get("sections").push(section)
+      else
+        storage.get("sections").set(index, section)
+    }, []);
+    const addOrUpdateLine = useMutation(({ storage }, line: LineStorage) => {
+      const index = storage.get("lines").findIndex(x => x.id == line.id);
+      if (index < 0)
+        storage.get("lines").push(line)
+      else
+        storage.get("lines").set(index, line)
     }, []);
 
     //////// States

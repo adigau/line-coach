@@ -8,6 +8,25 @@ export type ScriptType = {
     groupIds: string[];
 };
 
+///// TEST 👇
+
+export type CharacterStorage = {
+    id: string;
+    displayName: string;
+};
+export type SectionStorage = {
+    id: string;
+    displayName: string;
+};
+export type LineStorage = {
+    id: string;
+    sectionId: string;
+    characterId: string;
+    text: string;
+};
+
+///// TEST 👆
+
 export type CharacterType = {
     id: string;
     displayName: string;
