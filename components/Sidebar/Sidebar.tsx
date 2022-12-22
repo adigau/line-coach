@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Character, ScriptType, Section } from "../../types/script"
-import { CharacterSelectionType, SectionSelectionType, OptionsSelectionType } from "../../types/storage"
+import { CharacterSelectionType } from "../../types/storage"
 import styles from "./Sidebar.module.css"
 import { User } from '../../types';
 import { useOthers, useSelf, useStorage } from '../../liveblocks.config';
 import { shallow } from '@liveblocks/react';
-import { DocumentCharacterAvatars } from '../Document/DocumentCharacterAvatars';
 import * as Accordion from '@radix-ui/react-accordion';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { Input } from '../../primitives/Input';
@@ -42,13 +41,10 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
     const [charactersToWatchers, setCharactersToWatchers] = useState<Map<string, (User | null)[]>>()
 
     useEffect(() => {
-        // declare the async data fetching function
         const fetchData = () => {
             const tempWatchers = new Map<string, (User | null)[]>()
             cast.map(x => {
                 const id = x.id
-                //A reminder of a way to make async calls in a map work 👇
-                //const watchers = await Promise.all(othersCharacterSelections.filter(y => y.characterIds.some(z => z == x.id)).map(x=>getUser(x.userId)))
                 const watchers = othersCharacterSelections
                     .filter(y => y.characterIds.some(z => z == x.id))
                     .map(x => {
@@ -82,6 +78,58 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
         scriptChanged(newScript)
     }
 
+    function isCharacterOnline(characterId: string): boolean {
+        if (charactersToWatchers == null)
+            return false
+        const onlineUsers = charactersToWatchers.get(characterId);
+        return onlineUsers != null && onlineUsers.length > 0
+    }
+
+    function onlyUniqueCharacterIds(value: { characterId: string, displayName: string }, index: number, self: { characterId: string, displayName: string }[]) {
+        return self.indexOf(value) === index;
+    }
+
+    const displayPresenceIndicatorCharacter = (characterId: string) => {
+        if (charactersToWatchers == null)
+            return
+
+        const character = charactersToWatchers.get(characterId)
+
+        if (character == null || character.length <= 0)
+            return
+
+        const title = character.map(x => x?.name).join(", ")
+
+        return (
+            <div className={styles.presenceIndicatorContainer} title={title}>
+                <div className={styles.presenceIndicator}>&nbsp;</div>
+            </div>
+        )
+    }
+
+    const displayPresenceIndicatorSection = (sectionId: string) => {
+        if (charactersToWatchers == null)
+            return
+
+        const allCharactersInThatSection: { characterId: string, displayName: string }[] = script.sections
+            .filter(x => x.id == sectionId)
+            .flatMap(x => x.lines)
+            .flatMap(x => { return { characterId: x.characterId as string, displayName: x.character.displayName as string } })
+            .filter((value, index, self) => onlyUniqueCharacterIds(value, index, self))
+        const isSectionFullOfWatchers = allCharactersInThatSection.every(x => isCharacterOnline(x.characterId))
+
+        if (isSectionFullOfWatchers == null || !isSectionFullOfWatchers)
+            return
+
+        const title = allCharactersInThatSection.map(x => x.displayName).join(", ")
+
+        return (
+            <div className={styles.presenceIndicatorContainer} title={title}>
+                <div className={styles.presenceIndicator}>&nbsp;</div>
+            </div>
+        )
+    }
+
     const renderSections = (section: Section) => {
         return (
             <li key={section.id}>
@@ -91,24 +139,11 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
                 <label title={section.displayName} htmlFor={section.id}>
                     {section.displayName}
                 </label>
+                {displayPresenceIndicatorSection(section.id)}
             </li>
         )
     }
 
-    const displayAvatarStack = (characterId: string) => {
-        if (charactersToWatchers == null)
-            return
-
-        const character = charactersToWatchers.get(characterId)
-
-        if (character == null)
-            return
-
-        return (
-            <div className={styles.avatarStack}>
-                <DocumentCharacterAvatars avatars={character} />
-            </div>)
-    }
 
     const renderCharacters = (character: Character) => {
         return (
@@ -119,7 +154,7 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
                 <label htmlFor={character.id}>
                     {character.displayName}
                 </label>
-                {displayAvatarStack(character.id)}
+                {displayPresenceIndicatorCharacter(character.id)}
             </li>
         )
     }
@@ -237,6 +272,7 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
             {renderAnnotationModeOnlyMine()}
         </li>;
     }
+
     function renderAnnotationModeOnlyMine() {
         return isAnnotationMode && (<ul><li>
             <input

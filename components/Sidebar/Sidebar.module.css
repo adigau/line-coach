@@ -127,3 +127,21 @@
         height: 0;
     }
 }
+
+.presenceIndicatorContainer {
+    position: relative;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    cursor: help;
+}
+
+.presenceIndicator {
+    width: 5px;
+    height: 5px;
+    background: #99CC00;
+    position: absolute;
+    border-radius: 100%;
+    top: -5px;
+    left: 1px;
+}

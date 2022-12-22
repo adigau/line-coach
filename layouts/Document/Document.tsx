@@ -6,7 +6,7 @@ import { users } from "../../data/users";
 import { useMutation, useRoom, useSelf, useStorage } from "../../liveblocks.config";
 import { shallow } from "@liveblocks/client";
 import { User } from "../../types";
-import { CharacterStorage, LineStorage, ScriptType, SectionStorage, Section, Character, Line } from "../../types/script";
+import { ScriptType, Section, Character, Line } from "../../types/script";
 // import { scripts } from "../../data/scripts";
 import { Spinner } from "../../primitives/Spinner";
 import { Sidebar } from "../../components/Sidebar";
@@ -48,30 +48,8 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     const addOrUpdateSectionSelection = useMutation(({ storage }, sectionSelection: SectionSelectionType) => {
       storage.get("sectionSelections").set(sectionSelection.userId, sectionSelection)
     }, []);
-    const addOrUpdateCharacter = useMutation(({ storage }, character: CharacterStorage) => {
-      const index = storage.get("characters").findIndex(x => x.id == character.id);
-      if (index < 0)
-        storage.get("characters").push(character)
-      else
-        storage.get("characters").set(index, character)
-    }, []);
-    const addOrUpdateSection = useMutation(({ storage }, section: SectionStorage) => {
-      const index = storage.get("sections").findIndex(x => x.id == section.id);
-      if (index < 0)
-        storage.get("sections").push(section)
-      else
-        storage.get("sections").set(index, section)
-    }, []);
-    const addOrUpdateLine = useMutation(({ storage }, line: LineStorage) => {
-      const index = storage.get("lines").findIndex(x => x.id == line.id);
-      if (index < 0)
-        storage.get("lines").push(line)
-      else
-        storage.get("lines").set(index, line)
-    }, []);
 
     //////// States
-    const [isMenuOpen, setMenuOpen] = useState(false);
     const [allUsers, setAllUsers] = useState<Omit<User, "color">[]>([])
     const [currentUser, setCurrentUser] = useState<Omit<User, "color">>({} as Omit<User, "color">)
     const [script, setScript] = useState<ScriptType>(null as any)
@@ -86,7 +64,6 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     const isHiddenLinesChanged = (data: boolean) => setIsHiddenLines(data)
     const isAnnotationModeChanged = (data: boolean) => setIsAnnotationMode(data)
     const isAnnotationModeOnlyMineChanged = (data: boolean) => setIsAnnotationModeOnlyMine(data)
-    const handleMenuClick = useCallback(() => { setMenuOpen((isOpen) => !isOpen); }, []);
     const scriptChanged = (data: ScriptType) => {
       setScript(data)
       const userToSections: SectionSelectionType =
@@ -142,12 +119,13 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
 
     const loadUser = useCallback(
       (userId: string) => {
-        const userIndex = users.findIndex((x, i) => x.id == userId)
+        const userIndex = users.findIndex((x) => x.id == userId)
         const newUser = users[userIndex]
 
         setCurrentUser({ ...newUser })
       }, [])
 
+    //////// useEffect
     useEffect(() => {
       const optionsSelection: OptionsSelectionType = {
         userId: self.id,
@@ -169,7 +147,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     return (
       <div className={clsx(className, styles.container)} {...props}>
         <header className={styles.header}>{header}</header>
-        <aside className={styles.aside} data-open={isMenuOpen || undefined}>
+        <aside className={styles.aside}>
           <Sidebar
             script={script}
             scriptChanged={scriptChanged}
@@ -204,15 +182,6 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
   }
 );
 
-function getCharacterDisplayNameFromUserId(
-  cast: Character[],
-  userId: string
-) {
-  const character = cast.find((x) => x.id === userId)
-  const displayName = character == null ? "Unknown" : character.displayName
-  return displayName
-}
-
 function getIsCharacterHighlightedFromStorage(
   characterSelections: CharacterSelectionType | undefined,
   characterId: string
@@ -232,7 +201,6 @@ function getIsSectionDisplayedFromStorage(
     sectionSelections.hiddenSectionIds.some((x) => x == sectionId)
   )
 }
-
 
 function getCharacterById(id: string, list: Character[]): Character {
   const result = list.find(x => x.id == id)

@@ -22,15 +22,6 @@ type LineProps = {
   onAddOrUpdateAnnotation: Function;
 };
 
-function renderCharacterInfo(line: Line) {
-  return (
-    <span className={styles.characterInfo}>
-      <span className={styles.character}>
-        <a href={line.href}>{line.character?.displayName}: </a>
-      </span>
-    </span>
-  );
-}
 function renderOtherAnnotation(
   lineId: string,
   annotations: AnnotationType[],
@@ -79,7 +70,7 @@ export function Line(props: LineProps) {
     shallow
   );
 
-  const [, setWatchers] = useState<(User | null)[]>();
+  const [watchers, setWatchers] = useState<(User | null)[]>();
 
   useEffect(() => {
     const fetchData = () => {
@@ -127,6 +118,33 @@ export function Line(props: LineProps) {
       </fieldset>
     );
   };
+
+  const displayPresenceIndicatorCharacter = () => {
+    if (watchers == null || watchers.length <= 0)
+      return
+
+    const title = watchers.map(x => x?.name).join(", ")
+
+    return (
+      <div className={styles.presenceIndicatorContainer} title={title}>
+        <div className={styles.presenceIndicator}>&nbsp;</div>
+      </div>
+    )
+  }
+
+  function renderCharacterInfo(line: Line) {
+    return (
+      <span className={styles.characterInfo}>
+        <span className={styles.character}>
+          <>
+            <a href={line.href}>{line.character?.displayName}
+              {displayPresenceIndicatorCharacter()}: </a>
+          </>
+        </span>
+      </span>
+    );
+  }
+
   const onAnnotationChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
     a: AnnotationType
