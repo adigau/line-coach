@@ -78,7 +78,6 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
         scriptChanged(newScript)
     }
 
-
     function isCharacterOnline(characterId: string): boolean {
         if (charactersToWatchers == null)
             return false
@@ -273,6 +272,7 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
             {renderAnnotationModeOnlyMine()}
         </li>;
     }
+
     function renderAnnotationModeOnlyMine() {
         return isAnnotationMode && (<ul><li>
             <input
