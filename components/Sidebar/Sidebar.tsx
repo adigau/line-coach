@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Character, ScriptType, Section } from "../../types/script"
 import { CharacterSelectionType } from "../../types/storage"
 import styles from "./Sidebar.module.css"
@@ -32,9 +32,13 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
 
     const self = useSelf()
     const others = useOthers()
+    const users = useMemo(
+        () => (self ? [self, ...others] : others),
+        [self, others]
+    );
 
     const othersCharacterSelections: CharacterSelectionType[] = useStorage(
-        root => Array.from(root.characterSelections.values()).filter((x) => x.userId != self.id && others.some(y => y.id == x.userId)),
+        root => Array.from(root.characterSelections.values()).filter((x) => users.some(y => y.id == x.userId)),
         shallow,
     );
 
@@ -48,7 +52,7 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
                 const watchers = othersCharacterSelections
                     .filter(y => y.characterIds.some(z => z == x.id))
                     .map(x => {
-                        const user = others.filter(y => y.id == x.userId)[0]
+                        const user = users.filter(y => y.id == x.userId)[0]
                         return { id: user.id, name: user.info.name, avatar: user.info.avatar } as User
                     })
                 tempWatchers.set(id, watchers)
@@ -57,7 +61,7 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
             setCharactersToWatchers(tempWatchers)
         }
         fetchData();
-    }, [cast, othersCharacterSelections, others])
+    }, [cast, othersCharacterSelections, others, users])
 
     const onIsHiddenLinesChanged = (event: React.ChangeEvent<HTMLInputElement>) => isHiddenLinesChanged(event.target.checked)
     const onIsAnnotationModeChanged = (event: React.ChangeEvent<HTMLInputElement>) => isAnnotationModeChanged(event.target.checked)
@@ -93,12 +97,12 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
         if (charactersToWatchers == null)
             return
 
-        const character = charactersToWatchers.get(characterId)
+        const watchersOfThisCharacter = charactersToWatchers.get(characterId)?.filter(x => x?.id != self.id)
 
-        if (character == null || character.length <= 0)
+        if (watchersOfThisCharacter == null || watchersOfThisCharacter.length <= 0)
             return
 
-        const title = character.map(x => x?.name).join(", ")
+        const title = watchersOfThisCharacter.map(x => x?.name).join(", ")
 
         return (
             <div className={styles.presenceIndicatorContainer} title={title}>

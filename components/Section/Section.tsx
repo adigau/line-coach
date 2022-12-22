@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Line as LineComponent } from "../Line";
 import styles from "./Section.module.css";
 import {
@@ -34,9 +34,13 @@ export function Section({
     addOrUpdateAnnotation }: SectionProps) {
     const self = useSelf()
     const others = useOthers()
+    const users = useMemo(
+        () => (self ? [self, ...others] : others),
+        [self, others]
+    );
 
     const othersCharacterSelections: CharacterSelectionType[] = useStorage(
-        root => Array.from(root.characterSelections.values()).filter((x) => x.userId != self.id && others.some(y => y.id == x.userId)),
+        root => Array.from(root.characterSelections.values()).filter((x) => users.some(y => y.id == x.userId)),
         shallow,
     );
 
@@ -50,7 +54,7 @@ export function Section({
                 const watchers = othersCharacterSelections
                     .filter(y => y.characterIds.some(z => z == x.id))
                     .map(x => {
-                        const user = others.filter(y => y.id == x.userId)[0]
+                        const user = users.filter(y => y.id == x.userId)[0]
                         return { id: user.id, name: user.info.name, avatar: user.info.avatar } as User
                     })
                 tempWatchers.set(id, watchers)
@@ -59,7 +63,7 @@ export function Section({
             setCharactersToWatchers(tempWatchers)
         }
         fetchData();
-    }, [cast, othersCharacterSelections, others])
+    }, [cast, othersCharacterSelections, others, users])
 
     const renderLine = (line: Line) => {
         const currentCharacter = cast.filter((character) => {
