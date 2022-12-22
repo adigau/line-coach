@@ -6,7 +6,7 @@ import {
     Section,
     Line,
 } from "../../types/script";
-import { AnnotationType, CharacterSelectionType } from "../../types/storage";
+import { AnnotationStorage, CharacterSelectionStorage } from "../../types/storage";
 import * as RadixSeparator from "@radix-ui/react-separator";
 import { useOthers, useSelf, useStorage } from "../../liveblocks.config";
 import { shallow } from "@liveblocks/client";
@@ -15,7 +15,7 @@ import { User } from "../../types";
 type SectionProps = {
     sections: Section[]
     cast: Character[];
-    annotations: AnnotationType[];
+    annotations: AnnotationStorage[];
     currentUserId: string;
     isHiddenLines: boolean;
     isAnnotationMode: boolean;
@@ -39,7 +39,7 @@ export function Section({
         [self, others]
     );
 
-    const othersCharacterSelections: CharacterSelectionType[] = useStorage(
+    const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
         root => Array.from(root.characterSelections.values()).filter((x) => users.some(y => y.id == x.userId)),
         shallow,
     );
@@ -66,9 +66,6 @@ export function Section({
     }, [cast, othersCharacterSelections, others, users])
 
     const renderLine = (line: Line) => {
-        const currentCharacter = cast.filter((character) => {
-            return character.id == line.characterId;
-        })[0];
         const lineAnnotations = annotations.filter(
             (annotation) => annotation.lineId == line.id
         );
@@ -78,11 +75,6 @@ export function Section({
         const otherUsersAnnotations = lineAnnotations.filter(
             (annotation) => annotation.userId != currentUserId
         );
-
-        if (line.character != null) {
-            line.character.displayName = currentCharacter.displayName;
-            line.character.isHighlighted = currentCharacter.isHighlighted;
-        }
 
         return (
             <li key={line.id}>
