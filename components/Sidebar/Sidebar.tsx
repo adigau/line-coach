@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Character, ScriptType, Section } from "../../types/script"
-import { CharacterSelectionType, SectionSelectionType, OptionsSelectionType } from "../../types/storage"
+import { CharacterSelectionType } from "../../types/storage"
 import styles from "./Sidebar.module.css"
 import { User } from '../../types';
 import { useOthers, useSelf, useStorage } from '../../liveblocks.config';
 import { shallow } from '@liveblocks/react';
-import { DocumentCharacterAvatars } from '../Document/DocumentCharacterAvatars';
 import * as Accordion from '@radix-ui/react-accordion';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { Input } from '../../primitives/Input';
@@ -101,13 +100,14 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
 
         const character = charactersToWatchers.get(characterId)
 
-        if (character == null)
+        if (character == null || character.length <= 0)
             return
 
         return (
-            <div className={styles.avatarStack}>
-                <DocumentCharacterAvatars avatars={character} />
-            </div>)
+            <div className={styles.presenceIndicatorContainer} title={character.map(x => x?.name).join(", ")}>
+                <div className={styles.presenceIndicator}>&nbsp;</div>
+            </div>
+        )
     }
 
     const renderCharacters = (character: Character) => {

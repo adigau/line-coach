@@ -34,10 +34,6 @@ export function Script({
     isAnnotationMode,
     isAnnotationModeOnlyMine,
     addOrUpdateAnnotation }: ScriptProps) {
-    let lineIncrement = 0;
-
-    const onAddOrUpdateAnnotation = (annotation: AnnotationType) =>
-        addOrUpdateAnnotation(annotation);
 
     const renderSections = (sections: Section[]) => {
         const sectionsToDisplay = sections
@@ -57,11 +53,7 @@ export function Script({
                         <div key={section.id}>
                             <h2 className={styles.sectionName}>{section.displayName}</h2>
                             <ul className={styles.linesul}>
-                                {section.matchingLines.map((line) => {
-                                    const newIncrementValue = lineIncrement;
-                                    lineIncrement = newIncrementValue + 1;
-                                    return renderLine(line);
-                                })}
+                                {section.matchingLines.map((line) => renderLine(line))}
                             </ul>
                             {renderSeparator(sectionsToDisplay.length, index)}
                         </div>
@@ -100,25 +92,19 @@ export function Script({
                     isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
                     currentUserAnnotation={currentUserAnnotation}
                     otherUsersAnnotations={otherUsersAnnotations}
-                    onAddOrUpdateAnnotation={onAddOrUpdateAnnotation}
+                    onAddOrUpdateAnnotation={addOrUpdateAnnotation}
                 />
             </li>
         );
     };
 
-    return (
-        <>
-            <div>{renderSections(script.sections.filter((f) => f.isDisplayed))}</div>
-        </>
-    );
+    return (<div>{renderSections(script.sections.filter((f) => f.isDisplayed))}</div>);
 }
 
 function renderSeparator(numberOfSections: number, index: number) {
-    if (index >= numberOfSections - 1) return <></>;
-
-    return (
-        <div className={styles.separatorContainer}>
+    return index >= numberOfSections - 1 ?
+        (<></>) :
+        (<div className={styles.separatorContainer}>
             <RadixSeparator.Root className={styles.separator} />
-        </div>
-    );
+        </div>);
 }
