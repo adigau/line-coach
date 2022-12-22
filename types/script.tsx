@@ -1,30 +1,32 @@
 export type ScriptType = {
     id: string;
-    type: string;
-    title: string;
-    lang: string;
-    cast: CharacterType[];
-    sections: SectionType[];
+    cast: Character[];
+    sections: Section[];
     groupIds: string[];
 };
 
-export type CharacterType = {
+export type CharacterStorage = {
     id: string;
     displayName: string;
-    isHighlighted?: boolean;
-};
-
-export type SectionType = {
+}
+export interface Character extends CharacterStorage {
+    isHighlighted: boolean;
+}
+export type SectionStorage = {
     id: string;
     displayName: string;
-    isDisplayed?: boolean;
-    lines: LineType[];
-};
-
-export type LineType = {
+}
+export interface Section extends SectionStorage {
+    isDisplayed: boolean;
+    lines: Line[];
+}
+export type LineStorage = {
     id: string;
-    href?: string;
+    sectionId: string;
     characterId: string;
     text: string;
-    character?: CharacterType;
-};
+}
+export interface Line extends LineStorage {
+    href: string;
+    character: Character;
+}

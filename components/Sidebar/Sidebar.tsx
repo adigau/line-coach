@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScriptType, CharacterType, SectionType } from "../../types/script"
+import { Character, ScriptType, Section } from "../../types/script"
 import { CharacterSelectionType, SectionSelectionType, OptionsSelectionType } from "../../types/storage"
 import styles from "./Sidebar.module.css"
 import { User } from '../../types';
@@ -16,7 +16,7 @@ type SidebarProps = {
 
     script: ScriptType,
     scriptChanged: Function,
-    cast: CharacterType[],
+    cast: Character[],
     castChanged: Function,
 
     searchTerm: string,
@@ -26,16 +26,10 @@ type SidebarProps = {
     isAnnotationMode: boolean,
     isAnnotationModeChanged: (isChecked: boolean) => void,
     isAnnotationModeOnlyMine: boolean,
-    isAnnotationModeOnlyMineChanged: Function,
-    isDisplayPresenceMode: boolean,
-    isDisplayPresenceModeChanged: Function,
-
-    characterSelections: CharacterSelectionType | undefined,
-    sectionSelections: SectionSelectionType | undefined,
-    optionsSelections: OptionsSelectionType | undefined
+    isAnnotationModeOnlyMineChanged: Function
 }
 
-export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, searchTermChanged, isHiddenLines, isHiddenLinesChanged, isAnnotationMode, isAnnotationModeChanged, isDisplayPresenceMode, isDisplayPresenceModeChanged, characterSelections, sectionSelections, optionsSelections, isAnnotationModeOnlyMine, isAnnotationModeOnlyMineChanged, ...props }: SidebarProps) {
+export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, searchTermChanged, isHiddenLines, isHiddenLinesChanged, isAnnotationMode, isAnnotationModeChanged, isAnnotationModeOnlyMine, isAnnotationModeOnlyMineChanged }: SidebarProps) {
 
     const self = useSelf()
     const others = useOthers()
@@ -80,7 +74,7 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
         castChanged(newCast)
     }
     const onHighlightSectionClick = (event: React.ChangeEvent<HTMLInputElement>, sectionId: string) => {
-        const newSections: SectionType[] = script.sections.slice()
+        const newSections: Section[] = script.sections.slice()
         const sectionKey = newSections.findIndex((x) => x.id == sectionId)
         newSections[sectionKey].isDisplayed = event.target.checked
         const newScript = { ...script }
@@ -88,7 +82,7 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
         scriptChanged(newScript)
     }
 
-    const renderSections = (section: SectionType) => {
+    const renderSections = (section: Section) => {
         return (
             <li key={section.id}>
                 <input
@@ -102,9 +96,6 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
     }
 
     const displayAvatarStack = (characterId: string) => {
-        if (!isDisplayPresenceMode)
-            return
-
         if (charactersToWatchers == null)
             return
 
@@ -119,7 +110,7 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
             </div>)
     }
 
-    const renderCharacters = (character: CharacterType) => {
+    const renderCharacters = (character: Character) => {
         return (
             <li key={"character_" + character.id}>
                 <input

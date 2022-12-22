@@ -1,11 +1,11 @@
 
 import React from 'react'
-import { ScriptType, CharacterType } from "../../types/script"
+import { ScriptType, Character } from "../../types/script"
 import styles from "./DataWidget.module.css";
 
 type DataWidgetProps = {
     script: ScriptType,
-    cast: CharacterType[]
+    cast: Character[]
 }
 
 type FlattenedLine = {

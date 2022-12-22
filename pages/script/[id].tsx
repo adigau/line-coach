@@ -1,4 +1,4 @@
-import { LiveMap } from "@liveblocks/client";
+import { LiveList, LiveMap } from "@liveblocks/client";
 import { ClientSideSuspense } from "@liveblocks/react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { Session } from "next-auth";
@@ -15,6 +15,7 @@ import * as Server from "../../lib/server";
 import { Presence, RoomProvider } from "../../liveblocks.config";
 import { Spinner } from "../../primitives/Spinner";
 import { Document, ErrorData } from "../../types";
+import { CharacterStorage, LineStorage, SectionStorage } from "../../types/script";
 import { AnnotationType, CharacterSelectionType, OptionsSelectionType, SectionSelectionType } from "../../types/storage";
 
 export default function ScriptDocumentView({
@@ -60,9 +61,12 @@ export default function ScriptDocumentView({
   }
 
   const initialStorage = () => ({
+    characters: new LiveList<CharacterStorage>([]),
     characterSelections: new LiveMap<string, CharacterSelectionType>([]),
+    sections: new LiveList<SectionStorage>([]),
     sectionSelections: new LiveMap<string, SectionSelectionType>([]),
     optionsSelections: new LiveMap<string, OptionsSelectionType>([]),
+    lines: new LiveList<LineStorage>([]),
     annotations: new LiveMap<string, AnnotationType>([])
   });
 

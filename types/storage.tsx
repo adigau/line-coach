@@ -24,5 +24,4 @@ export type OptionsSelectionType = {
     isHiddenLines: boolean;
     isAnnotationMode: boolean;
     isAnnotationModeOnlyMine: boolean;
-    isDisplayPresenceMode: boolean;
 };
