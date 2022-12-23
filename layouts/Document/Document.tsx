@@ -50,7 +50,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     const [cast, setCast] = useState<Character[]>([])
     const [isHiddenLines, setIsHiddenLines] = useState(optionsSelections != null ? optionsSelections.isHiddenLines : false)
     const [isAnnotationMode, setIsAnnotationMode] = useState(optionsSelections != null ? optionsSelections.isAnnotationMode : false)
-    const [isAnnotationModeOnlyMine, setIsAnnotationModeOnlyMine] = useState(optionsSelections != null ? optionsSelections.isAnnotationModeOnlyMine : false)
+    const [isAnnotationModeOnlyMine, setIsAnnotationModeOnlyMine] = useState(optionsSelections != null ? optionsSelections.isAnnotationModeOnlyMine : true)
     const [searchTerm, setSearchTerm] = useState<string>("")
 
     //////// Events

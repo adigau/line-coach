@@ -165,6 +165,9 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
 
     return (
         <div className={styles.containerOptions}>
+            <div className={styles.searchContainer}>
+                <Input placeholder='Search through your text' className={styles.searchInput} type='text' value={searchTerm} onChange={searchTermChanged} />
+            </div>
             <Accordion.Root className={styles.AccordionRoot} type="single" defaultValue="item-1" collapsible>
                 <Accordion.Item className={styles.AccordionItem} value="item-1">
                     <Accordion.Header className={styles.AccordionHeader}>
@@ -221,20 +224,8 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
                         </ul>
                     </Accordion.Content>
                 </Accordion.Item>
+
                 <Accordion.Item className={styles.AccordionItem} value="item-4">
-                    <Accordion.Header className={styles.AccordionHeader}>
-                        <Accordion.Trigger className={styles.AccordionTrigger}>
-                            <div className={styles.AccordionTriggerText}>Search</div>
-                            <div className={styles.AccordionTriggerInfo}>
-                                <ChevronDownIcon className={styles.AccordionChevron} aria-hidden />
-                            </div>
-                        </Accordion.Trigger>
-                    </Accordion.Header>
-                    <Accordion.Content className={clsx(styles.AccordionContent, styles.AccordionContentText)}>
-                        <Input placeholder='Search through your text' className={styles.searchInput} type='text' value={searchTerm} onChange={searchTermChanged} />
-                    </Accordion.Content>
-                </Accordion.Item>
-                <Accordion.Item className={styles.AccordionItem} value="item-5">
                     <Accordion.Header className={styles.AccordionHeader}>
                         <Accordion.Trigger className={styles.AccordionTrigger}>
                             <div className={styles.AccordionTriggerText}>Data</div>
