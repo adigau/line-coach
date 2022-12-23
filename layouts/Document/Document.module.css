@@ -53,7 +53,7 @@
     grid-template-rows: var(--header-height) 1fr;
   }
 
-  .aside {
+  /* .aside {
     display: block;
-  }
+  } */
 }

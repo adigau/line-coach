@@ -7,6 +7,7 @@
   grid-template-columns: repeat(3, 1fr);
 }
 
+.menu,
 .logo,
 .document,
 .collaboration {
@@ -40,4 +41,19 @@
 
 .presence {
   margin-right: var(--space-8);
+}
+
+
+.menu {
+  place-content: flex-start;
+}
+
+.menuToggle {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  background: var(--color-surface);
+  border-radius: 100%;
+  place-content: center;
+  place-items: center;
 }

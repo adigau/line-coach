@@ -1,8 +1,8 @@
 import { ClientSideSuspense } from "@liveblocks/react";
 import clsx from "clsx";
 import Link from "next/link";
-import { ComponentProps } from "react";
-import { ShareIcon } from "../../icons";
+import { ComponentProps, MouseEventHandler } from "react";
+import { CrossIcon, MenuIcon, ShareIcon } from "../../icons";
 import { Button } from "../../primitives/Button";
 import { Skeleton } from "../../primitives/Skeleton";
 import { Document } from "../../types";
@@ -15,9 +15,13 @@ import styles from "./DocumentHeader.module.css";
 interface Props extends ComponentProps<"header"> {
   document: Document;
   onDocumentRename: (name: string) => void;
+  isOpen: boolean;
+  onMenuClick: MouseEventHandler<HTMLButtonElement>;
 }
 
 export function DocumentHeader({
+  isOpen,
+  onMenuClick,
   document,
   onDocumentRename,
   className,
@@ -25,10 +29,15 @@ export function DocumentHeader({
 }: Props) {
   return (
     <header className={clsx(className, styles.header)} {...props}>
-      <div className={styles.logo}>
-        <Link href="/" className={styles.logoLink}>
-          <Logo />
-        </Link>
+      <div className={styles.menu}>
+        <button className={styles.menuToggle} onClick={onMenuClick}>
+          {isOpen ? <CrossIcon /> : <MenuIcon />}
+        </button>
+        <div className={styles.logo}>
+          <Link href="/" className={styles.logoLink}>
+            <Logo />
+          </Link>
+        </div>
       </div>
       <div className={styles.document}>
         <ClientSideSuspense fallback={null}>

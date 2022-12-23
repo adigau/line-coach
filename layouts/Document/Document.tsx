@@ -14,10 +14,11 @@ import { Script } from "../../components/Script";
 
 interface Props extends ComponentProps<"div"> {
   header: ReactNode;
+  isOpen: boolean;
 }
 
 export const DocumentLayout = forwardRef<HTMLElement, Props>(
-  ({ header, className, ...props }) => {
+  ({ header, isOpen, className, ...props }) => {
 
     //////// Liveblocks - Presence
     const self = useSelf()
@@ -140,7 +141,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     return (
       <div className={clsx(className, styles.container)} {...props}>
         <header className={styles.header}>{header}</header>
-        <aside className={styles.aside}>
+        <aside className={styles.aside} data-open={isOpen || undefined}>
           <Sidebar
             script={script}
             scriptChanged={scriptChanged}
