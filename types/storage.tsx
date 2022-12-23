@@ -1,7 +1,6 @@
 import { User } from "./data";
 
 export type AnnotationStorage = {
-    key: string;
     userId: string;
     lineId: string;
     text: string;

@@ -6,7 +6,7 @@ import {
     Section,
     Line,
 } from "../../types/script";
-import { AnnotationStorage, CharacterSelectionStorage } from "../../types/storage";
+import { CharacterSelectionStorage } from "../../types/storage";
 import * as RadixSeparator from "@radix-ui/react-separator";
 import { useOthers, useSelf, useStorage } from "../../liveblocks.config";
 import { shallow } from "@liveblocks/client";
@@ -15,23 +15,18 @@ import { User } from "../../types";
 type SectionProps = {
     sections: Section[]
     cast: Character[];
-    annotations: AnnotationStorage[];
-    currentUserId: string;
     isHiddenLines: boolean;
     isAnnotationMode: boolean;
     isAnnotationModeOnlyMine: boolean;
-    addOrUpdateAnnotation: Function;
 };
 
 export function Section({
     sections,
     cast,
-    annotations,
-    currentUserId,
     isHiddenLines,
     isAnnotationMode,
-    isAnnotationModeOnlyMine,
-    addOrUpdateAnnotation }: SectionProps) {
+    isAnnotationModeOnlyMine
+}: SectionProps) {
     const self = useSelf()
     const others = useOthers()
     const users = useMemo(
@@ -66,27 +61,14 @@ export function Section({
     }, [cast, othersCharacterSelections, others, users])
 
     const renderLine = (line: Line) => {
-        const lineAnnotations = annotations.filter(
-            (annotation) => annotation.lineId == line.id
-        );
-        const currentUserAnnotation = lineAnnotations.filter(
-            (annotation) => annotation.userId == currentUserId
-        )[0];
-        const otherUsersAnnotations = lineAnnotations.filter(
-            (annotation) => annotation.userId != currentUserId
-        );
 
         return (
             <li key={line.id}>
                 <LineComponent
                     line={line}
-                    currentUserId={currentUserId}
                     isHiddenLines={isHiddenLines}
                     isAnnotationMode={isAnnotationMode}
                     isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
-                    currentUserAnnotation={currentUserAnnotation}
-                    otherUsersAnnotations={otherUsersAnnotations}
-                    onAddOrUpdateAnnotation={addOrUpdateAnnotation}
                 />
             </li>
         )

@@ -3,7 +3,7 @@ import styles from "./Line.module.css";
 import Switch from "@mui/material/Switch";
 import { Line } from "../../types/script";
 import { AnnotationStorage, CharacterSelectionStorage } from "../../types/storage";
-import { useOthers, useSelf, useStorage } from "../../liveblocks.config";
+import { useMutation, useOthers, useSelf, useStorage } from "../../liveblocks.config";
 import clsx from "clsx";
 import { User } from "../../types";
 import { shallow } from "@liveblocks/react";
@@ -11,20 +11,14 @@ import { shallow } from "@liveblocks/react";
 type LineProps = {
   line: Line;
 
-  currentUserId: string;
-
   isHiddenLines: boolean;
   isAnnotationMode: boolean;
   isAnnotationModeOnlyMine: boolean;
-
-  currentUserAnnotation: AnnotationStorage;
-  otherUsersAnnotations: AnnotationStorage[];
-  onAddOrUpdateAnnotation: Function;
 };
 
 function renderOtherAnnotation(
   lineId: string,
-  annotations: AnnotationStorage[],
+  annotations: AnnotationStorage[] | undefined,
   isAnnotationModeOnlyMine: boolean
 ) {
   if (annotations == null || isAnnotationModeOnlyMine) return;
@@ -46,17 +40,22 @@ function renderOtherAnnotation(
 export function Line(props: LineProps) {
   const {
     line,
-    currentUserId,
     isHiddenLines,
     isAnnotationMode,
-    isAnnotationModeOnlyMine,
-    currentUserAnnotation,
-    otherUsersAnnotations,
-    onAddOrUpdateAnnotation,
+    isAnnotationModeOnlyMine
   } = props;
 
   const self = useSelf();
   const others = useOthers();
+  const annotations = useStorage((root) => root.annotations.filter(x => x.lineId == line.id), shallow);
+
+  const addOrUpdateAnnotation = useMutation(({ storage }, annotation: AnnotationStorage) => {
+    const index = storage.get("annotations").findIndex(x => x.userId == annotation.userId && x.userId == annotation.userId)
+    if (index < 0)
+      storage.get("annotations").push(annotation)
+    else
+      storage.get("annotations").set(index, annotation)
+  }, []);
 
   const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
     (root) =>
@@ -92,30 +91,20 @@ export function Line(props: LineProps) {
   const [isTextForcedVisible, setIsTextForcedVisible] = useState(false);
 
 
-  const renderYourAnnotation = (lineId: string, annotation: AnnotationStorage) => {
-    let updatedUserAnnotation = annotation;
-
-    if (updatedUserAnnotation == null) {
-      updatedUserAnnotation = {
-        key: currentUserId + "_" + line.id,
-        lineId: line.id,
-        text: "",
-        userId: currentUserId,
-      };
-    }
-
+  const renderYourAnnotation = (annotation: AnnotationStorage) => {
+    const text = annotation != null ? annotation.text : ""
     return (
       <fieldset
-        id={"yourAnnotationFieldset-" + lineId}
+        id={"yourAnnotationFieldset-" + line.id}
         className={styles.lineAnnotationsCurrentUser}
       >
         <legend>Your notes</legend>
         <textarea
           className={styles.annotationText}
           onChange={(event) => {
-            onAnnotationChange(event, updatedUserAnnotation);
+            onAnnotationChange(event.target.value, self.id);
           }}
-          defaultValue={updatedUserAnnotation.text}
+          defaultValue={text}
         ></textarea>
       </fieldset>
     );
@@ -148,11 +137,15 @@ export function Line(props: LineProps) {
   }
 
   const onAnnotationChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-    a: AnnotationStorage
+    value: string,
+    userId: string,
   ) => {
-    a.text = e.target.value;
-    onAddOrUpdateAnnotation(a);
+    const newAnnotation = {
+      lineId: line.id,
+      userId: userId,
+      text: value
+    } as AnnotationStorage
+    addOrUpdateAnnotation(newAnnotation)
   };
 
   const onRevealerButtonClick = (e: React.ChangeEvent<any>) => {
@@ -172,10 +165,10 @@ export function Line(props: LineProps) {
       >
         {renderOtherAnnotation(
           line.id,
-          otherUsersAnnotations,
+          annotations?.filter(x => x.userId != self.id && x.lineId == line.id),
           isAnnotationModeOnlyMine
         )}
-        {renderYourAnnotation(line.id, currentUserAnnotation)}
+        {renderYourAnnotation(annotations.filter(x => x.userId == self.id && x.lineId == line.id)[0])}
       </div>
       <div
         className={clsx(

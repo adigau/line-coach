@@ -67,7 +67,7 @@ export default function ScriptDocumentView({
     sectionSelections: new LiveMap<string, SectionSelectionStorage>([]),
     optionsSelections: new LiveMap<string, OptionsSelectionStorage>([]),
     lines: new LiveList<LineStorage>([]),
-    annotations: new LiveMap<string, AnnotationStorage>([])
+    annotations: new LiveList<AnnotationStorage>([])
   });
 
   return (

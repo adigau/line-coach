@@ -65,7 +65,7 @@ type Storage = {
   characters: LiveList<CharacterStorage>
   sections: LiveList<SectionStorage>
   lines: LiveList<LineStorage>
-  annotations: LiveMap<string, AnnotationStorage>
+  annotations: LiveList<AnnotationStorage>
 };
 
 export type UserInfo = Pick<User, "name" | "avatar" | "color">;

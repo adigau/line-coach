@@ -30,17 +30,10 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     const characters = useStorage((root) => root.characters);
     const sections = useStorage((root) => root.sections);
     const lines = useStorage((root) => root.lines);
-    const annotations = useStorage(
-      root => Array.from(root.annotations.values()),
-      shallow,
-    );
 
     //////// Liveblocks - Mutation
     const addOrUpdateOptionsSelection = useMutation(({ storage }, options: OptionsSelectionStorage) => {
       storage.get("optionsSelections").set(options.userId, options)
-    }, []);
-    const addOrUpdateAnnotation = useMutation(({ storage }, annotation: AnnotationStorage) => {
-      storage.get("annotations").set(annotation.key, annotation)
     }, []);
     const addOrUpdateCharacterSelection = useMutation(({ storage }, characterSelection: CharacterSelectionStorage) => {
       storage.get("characterSelections").set(characterSelection.userId, characterSelection)
@@ -168,10 +161,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
             script={script}
             cast={cast}
             searchTerm={searchTerm}
-            annotations={annotations}
-            addOrUpdateAnnotation={addOrUpdateAnnotation}
             users={allUsers}
-            currentUserId={self.id}
             isHiddenLines={isHiddenLines}
             isAnnotationMode={isAnnotationMode}
             isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
