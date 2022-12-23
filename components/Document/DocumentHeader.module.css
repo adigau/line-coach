@@ -17,6 +17,7 @@
 
 .logo {
   place-content: flex-start;
+  margin-left: 5px;
 }
 
 .logoLink {

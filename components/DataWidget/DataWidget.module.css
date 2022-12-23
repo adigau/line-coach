@@ -7,6 +7,9 @@
 }
 
 .dataUl li {
-  list-style: none;
-  margin-left: 10px;
+  list-style: circle;
+}
+
+.dataUl li ul {
+  margin-left: 20px;
 }
