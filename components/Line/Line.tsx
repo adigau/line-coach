@@ -52,6 +52,7 @@ export function Line(props: LineProps) {
   const [draftAnnotation] = useState<string>(annotations.filter(x => x.userId == self.id).map(x => x.text)[0] ?? "");
   const [watchers, setWatchers] = useState<(User | null)[]>();
 
+  //TODO: Understand why others only receive updates when a new annotation is added witht he first letter, but not the rest when more text is typed
   const addOrUpdateAnnotation = useMutation(({ storage, self }, value: string) => {
     const newAnnotation = { lineId: line.id, userId: self.id, text: value } as AnnotationStorage
     const index = storage.get("annotations").findIndex(x => x.userId == newAnnotation.userId && x.lineId == newAnnotation.lineId)
