@@ -49,13 +49,18 @@ export function Line(props: LineProps) {
   const others = useOthers();
   const annotations = useStorage((root) => root.annotations.filter(x => x.lineId == line.id), shallow);
 
-  const addOrUpdateAnnotation = useMutation(({ storage }, annotation: AnnotationStorage) => {
-    const index = storage.get("annotations").findIndex(x => x.userId == annotation.userId && x.userId == annotation.userId)
+
+  const [draftAnnotation, setDraftAnnotation] = useState<string>(annotations.filter(x => x.userId == self.id).map(x => x.text)[0]);
+  const [watchers, setWatchers] = useState<(User | null)[]>();
+
+  const addOrUpdateAnnotation = useMutation(({ storage, self }) => {
+    const newAnnotation = { lineId: line.id, userId: self.id, text: draftAnnotation } as AnnotationStorage
+    const index = storage.get("annotations").findIndex(x => x.userId == newAnnotation.userId && x.lineId == newAnnotation.lineId)
     if (index < 0)
-      storage.get("annotations").push(annotation)
+      storage.get("annotations").push(newAnnotation)
     else
-      storage.get("annotations").set(index, annotation)
-  }, []);
+      storage.get("annotations").set(index, newAnnotation)
+  }, [draftAnnotation]);
 
   const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
     (root) =>
@@ -68,8 +73,6 @@ export function Line(props: LineProps) {
         .filter((x) => others.some((y) => y.id == x.userId)),
     shallow
   );
-
-  const [watchers, setWatchers] = useState<(User | null)[]>();
 
   useEffect(() => {
     const fetchData = () => {
@@ -91,8 +94,7 @@ export function Line(props: LineProps) {
   const [isTextForcedVisible, setIsTextForcedVisible] = useState(false);
 
 
-  const renderYourAnnotation = (annotation: AnnotationStorage) => {
-    const text = annotation != null ? annotation.text : ""
+  const renderYourAnnotation = () => {
     return (
       <fieldset
         id={"yourAnnotationFieldset-" + line.id}
@@ -101,10 +103,11 @@ export function Line(props: LineProps) {
         <legend>Your notes</legend>
         <textarea
           className={styles.annotationText}
-          onChange={(event) => {
-            onAnnotationChange(event.target.value, self.id);
+          onChange={(e) => {
+            setDraftAnnotation(e.target.value);
+            addOrUpdateAnnotation()
           }}
-          defaultValue={text}
+          defaultValue={draftAnnotation}
         ></textarea>
       </fieldset>
     );
@@ -136,17 +139,6 @@ export function Line(props: LineProps) {
     );
   }
 
-  const onAnnotationChange = (
-    value: string,
-    userId: string,
-  ) => {
-    const newAnnotation = {
-      lineId: line.id,
-      userId: userId,
-      text: value
-    } as AnnotationStorage
-    addOrUpdateAnnotation(newAnnotation)
-  };
 
   const onRevealerButtonClick = (e: React.ChangeEvent<any>) => {
     setIsTextForcedVisible(e.target.checked);
@@ -168,7 +160,7 @@ export function Line(props: LineProps) {
           annotations?.filter(x => x.userId != self.id && x.lineId == line.id),
           isAnnotationModeOnlyMine
         )}
-        {renderYourAnnotation(annotations.filter(x => x.userId == self.id && x.lineId == line.id)[0])}
+        {renderYourAnnotation()}
       </div>
       <div
         className={clsx(
