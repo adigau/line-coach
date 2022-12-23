@@ -49,18 +49,20 @@ export function Line(props: LineProps) {
   const others = useOthers();
   const annotations = useStorage((root) => root.annotations.filter(x => x.lineId == line.id), shallow);
 
-
-  const [draftAnnotation, setDraftAnnotation] = useState<string>(annotations.filter(x => x.userId == self.id).map(x => x.text)[0]);
+  const [draftAnnotation, setDraftAnnotation] = useState<string>(annotations.filter(x => x.userId == self.id).map(x => x.text)[0] ?? "");
   const [watchers, setWatchers] = useState<(User | null)[]>();
 
-  const addOrUpdateAnnotation = useMutation(({ storage, self }) => {
-    const newAnnotation = { lineId: line.id, userId: self.id, text: draftAnnotation } as AnnotationStorage
+  const addOrUpdateAnnotation = useMutation(({ storage, self }, value: string) => {
+    const newAnnotation = { lineId: line.id, userId: self.id, text: value } as AnnotationStorage
     const index = storage.get("annotations").findIndex(x => x.userId == newAnnotation.userId && x.lineId == newAnnotation.lineId)
     if (index < 0)
       storage.get("annotations").push(newAnnotation)
     else
       storage.get("annotations").set(index, newAnnotation)
-  }, [draftAnnotation]);
+  }
+    , []
+    // , [draftAnnotation]
+  );
 
   const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
     (root) =>
@@ -105,7 +107,7 @@ export function Line(props: LineProps) {
           className={styles.annotationText}
           onChange={(e) => {
             setDraftAnnotation(e.target.value);
-            addOrUpdateAnnotation()
+            addOrUpdateAnnotation(e.target.value)
           }}
           defaultValue={draftAnnotation}
         ></textarea>
