@@ -29,6 +29,10 @@
   transition-property: background, color, opacity;
 }
 
+.label {
+  margin-left: 5px;
+}
+
 .checkboxIcon {
   width: 12px;
   height: 12px;
@@ -36,22 +40,22 @@
   pointer-events: none;
 }
 
-.input:hover + .checkbox,
-.input:focus-visible + .checkbox {
+.input:hover+.checkbox,
+.input:focus-visible+.checkbox {
   background: var(--color-surface-hover);
 }
 
-.input:checked + .checkbox {
+.input:checked+.checkbox {
   background: var(--color-accent);
   color: var(--color-surface-elevated);
 }
 
-.input:checked + .checkbox .checkboxIcon {
+.input:checked+.checkbox .checkboxIcon {
   opacity: 1;
 }
 
 .input:disabled,
-.input:disabled + .checkbox {
+.input:disabled+.checkbox {
   cursor: default;
   opacity: var(--opacity-disabled);
 }
