@@ -14,18 +14,18 @@ import { DataWidget } from '../DataWidget';
 type SidebarProps = {
 
     script: ScriptType,
-    scriptChanged: Function,
+    scriptChanged: (data: ScriptType) => void,
     cast: Character[],
-    castChanged: Function,
+    castChanged: (data: Character[]) => void,
 
     searchTerm: string,
     searchTermChanged: (event: React.ChangeEvent<HTMLInputElement>) => void,
     isHiddenLines: boolean,
-    isHiddenLinesChanged: Function,
+    isHiddenLinesChanged: (data: boolean) => void,
     isAnnotationMode: boolean,
     isAnnotationModeChanged: (isChecked: boolean) => void,
     isAnnotationModeOnlyMine: boolean,
-    isAnnotationModeOnlyMineChanged: Function
+    isAnnotationModeOnlyMineChanged: (data: boolean) => void
 }
 
 export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, searchTermChanged, isHiddenLines, isHiddenLinesChanged, isAnnotationMode, isAnnotationModeChanged, isAnnotationModeOnlyMine, isAnnotationModeOnlyMineChanged }: SidebarProps) {
