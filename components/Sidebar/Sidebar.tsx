@@ -10,6 +10,7 @@ import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { Input } from '../../primitives/Input';
 import clsx from 'clsx';
 import { DataWidget } from '../DataWidget';
+import { Checkbox } from '../../primitives/Checkbox';
 
 type SidebarProps = {
 
@@ -63,20 +64,20 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
         fetchData();
     }, [cast, othersCharacterSelections, others, users])
 
-    const onIsHiddenLinesChanged = (event: React.ChangeEvent<HTMLInputElement>) => isHiddenLinesChanged(event.target.checked)
-    const onIsAnnotationModeChanged = (event: React.ChangeEvent<HTMLInputElement>) => isAnnotationModeChanged(event.target.checked)
-    const onIsAnnotationModeOnlyMineChanged = (event: React.ChangeEvent<HTMLInputElement>) => isAnnotationModeOnlyMineChanged(event.target.checked)
+    const onIsHiddenLinesChanged = (checked: boolean) => isHiddenLinesChanged(checked)
+    const onIsAnnotationModeChanged = (checked: boolean) => isAnnotationModeChanged(checked)
+    const onIsAnnotationModeOnlyMineChanged = (checked: boolean) => isAnnotationModeOnlyMineChanged(checked)
 
-    const onHighlightCharacterClick = (event: React.ChangeEvent<HTMLInputElement>, characterId: string) => {
+    const onHighlightCharacterClick = (checked: boolean, value?: string) => {
         const newCast = cast.slice()
-        const castKey = newCast.findIndex((x) => x.id == characterId)
-        newCast[castKey].isHighlighted = event.target.checked
+        const castKey = newCast.findIndex((x) => x.id == value)
+        newCast[castKey].isHighlighted = checked
         castChanged(newCast)
     }
-    const onHighlightSectionClick = (event: React.ChangeEvent<HTMLInputElement>, sectionId: string) => {
+    const onHighlightSectionClick = (checked: boolean, value?: string) => {
         const newSections: Section[] = script.sections.slice()
-        const sectionKey = newSections.findIndex((x) => x.id == sectionId)
-        newSections[sectionKey].isDisplayed = event.target.checked
+        const sectionKey = newSections.findIndex((x) => x.id == value)
+        newSections[sectionKey].isDisplayed = checked
         const newScript = { ...script }
         newScript.sections = newSections
         scriptChanged(newScript)
@@ -137,27 +138,17 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
     const renderSections = (section: Section) => {
         return (
             <li key={section.id}>
-                <input
-                    type="checkbox" checked={section.isDisplayed} id={section.id} name={section.id} value={section.id}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => onHighlightSectionClick(event, section.id)} />
-                <label title={section.displayName} htmlFor={section.id}>
-                    {section.displayName}
-                </label>
+                <Checkbox checked={section.isDisplayed} id={section.id} name={section.id} value={section.id}
+                    onValueChange={onHighlightSectionClick} initialValue={section.isDisplayed} label={section.displayName} />
                 {displayPresenceIndicatorSection(section.id)}
             </li>
         )
     }
 
-
     const renderCharacters = (character: Character) => {
         return (
             <li key={"character_" + character.id}>
-                <input
-                    type="checkbox" checked={character.isHighlighted} id={character.id} name={character.id} value={character.id}
-                    onChange={(event) => onHighlightCharacterClick(event, character.id)} />
-                <label htmlFor={character.id}>
-                    {character.displayName}
-                </label>
+                <Checkbox initialValue={character.isHighlighted} checked={character.isHighlighted} onValueChange={onHighlightCharacterClick} id={character.id} name={character.id} value={character.id} label={character.displayName} />
                 {displayPresenceIndicatorCharacter(character.id)}
             </li>
         )
@@ -247,35 +238,23 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
 
     function renderHideLines() {
         return <li>
-            <input
-                type="checkbox" checked={isHiddenLines} id="isHiddenLines" name="isHiddenLines" value="isHiddenLines"
-                onChange={(event) => onIsHiddenLinesChanged(event)} />
-            <label htmlFor="isHiddenLines">
-                🧑‍🦯 Hide your lines
-            </label>
+            <Checkbox checked={isHiddenLines} id="isHiddenLines" name="isHiddenLines" value="isHiddenLines"
+                onValueChange={onIsHiddenLinesChanged} initialValue={isHiddenLines} label="🧑‍🦯 Hide your lines" />
         </li>;
     }
 
     function renderAnnotationMode() {
         return <li>
-            <input
-                type="checkbox" checked={isAnnotationMode} id="isAnnotationMode" name="isAnnotationMode" value="isAnnotationMode"
-                onChange={(event) => onIsAnnotationModeChanged(event)} />
-            <label htmlFor="isAnnotationMode">
-                📝 Activate annotation mode
-            </label>
+            <Checkbox checked={isAnnotationMode} id="isAnnotationMode" name="isAnnotationMode" value="isAnnotationMode"
+                onValueChange={onIsAnnotationModeChanged} initialValue={isAnnotationMode} label="📝 Activate annotation mode" />
             {renderAnnotationModeOnlyMine()}
         </li>;
     }
 
     function renderAnnotationModeOnlyMine() {
         return isAnnotationMode && (<ul><li>
-            <input
-                type="checkbox" checked={isAnnotationModeOnlyMine} id="isAnnotationModeOnlyMine" name="isAnnotationModeOnlyMine" value="isAnnotationModeOnlyMine"
-                onChange={(event) => onIsAnnotationModeOnlyMineChanged(event)} />
-            <label htmlFor="isAnnotationModeOnlyMine">
-                ☝️ Only show mine
-            </label>
+            <Checkbox checked={isAnnotationModeOnlyMine} id="isAnnotationModeOnlyMine" name="isAnnotationModeOnlyMine" value="isAnnotationModeOnlyMine"
+                onValueChange={onIsAnnotationModeOnlyMineChanged} initialValue={isAnnotationModeOnlyMine} label="☝️ Only show mine" />
         </li></ul>);
     }
 }

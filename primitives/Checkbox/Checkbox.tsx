@@ -11,19 +11,23 @@ import styles from "./Checkbox.module.css";
 
 interface Props extends ComponentProps<"div"> {
   initialValue: boolean;
-  onValueChange?: (value: boolean) => void;
+  onValueChange?: (value: boolean, id?: string) => void;
   checked: boolean;
   name?: string;
+  value: string;
   disabled?: boolean;
+  label?: string;
 }
 
 export function Checkbox({
   initialValue = false,
-  onValueChange = () => {},
+  onValueChange = () => { },
   checked = false,
   name,
   disabled = false,
   id,
+  value,
+  label,
   className,
   ...props
 }: Props) {
@@ -32,9 +36,9 @@ export function Checkbox({
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       setInternalChecked(event.target.checked);
-      onValueChange(event.target.checked);
+      onValueChange(event.target.checked, value);
     },
-    [onValueChange]
+    [value, onValueChange]
   );
 
   useEffect(() => {
@@ -42,7 +46,7 @@ export function Checkbox({
   }, [checked]);
 
   return (
-    <div className={clsx(className, styles.container)} {...props}>
+    <div title={label} className={clsx(className, styles.container)} {...props}>
       <input
         className={styles.input}
         type="checkbox"
@@ -55,6 +59,9 @@ export function Checkbox({
       <span className={styles.checkbox}>
         <CheckIcon className={styles.checkboxIcon} />
       </span>
+      <label className={styles.label} htmlFor={id}>
+        {label}
+      </label>
     </div>
   );
 }
