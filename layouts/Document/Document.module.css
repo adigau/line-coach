@@ -44,6 +44,7 @@
   grid-area: main;
 }
 
+/* 
 @media (min-width: 1024px) {
   .container {
     grid-template-areas:
@@ -53,7 +54,4 @@
     grid-template-rows: var(--header-height) 1fr;
   }
 
-  /* .aside {
-    display: block;
-  } */
-}
+} */
