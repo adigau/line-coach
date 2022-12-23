@@ -18,7 +18,7 @@ type LineProps = {
 
 function renderOtherAnnotation(
   lineId: string,
-  annotations: AnnotationStorage[] | undefined,
+  annotations: AnnotationStorage[],
   isAnnotationModeOnlyMine: boolean
 ) {
   if (annotations == null || isAnnotationModeOnlyMine) return;
@@ -49,7 +49,7 @@ export function Line(props: LineProps) {
   const others = useOthers();
   const annotations = useStorage((root) => root.annotations.filter(x => x.lineId == line.id), shallow);
 
-  const [draftAnnotation, setDraftAnnotation] = useState<string>(annotations.filter(x => x.userId == self.id).map(x => x.text)[0] ?? "");
+  const [draftAnnotation] = useState<string>(annotations.filter(x => x.userId == self.id).map(x => x.text)[0] ?? "");
   const [watchers, setWatchers] = useState<(User | null)[]>();
 
   const addOrUpdateAnnotation = useMutation(({ storage, self }, value: string) => {
@@ -59,10 +59,7 @@ export function Line(props: LineProps) {
       storage.get("annotations").push(newAnnotation)
     else
       storage.get("annotations").set(index, newAnnotation)
-  }
-    , []
-    // , [draftAnnotation]
-  );
+  }, []);
 
   const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
     (root) =>
@@ -86,10 +83,8 @@ export function Line(props: LineProps) {
           avatar: user.info.avatar,
         } as User;
       });
-
       setWatchers(tempWatchers);
     };
-
     fetchData();
   }, [othersCharacterSelections, others]);
 
@@ -105,12 +100,8 @@ export function Line(props: LineProps) {
         <legend>Your notes</legend>
         <textarea
           className={styles.annotationText}
-          onChange={(e) => {
-            setDraftAnnotation(e.target.value);
-            addOrUpdateAnnotation(e.target.value)
-          }}
-          defaultValue={draftAnnotation}
-        ></textarea>
+          onChange={(e) => { addOrUpdateAnnotation(e.target.value) }}
+        >{draftAnnotation}</textarea>
       </fieldset>
     );
   };
@@ -141,13 +132,9 @@ export function Line(props: LineProps) {
     );
   }
 
+  const onRevealerButtonClick = (e: React.ChangeEvent<any>) => { setIsTextForcedVisible(e.target.checked); };
 
-  const onRevealerButtonClick = (e: React.ChangeEvent<any>) => {
-    setIsTextForcedVisible(e.target.checked);
-  };
-
-  const isTextVisible =
-    !line.character?.isHighlighted || isTextForcedVisible || !isHiddenLines;
+  const isTextVisible = !line.character?.isHighlighted || isTextForcedVisible || !isHiddenLines;
 
   return (
     <div id={line.href} key={line.href} className={styles.line}>
@@ -159,7 +146,7 @@ export function Line(props: LineProps) {
       >
         {renderOtherAnnotation(
           line.id,
-          annotations?.filter(x => x.userId != self.id && x.lineId == line.id),
+          annotations.filter(x => x.userId != self.id),
           isAnnotationModeOnlyMine
         )}
         {renderYourAnnotation()}
