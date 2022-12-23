@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import styles from "./Line.module.css";
 import Switch from "@mui/material/Switch";
 import { Line } from "../../types/script";
-import { AnnotationType, CharacterSelectionType } from "../../types/storage";
-import { useOthers, useSelf, useStorage } from "../../liveblocks.config";
+import { AnnotationStorage, CharacterSelectionStorage } from "../../types/storage";
+import { useMutation, useOthers, useSelf, useStorage } from "../../liveblocks.config";
 import clsx from "clsx";
 import { User } from "../../types";
 import { shallow } from "@liveblocks/react";
@@ -11,20 +11,14 @@ import { shallow } from "@liveblocks/react";
 type LineProps = {
   line: Line;
 
-  currentUserId: string;
-
   isHiddenLines: boolean;
   isAnnotationMode: boolean;
   isAnnotationModeOnlyMine: boolean;
-
-  currentUserAnnotation: AnnotationType;
-  otherUsersAnnotations: AnnotationType[];
-  onAddOrUpdateAnnotation: Function;
 };
 
 function renderOtherAnnotation(
   lineId: string,
-  annotations: AnnotationType[],
+  annotations: AnnotationStorage[],
   isAnnotationModeOnlyMine: boolean
 ) {
   if (annotations == null || isAnnotationModeOnlyMine) return;
@@ -46,19 +40,29 @@ function renderOtherAnnotation(
 export function Line(props: LineProps) {
   const {
     line,
-    currentUserId,
     isHiddenLines,
     isAnnotationMode,
-    isAnnotationModeOnlyMine,
-    currentUserAnnotation,
-    otherUsersAnnotations,
-    onAddOrUpdateAnnotation,
+    isAnnotationModeOnlyMine
   } = props;
 
   const self = useSelf();
   const others = useOthers();
+  const annotations = useStorage((root) => root.annotations.filter(x => x.lineId == line.id), shallow);
 
-  const othersCharacterSelections: CharacterSelectionType[] = useStorage(
+  const [draftAnnotation] = useState<string>(annotations.filter(x => x.userId == self.id).map(x => x.text)[0] ?? "");
+  const [watchers, setWatchers] = useState<(User | null)[]>();
+
+  //TODO: Understand why others only receive updates when a new annotation is added witht he first letter, but not the rest when more text is typed
+  const addOrUpdateAnnotation = useMutation(({ storage, self }, value: string) => {
+    const newAnnotation = { lineId: line.id, userId: self.id, text: value } as AnnotationStorage
+    const index = storage.get("annotations").findIndex(x => x.userId == newAnnotation.userId && x.lineId == newAnnotation.lineId)
+    if (index < 0)
+      storage.get("annotations").push(newAnnotation)
+    else
+      storage.get("annotations").set(index, newAnnotation)
+  }, []);
+
+  const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
     (root) =>
       Array.from(root.characterSelections.values())
         .filter(
@@ -70,8 +74,6 @@ export function Line(props: LineProps) {
     shallow
   );
 
-  const [watchers, setWatchers] = useState<(User | null)[]>();
-
   useEffect(() => {
     const fetchData = () => {
       const tempWatchers = othersCharacterSelections.map((x) => {
@@ -82,39 +84,25 @@ export function Line(props: LineProps) {
           avatar: user.info.avatar,
         } as User;
       });
-
       setWatchers(tempWatchers);
     };
-
     fetchData();
   }, [othersCharacterSelections, others]);
 
   const [isTextForcedVisible, setIsTextForcedVisible] = useState(false);
 
-  let updatedUserAnnotation = currentUserAnnotation;
 
-  if (updatedUserAnnotation == null) {
-    updatedUserAnnotation = {
-      key: currentUserId + "_" + line.id,
-      lineId: line.id,
-      text: "",
-      userId: currentUserId,
-    };
-  }
-  const renderYourAnnotation = (lineId: string, annotation: AnnotationType) => {
+  const renderYourAnnotation = () => {
     return (
       <fieldset
-        id={"yourAnnotationFieldset-" + lineId}
+        id={"yourAnnotationFieldset-" + line.id}
         className={styles.lineAnnotationsCurrentUser}
       >
         <legend>Your notes</legend>
         <textarea
           className={styles.annotationText}
-          onChange={(event) => {
-            onAnnotationChange(event, annotation);
-          }}
-          defaultValue={annotation.text}
-        ></textarea>
+          onChange={(e) => { addOrUpdateAnnotation(e.target.value) }}
+        >{draftAnnotation}</textarea>
       </fieldset>
     );
   };
@@ -145,20 +133,9 @@ export function Line(props: LineProps) {
     );
   }
 
-  const onAnnotationChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-    a: AnnotationType
-  ) => {
-    a.text = e.target.value;
-    onAddOrUpdateAnnotation(a);
-  };
+  const onRevealerButtonClick = (e: React.ChangeEvent<any>) => { setIsTextForcedVisible(e.target.checked); };
 
-  const onRevealerButtonClick = (e: React.ChangeEvent<any>) => {
-    setIsTextForcedVisible(e.target.checked);
-  };
-
-  const isTextVisible =
-    !line.character?.isHighlighted || isTextForcedVisible || !isHiddenLines;
+  const isTextVisible = !line.character?.isHighlighted || isTextForcedVisible || !isHiddenLines;
 
   return (
     <div id={line.href} key={line.href} className={styles.line}>
@@ -170,10 +147,10 @@ export function Line(props: LineProps) {
       >
         {renderOtherAnnotation(
           line.id,
-          otherUsersAnnotations,
+          annotations.filter(x => x.userId != self.id),
           isAnnotationModeOnlyMine
         )}
-        {renderYourAnnotation(line.id, updatedUserAnnotation)}
+        {renderYourAnnotation()}
       </div>
       <div
         className={clsx(

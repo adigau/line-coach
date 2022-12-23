@@ -84,16 +84,17 @@ export function DataWidget(props: DataWidgetProps) {
 
     return (
         <div>
-            <div className={styles.sectionName}>Total</div>
             <ul className={styles.dataUl}>
                 <li>{dataSummary.numberOfSections} sections</li>
-                <li>{dataSummary.numberOfCharacters} characters</li>
                 <li>{dataSummary.numberOfLines} lines</li>
                 <li>{dataSummary.numberOfWords} words</li>
-            </ul>
-            <div className={styles.sectionName}>Per character</div>
-            <ul className={styles.dataUl}>
-                {dataSummary.characters.sort(compareForSortingByNumWords).map(character => renderDataCharacter(character))}
+                <li>
+                    {dataSummary.numberOfCharacters} characters
+
+                    <ul className={styles.dataUl}>
+                        {dataSummary.characters.sort(compareForSortingByNumWords).map(character => renderDataCharacter(character))}
+                    </ul>
+                </li>
             </ul>
         </div>
     )

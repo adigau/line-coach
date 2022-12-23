@@ -3,7 +3,8 @@ import { ClientSideSuspense } from "@liveblocks/react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { Session } from "next-auth";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { isObject } from "util";
 import {
   DocumentHeader,
   DocumentHeaderSkeleton,
@@ -16,7 +17,7 @@ import { Presence, RoomProvider } from "../../liveblocks.config";
 import { Spinner } from "../../primitives/Spinner";
 import { Document, ErrorData } from "../../types";
 import { CharacterStorage, LineStorage, SectionStorage } from "../../types/script";
-import { AnnotationType, CharacterSelectionType, OptionsSelectionType, SectionSelectionType } from "../../types/storage";
+import { AnnotationStorage, CharacterSelectionStorage, OptionsSelectionStorage, SectionSelectionStorage } from "../../types/storage";
 
 export default function ScriptDocumentView({
   initialDocument,
@@ -26,6 +27,12 @@ export default function ScriptDocumentView({
   const { id, error: queryError } = router.query;
   const [document, setDocument] = useState<Document | null>(initialDocument);
   const [error, setError] = useState<ErrorData | null>(initialError);
+
+  const [isMenuOpen, setMenuOpen] = useState(false);
+
+  const handleMenuClick = useCallback(() => {
+    setMenuOpen((isOpen) => !isOpen);
+  }, []);
 
   // Update document with new name
   async function updateName(name: string) {
@@ -57,17 +64,17 @@ export default function ScriptDocumentView({
   }
 
   if (!document) {
-    return <DocumentLayout header={<DocumentHeaderSkeleton />} />;
+    return <DocumentLayout isOpen={isMenuOpen} header={<DocumentHeaderSkeleton />} />;
   }
 
   const initialStorage = () => ({
     characters: new LiveList<CharacterStorage>([]),
-    characterSelections: new LiveMap<string, CharacterSelectionType>([]),
+    characterSelections: new LiveMap<string, CharacterSelectionStorage>([]),
     sections: new LiveList<SectionStorage>([]),
-    sectionSelections: new LiveMap<string, SectionSelectionType>([]),
-    optionsSelections: new LiveMap<string, OptionsSelectionType>([]),
+    sectionSelections: new LiveMap<string, SectionSelectionStorage>([]),
+    optionsSelections: new LiveMap<string, OptionsSelectionStorage>([]),
     lines: new LiveList<LineStorage>([]),
-    annotations: new LiveMap<string, AnnotationType>([])
+    annotations: new LiveList<AnnotationStorage>([])
   });
 
   return (
@@ -77,7 +84,7 @@ export default function ScriptDocumentView({
       initialStorage={initialStorage}
     >
       <ClientSideSuspense fallback={<Spinner />}>
-        {() => <DocumentLayout header={<DocumentHeader document={document} onDocumentRename={updateName} />} />}
+        {() => <DocumentLayout isOpen={isMenuOpen} header={<DocumentHeader isOpen={isMenuOpen} onMenuClick={handleMenuClick} document={document} onDocumentRename={updateName} />} />}
       </ClientSideSuspense>
     </RoomProvider>
   );

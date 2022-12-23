@@ -1,9 +1,9 @@
-import { createClient, LiveList, LiveMap, LiveObject } from "@liveblocks/client";
+import { createClient, LiveList, LiveMap } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
 import Router from "next/router";
 import { User } from "./types";
 import { CharacterStorage, LineStorage, SectionStorage } from "./types/script";
-import { AnnotationType, CharacterSelectionType, OptionsSelectionType, SectionSelectionType } from "./types/storage";
+import { AnnotationStorage, CharacterSelectionStorage, OptionsSelectionStorage, SectionSelectionStorage } from "./types/storage";
 
 // The location of the liveblocks custom API endpoints
 export const ENDPOINT_BASE_URL = "/api/liveblocks";
@@ -59,13 +59,13 @@ export type Presence = {
 // LiveList, LiveMap, LiveObject instances, for which updates are
 // automatically persisted and synced to all connected clients.
 type Storage = {
-  characterSelections: LiveMap<string, CharacterSelectionType>
-  sectionSelections: LiveMap<string, SectionSelectionType>
-  optionsSelections: LiveMap<string, OptionsSelectionType>
+  characterSelections: LiveMap<string, CharacterSelectionStorage>
+  sectionSelections: LiveMap<string, SectionSelectionStorage>
+  optionsSelections: LiveMap<string, OptionsSelectionStorage>
   characters: LiveList<CharacterStorage>
   sections: LiveList<SectionStorage>
   lines: LiveList<LineStorage>
-  annotations: LiveMap<string, AnnotationType>
+  annotations: LiveList<AnnotationStorage>
 };
 
 export type UserInfo = Pick<User, "name" | "avatar" | "color">;

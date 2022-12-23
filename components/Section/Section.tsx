@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Line as LineComponent } from "../Line";
 import styles from "./Section.module.css";
 import {
@@ -6,7 +6,7 @@ import {
     Section,
     Line,
 } from "../../types/script";
-import { AnnotationType, CharacterSelectionType } from "../../types/storage";
+import { CharacterSelectionStorage } from "../../types/storage";
 import * as RadixSeparator from "@radix-ui/react-separator";
 import { useOthers, useSelf, useStorage } from "../../liveblocks.config";
 import { shallow } from "@liveblocks/client";
@@ -15,28 +15,27 @@ import { User } from "../../types";
 type SectionProps = {
     sections: Section[]
     cast: Character[];
-    annotations: AnnotationType[];
-    currentUserId: string;
     isHiddenLines: boolean;
     isAnnotationMode: boolean;
     isAnnotationModeOnlyMine: boolean;
-    addOrUpdateAnnotation: Function;
 };
 
 export function Section({
     sections,
     cast,
-    annotations,
-    currentUserId,
     isHiddenLines,
     isAnnotationMode,
-    isAnnotationModeOnlyMine,
-    addOrUpdateAnnotation }: SectionProps) {
+    isAnnotationModeOnlyMine
+}: SectionProps) {
     const self = useSelf()
     const others = useOthers()
+    const users = useMemo(
+        () => (self ? [self, ...others] : others),
+        [self, others]
+    );
 
-    const othersCharacterSelections: CharacterSelectionType[] = useStorage(
-        root => Array.from(root.characterSelections.values()).filter((x) => x.userId != self.id && others.some(y => y.id == x.userId)),
+    const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
+        root => Array.from(root.characterSelections.values()).filter((x) => users.some(y => y.id == x.userId)),
         shallow,
     );
 
@@ -50,7 +49,7 @@ export function Section({
                 const watchers = othersCharacterSelections
                     .filter(y => y.characterIds.some(z => z == x.id))
                     .map(x => {
-                        const user = others.filter(y => y.id == x.userId)[0]
+                        const user = users.filter(y => y.id == x.userId)[0]
                         return { id: user.id, name: user.info.name, avatar: user.info.avatar } as User
                     })
                 tempWatchers.set(id, watchers)
@@ -59,38 +58,17 @@ export function Section({
             setCharactersToWatchers(tempWatchers)
         }
         fetchData();
-    }, [cast, othersCharacterSelections, others])
+    }, [cast, othersCharacterSelections, others, users])
 
     const renderLine = (line: Line) => {
-        const currentCharacter = cast.filter((character) => {
-            return character.id == line.characterId;
-        })[0];
-        const lineAnnotations = annotations.filter(
-            (annotation) => annotation.lineId == line.id
-        );
-        const currentUserAnnotation = lineAnnotations.filter(
-            (annotation) => annotation.userId == currentUserId
-        )[0];
-        const otherUsersAnnotations = lineAnnotations.filter(
-            (annotation) => annotation.userId != currentUserId
-        );
-
-        if (line.character != null) {
-            line.character.displayName = currentCharacter.displayName;
-            line.character.isHighlighted = currentCharacter.isHighlighted;
-        }
 
         return (
             <li key={line.id}>
                 <LineComponent
                     line={line}
-                    currentUserId={currentUserId}
                     isHiddenLines={isHiddenLines}
                     isAnnotationMode={isAnnotationMode}
                     isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
-                    currentUserAnnotation={currentUserAnnotation}
-                    otherUsersAnnotations={otherUsersAnnotations}
-                    onAddOrUpdateAnnotation={addOrUpdateAnnotation}
                 />
             </li>
         )

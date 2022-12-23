@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Character, ScriptType, Section } from "../../types/script"
-import { CharacterSelectionType } from "../../types/storage"
+import { CharacterSelectionStorage } from "../../types/storage"
 import styles from "./Sidebar.module.css"
 import { User } from '../../types';
 import { useOthers, useSelf, useStorage } from '../../liveblocks.config';
@@ -14,27 +14,31 @@ import { DataWidget } from '../DataWidget';
 type SidebarProps = {
 
     script: ScriptType,
-    scriptChanged: Function,
+    scriptChanged: (data: ScriptType) => void,
     cast: Character[],
-    castChanged: Function,
+    castChanged: (data: Character[]) => void,
 
     searchTerm: string,
     searchTermChanged: (event: React.ChangeEvent<HTMLInputElement>) => void,
     isHiddenLines: boolean,
-    isHiddenLinesChanged: Function,
+    isHiddenLinesChanged: (data: boolean) => void,
     isAnnotationMode: boolean,
     isAnnotationModeChanged: (isChecked: boolean) => void,
     isAnnotationModeOnlyMine: boolean,
-    isAnnotationModeOnlyMineChanged: Function
+    isAnnotationModeOnlyMineChanged: (data: boolean) => void
 }
 
 export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, searchTermChanged, isHiddenLines, isHiddenLinesChanged, isAnnotationMode, isAnnotationModeChanged, isAnnotationModeOnlyMine, isAnnotationModeOnlyMineChanged }: SidebarProps) {
 
     const self = useSelf()
     const others = useOthers()
+    const users = useMemo(
+        () => (self ? [self, ...others] : others),
+        [self, others]
+    );
 
-    const othersCharacterSelections: CharacterSelectionType[] = useStorage(
-        root => Array.from(root.characterSelections.values()).filter((x) => x.userId != self.id && others.some(y => y.id == x.userId)),
+    const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
+        root => Array.from(root.characterSelections.values()).filter((x) => users.some(y => y.id == x.userId)),
         shallow,
     );
 
@@ -48,7 +52,7 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
                 const watchers = othersCharacterSelections
                     .filter(y => y.characterIds.some(z => z == x.id))
                     .map(x => {
-                        const user = others.filter(y => y.id == x.userId)[0]
+                        const user = users.filter(y => y.id == x.userId)[0]
                         return { id: user.id, name: user.info.name, avatar: user.info.avatar } as User
                     })
                 tempWatchers.set(id, watchers)
@@ -57,7 +61,7 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
             setCharactersToWatchers(tempWatchers)
         }
         fetchData();
-    }, [cast, othersCharacterSelections, others])
+    }, [cast, othersCharacterSelections, others, users])
 
     const onIsHiddenLinesChanged = (event: React.ChangeEvent<HTMLInputElement>) => isHiddenLinesChanged(event.target.checked)
     const onIsAnnotationModeChanged = (event: React.ChangeEvent<HTMLInputElement>) => isAnnotationModeChanged(event.target.checked)
@@ -93,12 +97,12 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
         if (charactersToWatchers == null)
             return
 
-        const character = charactersToWatchers.get(characterId)
+        const watchersOfThisCharacter = charactersToWatchers.get(characterId)?.filter(x => x?.id != self.id)
 
-        if (character == null || character.length <= 0)
+        if (watchersOfThisCharacter == null || watchersOfThisCharacter.length <= 0)
             return
 
-        const title = character.map(x => x?.name).join(", ")
+        const title = watchersOfThisCharacter.map(x => x?.name).join(", ")
 
         return (
             <div className={styles.presenceIndicatorContainer} title={title}>
@@ -161,6 +165,9 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
 
     return (
         <div className={styles.containerOptions}>
+            <div className={styles.searchContainer}>
+                <Input placeholder='Search through your text' className={styles.searchInput} type='text' value={searchTerm} onChange={searchTermChanged} />
+            </div>
             <Accordion.Root className={styles.AccordionRoot} type="single" defaultValue="item-1" collapsible>
                 <Accordion.Item className={styles.AccordionItem} value="item-1">
                     <Accordion.Header className={styles.AccordionHeader}>
@@ -217,20 +224,8 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
                         </ul>
                     </Accordion.Content>
                 </Accordion.Item>
+
                 <Accordion.Item className={styles.AccordionItem} value="item-4">
-                    <Accordion.Header className={styles.AccordionHeader}>
-                        <Accordion.Trigger className={styles.AccordionTrigger}>
-                            <div className={styles.AccordionTriggerText}>Search</div>
-                            <div className={styles.AccordionTriggerInfo}>
-                                <ChevronDownIcon className={styles.AccordionChevron} aria-hidden />
-                            </div>
-                        </Accordion.Trigger>
-                    </Accordion.Header>
-                    <Accordion.Content className={clsx(styles.AccordionContent, styles.AccordionContentText)}>
-                        <Input placeholder='Search through your text' className={styles.searchInput} type='text' value={searchTerm} onChange={searchTermChanged} />
-                    </Accordion.Content>
-                </Accordion.Item>
-                <Accordion.Item className={styles.AccordionItem} value="item-5">
                     <Accordion.Header className={styles.AccordionHeader}>
                         <Accordion.Trigger className={styles.AccordionTrigger}>
                             <div className={styles.AccordionTriggerText}>Data</div>
