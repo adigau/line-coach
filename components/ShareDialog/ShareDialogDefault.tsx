@@ -128,7 +128,7 @@ export function ShareDialogDefault({
               initialValue={defaultAccess !== DocumentAccess.NONE}
               name="public-read-checkbox"
               onValueChange={handlePublicRead}
-            />
+              value="public-read-checkbox" />
           )}
         </div>
       </div>
@@ -154,7 +154,7 @@ export function ShareDialogDefault({
                   initialValue={defaultAccess === DocumentAccess.EDIT}
                   name="public-edit-checkbox"
                   onValueChange={handlePublicEdit}
-                />
+                  value="public-edit-checkbox" />
               )}
             </div>
           </div>
