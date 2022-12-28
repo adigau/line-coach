@@ -11,6 +11,7 @@ import * as RadixSeparator from "@radix-ui/react-separator";
 import { useOthers, useSelf, useStorage } from "../../liveblocks.config";
 import { shallow } from "@liveblocks/client";
 import { User } from "../../types";
+import { LinkIcon } from "../../icons";
 
 type SectionProps = {
     sections: Section[]
@@ -112,10 +113,17 @@ export function Section({
         <div>
             {sections.map((section, index) => {
                 return (
-                    <div key={section.id}>
+                    <div className={styles.section} id={section.href} key={section.id}>
                         <h2 className={styles.sectionName}>
-                            {section.displayName}
-                            {displayPresenceIndicatorSection(section.id)}
+                            <a className={styles.sectionLink} href={"#" + section.href}>
+                                <span className={styles.sectionLinkIconContainer}>
+                                    <span className={styles.sectionLinkIcon}>
+                                        <LinkIcon />
+                                    </span>
+                                </span>
+                                {section.displayName}
+                                {displayPresenceIndicatorSection(section.id)}
+                            </a>
                         </h2>
                         <ul className={styles.linesul}>
                             {section.lines.map((line) => renderLine(line))}

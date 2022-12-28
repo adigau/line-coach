@@ -92,6 +92,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
         const sectionsEnriched = sections.map(x => (
           {
             isDisplayed: getIsSectionDisplayedFromStorage(sectionSelections, x.id),
+            href: "section" + x.id,
             lines: lines.filter(y => y.sectionId == x.id)
               .map(x => (
                 {
