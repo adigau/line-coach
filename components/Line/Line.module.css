@@ -7,13 +7,36 @@
     word-spacing: 1px;
 }
 
-.character,
-.character a {
+.character {
     text-transform: uppercase;
-    /* color: grey; */
     text-decoration: none;
     font-weight: bold;
     padding: 1px;
+}
+
+.characterLink {
+    position: relative;
+}
+
+.characterLinkIconContainer {
+    position: absolute;
+    left: 0px;
+}
+
+.characterLinkIcon {
+    position: absolute;
+    left: -18px;
+    top: 4px;
+    height: 14px;
+    width: 14px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.characterLink:hover .characterLinkIcon {
+    opacity: 1;
+    transition: opacity 0.3s;
+
 }
 
 .highlighted .character {

@@ -7,6 +7,7 @@ import { useMutation, useOthers, useSelf, useStorage } from "../../liveblocks.co
 import clsx from "clsx";
 import { User } from "../../types";
 import { shallow } from "@liveblocks/react";
+import { LinkIcon } from "../../icons";
 
 type LineProps = {
   line: Line;
@@ -125,10 +126,17 @@ export function Line(props: LineProps) {
     return (
       <span className={styles.characterInfo}>
         <span className={styles.character}>
-          <>
-            <a href={"#" + line.href}>{line.character?.displayName}
-              {displayPresenceIndicatorCharacter()}: </a>
-          </>
+          <a className={styles.characterLink} href={"#" + line.href}>
+            <span className={styles.characterLinkIconContainer}>
+              <span className={styles.characterLinkIcon}>
+                <LinkIcon />
+              </span>
+            </span>
+            <span>
+              {line.character?.displayName}
+              {displayPresenceIndicatorCharacter()}:
+            </span>
+          </a>
         </span>
       </span>
     );
