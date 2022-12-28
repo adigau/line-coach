@@ -31,7 +31,8 @@ function renderOtherAnnotation(
           <textarea
             className={styles.annotationText}
             defaultValue={a.text}
-          ></textarea>
+            disabled={true}
+          />
         </fieldset>
       );
     });
@@ -102,7 +103,7 @@ export function Line(props: LineProps) {
         <textarea
           className={styles.annotationText}
           onChange={(e) => { addOrUpdateAnnotation(e.target.value) }}
-        >{draftAnnotation}</textarea>
+          defaultValue={draftAnnotation} />
       </fieldset>
     );
   };
@@ -125,7 +126,7 @@ export function Line(props: LineProps) {
       <span className={styles.characterInfo}>
         <span className={styles.character}>
           <>
-            <a href={line.href}>{line.character?.displayName}
+            <a href={"#" + line.href}>{line.character?.displayName}
               {displayPresenceIndicatorCharacter()}: </a>
           </>
         </span>

@@ -1,16 +1,15 @@
-import { ComponentProps, forwardRef, ReactNode, useCallback, useEffect, useState } from "react";
+import { ComponentProps, forwardRef, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import styles from "./Document.module.css";
-import { AnnotationStorage, CharacterSelectionStorage, OptionsSelectionStorage, SectionSelectionStorage } from "../../types/storage";
+import { CharacterSelectionStorage, OptionsSelectionStorage, SectionSelectionStorage } from "../../types/storage";
 import { users } from "../../data/users";
 import { useMutation, useRoom, useSelf, useStorage } from "../../liveblocks.config";
-import { shallow } from "@liveblocks/client";
 import { User } from "../../types";
 import { ScriptType, Section, Character, Line } from "../../types/script";
-// import { scripts } from "../../data/scripts";
 import { Spinner } from "../../primitives/Spinner";
 import { Sidebar } from "../../components/Sidebar";
 import { Script } from "../../components/Script";
+import { useRouter } from "next/router";
 
 interface Props extends ComponentProps<"div"> {
   header: ReactNode;
@@ -19,6 +18,9 @@ interface Props extends ComponentProps<"div"> {
 
 export const DocumentLayout = forwardRef<HTMLElement, Props>(
   ({ header, isOpen, className, ...props }) => {
+
+    //////// Next - Router
+    const { asPath } = useRouter();
 
     //////// Liveblocks - Presence
     const self = useSelf()
@@ -93,7 +95,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
             lines: lines.filter(y => y.sectionId == x.id)
               .map(x => (
                 {
-                  href: "#" + x.characterId + "_" + x.id,
+                  href: "line" + x.id + "_" + x.characterId,
                   character: getCharacterById(x.characterId, cast),
                   ...x
                 } as Line)),
@@ -133,6 +135,29 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
       loadUser(self.id)
       loadScript()
     }, [addOrUpdateOptionsSelection, self.id, isAnnotationMode, isHiddenLines, loadScript, loadUser, isAnnotationModeOnlyMine, room.id])
+
+    //Support for ScrollTo anchor
+    const scrolledRef = useRef(false);
+    const hash = asPath.split('#')[1];
+    const hashRef = useRef(hash);
+    useEffect(() => {
+      if (hash) {
+        // We want to reset if the hash has changed
+        if (hashRef.current !== hash) {
+          hashRef.current = hash;
+          scrolledRef.current = false;
+        }
+        // only attempt to scroll if we haven't yet (this could have just reset above if hash changed)
+        if (!scrolledRef.current) {
+          const id = hash.replace('#', '');
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+            scrolledRef.current = true;
+          }
+        }
+      }
+    }, [script, cast, asPath, hash]);
 
     if (script == null || cast == null) {
       return (<Spinner />)
