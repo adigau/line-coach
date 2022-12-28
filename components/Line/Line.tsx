@@ -132,10 +132,8 @@ export function Line(props: LineProps) {
                 <LinkIcon />
               </span>
             </span>
-            <span>
-              {line.character?.displayName}
-              {displayPresenceIndicatorCharacter()}:
-            </span>
+            {line.character?.displayName}
+            {displayPresenceIndicatorCharacter()}:
           </a>
         </span>
       </span>

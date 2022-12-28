@@ -104,6 +104,7 @@
     list-style-type: none;
     margin-left: 0px;
     scroll-margin: 60px;
+    scroll-behavior: smooth;
 }
 
 .text {
