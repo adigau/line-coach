@@ -3,7 +3,7 @@ import { ComponentProps, forwardRef } from "react";
 import styles from "./TextArea2.module.css";
 
 export const TextArea2 = forwardRef<HTMLTextAreaElement, ComponentProps<"textarea">>(
-  ({ className, defaultValue, onChange, disabled, ...props }, ref) => {
+  ({ className, defaultValue, onChange, disabled }, ref) => {
     return (
       <textarea
         ref={ref}
