@@ -53,10 +53,14 @@ export function Line(props: LineProps) {
   const addOrUpdateAnnotation = useMutation(({ storage, self }, value: string) => {
     const newAnnotation = { lineId: line.id, userId: self.id, text: value } as NoteStorage
     const index = storage.get("annotations").findIndex(x => x.userId == newAnnotation.userId && x.lineId == newAnnotation.lineId)
-    if (index < 0)
+    if (index < 0) {
+      console.log("PUSH, index: " + index + ", lineId:" + newAnnotation.lineId + ", userId:" + newAnnotation.userId)
       storage.get("annotations").push(newAnnotation)
-    else
+    }
+    else {
+      console.log("SET, index: " + index + ", lineId:" + newAnnotation.lineId + ", userId:" + newAnnotation.userId)
       storage.get("annotations").set(index, newAnnotation)
+    }
   }, []);
 
   const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(

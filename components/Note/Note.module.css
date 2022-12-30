@@ -1,5 +1,27 @@
-.annotation {}
+.annotation {
+    font-size: small;
+    padding: 3px;
+    margin: 0px;
+}
 
-.annotation .editable {}
+.annotation.editable {
+    border: 1px solid var(--color-text-lightest);
+}
 
-.annotation .readonly {}
+.annotation.readonly {
+    border: 1px dashed var(--color-text-lightest);
+}
+
+.annotation legend {
+    padding: 2px;
+    margin-left: 3px;
+    color: var(--color-text-lightest);
+}
+
+.annotation.editable legend {
+    font-weight: bold;
+}
+
+.annotation.readonly {
+    font-style: italic;
+}

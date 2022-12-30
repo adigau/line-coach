@@ -15,7 +15,6 @@ type NoteProps = {
   onNoteChange?: (value: string) => void
 };
 
-
 export function Note(props: NoteProps) {
   const {
     note,
@@ -25,7 +24,7 @@ export function Note(props: NoteProps) {
 
   return (
     <fieldset key={note.key} id={note.key} className={clsx(styles.annotation, type == NoteType.Yours ? styles.editable : styles.readonly)}>
-      <legend>{type == NoteType.Others ? note.user.name : "Your notes"}</legend>
+      <legend>{type == NoteType.Others ? "By " + note.user.name : "Your notes"}</legend>
       <TextArea2
         className={styles.annotationText}
         defaultValue={note.text}

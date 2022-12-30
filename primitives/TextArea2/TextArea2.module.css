@@ -5,24 +5,18 @@
   background: var(--color-surface);
   border-radius: var(--radius-sm);
   font-size: var(--size-sm);
-  color: var(--color-text-light);
   transition: var(--transition);
   transition-property: background, color, opacity;
   outline: none;
 }
 
-.textarea:hover,
-.textarea:focus-visible {
+.textarea .textarea:hover:enabled,
+.textarea:focus-visible:enabled {
   background: var(--color-surface-hover);
-  color: var(--color-text);
 }
 
 .textarea:disabled {
   cursor: default;
   opacity: var(--opacity-disabled);
   resize: none;
-}
-
-.textarea::placeholder {
-  color: var(--color-text-lightest);
 }
