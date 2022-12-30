@@ -3,7 +3,7 @@ import { createRoomContext } from "@liveblocks/react";
 import Router from "next/router";
 import { User } from "./types";
 import { CharacterStorage, LineStorage, SectionStorage } from "./types/script";
-import { AnnotationStorage, CharacterSelectionStorage, OptionsSelectionStorage, SectionSelectionStorage } from "./types/storage";
+import { NoteStorage, CharacterSelectionStorage, OptionsSelectionStorage, SectionSelectionStorage } from "./types/storage";
 
 // The location of the liveblocks custom API endpoints
 export const ENDPOINT_BASE_URL = "/api/liveblocks";
@@ -65,7 +65,7 @@ type Storage = {
   characters: LiveList<CharacterStorage>
   sections: LiveList<SectionStorage>
   lines: LiveList<LineStorage>
-  annotations: LiveList<AnnotationStorage>
+  annotations: LiveList<NoteStorage>
 };
 
 export type UserInfo = Pick<User, "name" | "avatar" | "color">;

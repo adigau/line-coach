@@ -50,30 +50,6 @@
     padding: 3px;
 }
 
-.lineAnnotations {
-    border: 1px dashed rgb(var(--color-yellow-dark));
-    color: var(--color-black);
-    font-style: italic;
-}
-
-
-.annotationText {
-    background-color: var(--color-red-light);
-    ;
-    color: grey;
-    font-size: small;
-    font-style: italic;
-}
-
-.lineAnnotationsOthers textarea {
-    border: 1px solid grey;
-    background-color: lightgrey;
-}
-
-.lineAnnotationsCurrentUser textarea {
-    border: 1px solid coral;
-    background-color: lightskyblue;
-}
 
 .characterInfo {
     display: inline-flex;
