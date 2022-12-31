@@ -29,6 +29,7 @@
 
     .sectionName {
         page-break-before: always;
+        text-align: center;
     }
 }
 
