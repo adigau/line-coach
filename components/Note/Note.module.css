@@ -25,3 +25,9 @@
 .annotation.readonly {
     font-style: italic;
 }
+
+@media print {
+    .isEmpty {
+        display: none;
+    }
+}

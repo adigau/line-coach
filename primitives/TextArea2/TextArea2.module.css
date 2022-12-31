@@ -20,3 +20,10 @@
   opacity: var(--opacity-disabled);
   resize: none;
 }
+
+@media print {
+  .textarea {
+    color: black;
+    background: transparent;
+  }
+}

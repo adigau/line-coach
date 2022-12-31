@@ -23,7 +23,7 @@ export function Note(props: NoteProps) {
   } = props;
 
   return (
-    <fieldset key={note.key} id={note.key} className={clsx(styles.annotation, type == NoteType.Yours ? styles.editable : styles.readonly)}>
+    <fieldset key={note.key} id={note.key} className={clsx(styles.annotation, type == NoteType.Yours ? styles.editable : styles.readonly, note.text == "" ? styles.isEmpty : styles.isNotEmpty)}>
       <legend>{type == NoteType.Others ? "By " + note.user.name : "Your notes"}</legend>
       <TextArea2
         className={styles.annotationText}

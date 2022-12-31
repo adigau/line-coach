@@ -44,3 +44,9 @@
   background: var(--color-surface);
   font-size: 0.8em;
 }
+
+@media print {
+  .renameButton {
+    display: none;
+  }
+}

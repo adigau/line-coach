@@ -151,3 +151,19 @@ html.grabbing {
 html.grabbing * {
   user-select: none;
 }
+
+@media print {
+
+  html,
+  body {
+    background-color: transparent;
+    color: black;
+  }
+}
+
+@media print and (color) {
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

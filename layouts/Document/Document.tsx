@@ -10,14 +10,17 @@ import { Spinner } from "../../primitives/Spinner";
 import { Sidebar } from "../../components/Sidebar";
 import { Script } from "../../components/Script";
 import { useRouter } from "next/router";
+import Head from 'next/head'
+import { Document } from "../../types";
 
 interface Props extends ComponentProps<"div"> {
   header: ReactNode;
   isOpen: boolean;
+  roomDocument?: Document;
 }
 
 export const DocumentLayout = forwardRef<HTMLElement, Props>(
-  ({ header, isOpen, className, ...props }) => {
+  ({ header, isOpen, roomDocument, className, ...props }) => {
 
     //////// Next - Router
     const { asPath } = useRouter();
@@ -165,36 +168,41 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
     }
 
     return (
-      <div className={clsx(className, styles.container)} {...props}>
-        <header className={styles.header}>{header}</header>
-        <aside className={styles.aside} data-open={isOpen || undefined}>
-          <Sidebar
-            script={script}
-            scriptChanged={scriptChanged}
-            cast={cast}
-            castChanged={castChanged}
-            searchTerm={searchTerm}
-            searchTermChanged={onSearchTermChanged}
-            isHiddenLines={isHiddenLines}
-            isHiddenLinesChanged={isHiddenLinesChanged}
-            isAnnotationMode={isAnnotationMode}
-            isAnnotationModeChanged={isAnnotationModeChanged}
-            isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
-            isAnnotationModeOnlyMineChanged={isAnnotationModeOnlyMineChanged}
-          />
-        </aside>
-        <main className={styles.main}>
-          <Script
-            script={script}
-            cast={cast}
-            searchTerm={searchTerm}
-            users={allUsers}
-            isHiddenLines={isHiddenLines}
-            isAnnotationMode={isAnnotationMode}
-            isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
-          />
-        </main>
-      </div>
+      <>
+        <Head>
+          <title>{roomDocument != null ? roomDocument.name : "LineCoach"}</title>
+        </Head>
+        <div className={clsx(className, styles.container)} {...props}>
+          <header className={styles.header}>{header}</header>
+          <aside className={styles.aside} data-open={isOpen || undefined}>
+            <Sidebar
+              script={script}
+              scriptChanged={scriptChanged}
+              cast={cast}
+              castChanged={castChanged}
+              searchTerm={searchTerm}
+              searchTermChanged={onSearchTermChanged}
+              isHiddenLines={isHiddenLines}
+              isHiddenLinesChanged={isHiddenLinesChanged}
+              isAnnotationMode={isAnnotationMode}
+              isAnnotationModeChanged={isAnnotationModeChanged}
+              isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
+              isAnnotationModeOnlyMineChanged={isAnnotationModeOnlyMineChanged}
+            />
+          </aside>
+          <main className={styles.main}>
+            <Script
+              script={script}
+              cast={cast}
+              searchTerm={searchTerm}
+              users={allUsers}
+              isHiddenLines={isHiddenLines}
+              isAnnotationMode={isAnnotationMode}
+              isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
+            />
+          </main>
+        </div>
+      </>
     );
   }
 );
