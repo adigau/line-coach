@@ -34,7 +34,7 @@ export default function Index() {
           </h1>
           <p className={styles.heroLead}>
             With its user-friendly interface and powerful features,
-            MemorizingBuddy is the perfect tool for actors of all levels to
+            LineCoach is the perfect tool for actors of all levels to
             perfect their craft and deliver standout performances.
           </p>
         </div>
