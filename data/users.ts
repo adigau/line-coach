@@ -20,13 +20,13 @@ export const users: Omit<User, "color">[] = [
   {
     id: "adrien.gaudon",
     name: "Adrien Gaudon",
-    avatar: "https://media.licdn.com/dms/image/C4D03AQH5Qmp0g5cdbA/profile-displayphoto-shrink_400_400/0/1621607347997?e=1677715200&v=beta&t=L6agGsQrpbSmKl6l9hHmJQoO8KAyDr_SS77f1pKa6Us",
+    avatar: "/images/adrien.gaudon.jpeg",
     groupIds: ["theatre.parenthese", "warner.bros", "the.old.vic"],
   },
   {
-    id: "alain",
-    name: "Alain",
-    avatar: "https://media.licdn.com/dms/image/C5603AQEyWQhXH_4Llg/profile-displayphoto-shrink_400_400/0/1655663054749?e=1677715200&v=beta&t=AC3llri1qyzV6JFpDZnLTUuqAPmB5v9Opb5jT3PAYY4",
+    id: "alain.arthapignet",
+    name: "Alain Arthapignet",
+    avatar: "/images/alain.arthapignet.jpeg",
     groupIds: ["theatre.parenthese", "warner.bros", "the.old.vic"],
   },
   {
