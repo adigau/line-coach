@@ -28,6 +28,7 @@ export function Checkbox({
   id,
   value,
   label,
+  children,
   className,
   ...props
 }: Props) {
@@ -62,6 +63,7 @@ export function Checkbox({
       <label className={styles.label} htmlFor={id}>
         {label}
       </label>
+      {children}
     </div>
   );
 }

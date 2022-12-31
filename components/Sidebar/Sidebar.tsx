@@ -147,9 +147,11 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
 
     const renderCharacters = (character: Character) => {
         return (
-            <li key={"character_" + character.id}>
-                <Checkbox initialValue={character.isHighlighted} checked={character.isHighlighted} onValueChange={onHighlightCharacterClick} id={character.id} name={character.id} value={character.id} label={character.displayName} />
-                {displayPresenceIndicatorCharacter(character.id)}
+            <li className={styles.sidebarCharacter} key={"character_" + character.id}>
+                <Checkbox initialValue={character.isHighlighted} checked={character.isHighlighted} onValueChange={onHighlightCharacterClick} id={character.id} name={character.id} value={character.id} label={character.displayName}>
+
+                    {displayPresenceIndicatorCharacter(character.id)}
+                </Checkbox>
             </li>
         )
     }

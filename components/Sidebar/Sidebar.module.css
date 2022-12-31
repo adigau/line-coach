@@ -105,6 +105,10 @@
     transform: rotate(180deg);
 }
 
+.sidebarCharacter {
+    display: flex;
+}
+
 .presenceIndicatorContainer {
     position: relative;
     display: inline-block;
