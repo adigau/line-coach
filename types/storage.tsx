@@ -1,12 +1,13 @@
 import { User } from "./data";
 
-export type AnnotationStorage = {
+export type NoteStorage = {
     userId: string;
     lineId: string;
     text: string;
 }
-export interface Annotation extends AnnotationStorage {
+export interface Note extends NoteStorage {
     user: User;
+    key: string
 }
 
 export type CharacterSelectionStorage = {
