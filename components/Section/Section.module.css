@@ -24,7 +24,12 @@
 
 @media print {
     .separatorContainer {
+        display: none;
+    }
+
+    .sectionName {
         page-break-before: always;
+        text-align: center;
     }
 }
 

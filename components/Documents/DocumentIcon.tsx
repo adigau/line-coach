@@ -5,7 +5,7 @@ interface Props extends Omit<ComponentProps<"svg">, "type"> {
   type?: DocumentType;
 }
 
-function SitcomDocumentIcon(props: ComponentProps<"svg">) {
+function SitcomDocumentIcon() {
   return (
     <svg
       width="24px"
@@ -15,21 +15,21 @@ function SitcomDocumentIcon(props: ComponentProps<"svg">) {
       xmlns="http://www.w3.org/2000/svg"
       aria-labelledby="tvIconTitle"
       stroke="#000000"
-      stroke-width="1"
-      stroke-linecap="square"
-      stroke-linejoin="miter"
+      strokeWidth="1"
+      strokeLinecap="square"
+      strokeLinejoin="miter"
       fill="none"
       color="#000000"
     >
       {" "}
       <title id="tvIconTitle">TV</title>{" "}
       <polygon points="20 8 20 20 4 20 4 8" />{" "}
-      <polyline stroke-linejoin="round" points="8 4 12 7.917 16 4" />{" "}
+      <polyline strokeLinejoin="round" points="8 4 12 7.917 16 4" />{" "}
     </svg>
   );
 }
 
-function PlayDocumentIcon(props: ComponentProps<"svg">) {
+function PlayDocumentIcon() {
   return (
     <svg
       version="1.1"
@@ -116,7 +116,7 @@ function PlayDocumentIcon(props: ComponentProps<"svg">) {
   );
 }
 
-function MovieDocumentIcon(props: ComponentProps<"svg">) {
+function MovieDocumentIcon() {
   return (
     <svg
       version="1.1"

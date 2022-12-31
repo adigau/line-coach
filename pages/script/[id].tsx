@@ -4,7 +4,6 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { Session } from "next-auth";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import { isObject } from "util";
 import {
   DocumentHeader,
   DocumentHeaderSkeleton,
@@ -84,7 +83,7 @@ export default function ScriptDocumentView({
       initialStorage={initialStorage}
     >
       <ClientSideSuspense fallback={<Spinner />}>
-        {() => <DocumentLayout isOpen={isMenuOpen} header={<DocumentHeader isOpen={isMenuOpen} onMenuClick={handleMenuClick} document={document} onDocumentRename={updateName} />} />}
+        {() => <DocumentLayout isOpen={isMenuOpen} roomDocument={document} header={<DocumentHeader isOpen={isMenuOpen} onMenuClick={handleMenuClick} document={document} onDocumentRename={updateName} />} />}
       </ClientSideSuspense>
     </RoomProvider>
   );

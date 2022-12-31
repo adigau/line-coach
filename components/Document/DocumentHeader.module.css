@@ -58,3 +58,13 @@
   place-content: center;
   place-items: center;
 }
+
+@media print {
+  .menuToggle {
+    display: none;
+  }
+
+  .collaboration {
+    display: none;
+  }
+}

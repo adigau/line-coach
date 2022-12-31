@@ -44,14 +44,22 @@
   grid-area: main;
 }
 
-/* 
-@media (min-width: 1024px) {
-  .container {
-    grid-template-areas:
-      ". ."
-      ". main";
-    grid-template-columns: var(--aside-width) 1fr;
-    grid-template-rows: var(--header-height) 1fr;
+@media print {
+  .header {
+    display: none;
   }
 
-} */
+  .header {
+    background: transparent;
+  }
+
+  .aside[data-open] {
+    display: none;
+  }
+
+  .container {
+    background: transparent;
+    min-height: 0px;
+    grid-template-rows: 0px 1fr;
+  }
+}

@@ -151,3 +151,27 @@ html.grabbing {
 html.grabbing * {
   user-select: none;
 }
+
+@media print {
+
+  html,
+  body {
+    background-color: transparent;
+    color: black;
+  }
+
+  @page {
+    /* auto is the initial value */
+    size: auto;
+
+    /* this affects the margin in the printer settings */
+    margin: 20mm 10mm 20mm 10mm;
+  }
+}
+
+@media print and (color) {
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
