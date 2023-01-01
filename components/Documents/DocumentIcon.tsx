@@ -7,25 +7,7 @@ interface Props extends Omit<ComponentProps<"svg">, "type"> {
 
 function SitcomDocumentIcon() {
   return (
-    <svg
-      width="24px"
-      height="24px"
-      viewBox="0 0 24 24"
-      role="img"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-labelledby="tvIconTitle"
-      stroke="#000000"
-      strokeWidth="1"
-      strokeLinecap="square"
-      strokeLinejoin="miter"
-      fill="none"
-      color="#000000"
-    >
-      {" "}
-      <title id="tvIconTitle">TV</title>{" "}
-      <polygon points="20 8 20 20 4 20 4 8" />{" "}
-      <polyline strokeLinejoin="round" points="8 4 12 7.917 16 4" />{" "}
-    </svg>
+    <svg width="800px" height="800px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="#000000" fill="none"><path d="M58.94,43.28a2,2,0,0,1-2,2H7.16a2,2,0,0,1-2-2V10.63a2,2,0,0,1,2-2H56.93a2,2,0,0,1,2,2Z" /><rect x="10.1" y="13.7" width="43.8" height="26.5" rx=".5" /><line x1="27.53" y1="45.55" x2="27.53" y2="51.41" /><line x1="37.04" y1="45.55" x2="37.04" y2="51.41" /><line x1="18.82" y1="51.54" x2="45.66" y2="51.54" /></svg>
   );
 }
 
@@ -216,6 +198,24 @@ function MovieDocumentIcon() {
   );
 }
 
+function QADocumentIcon() {
+  return (
+    <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+      width="800px" height="800px" viewBox="0 0 100 100" enable-background="new 0 0 100 100">
+      <g>
+        <path d="M20.074,69H23v12.32c0,0.747,0.416,1.432,1.08,1.775c0.289,0.15,0.605,0.225,0.92,0.225c0.405,0,0.81-0.063,1.153-0.306
+		L46.102,69h18.476l9.294,6.292c0.339,0.232,0.733,0.319,1.129,0.319c0.319,0,0.641-0.092,0.934-0.247
+		C76.59,75.019,77,74.323,77,73.582V62h3.345C84.955,62,89,57.461,89,52.422V26.183C89,21.45,85.279,18,80.345,18h-44.86
+		c-4.47,0-9.274,3-9.467,8h-5.943C14.901,26,11,29.337,11,33.921V60.16C11,64.887,15.155,69,20.074,69z M30,26.183
+		C30,23.609,32.836,22,35.484,22h44.86C83.086,22,85,23.65,85,26.183v26.239C85,54.998,83.009,58,80.345,58H75
+		c-1.104,0-2,0.776-2,1.881v9.911L56.082,58.289C55.749,58.062,55.355,58,54.953,58H35.484C32.819,58,30,55.074,30,52.422V26.183z
+		 M15,33.921C15,31.269,17.553,30,20.074,30H26v22.422C26,57.283,30.609,62,35.484,62h18.851l4.39,3H45.467
+		c-0.413,0-0.815,0.068-1.153,0.306L27,77.461v-10.58C27,65.776,26.104,65,25,65h-4.926C17.323,65,15,62.719,15,60.16V33.921z"/>
+      </g>
+    </svg>
+  );
+}
+
 export function DocumentIcon({ type, ...props }: Props) {
   switch (type) {
     case "play":
@@ -224,6 +224,8 @@ export function DocumentIcon({ type, ...props }: Props) {
       return <SitcomDocumentIcon {...props} />;
     case "movie":
       return <MovieDocumentIcon {...props} />;
+    case "qa":
+      return <QADocumentIcon {...props} />;
     default:
       return null;
   }

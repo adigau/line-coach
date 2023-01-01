@@ -36,7 +36,9 @@
   box-shadow: var(--shadow-xs);
   place-content: center;
   place-items: center;
+  padding: 5px;
 }
+
 
 .info {
   display: flex;

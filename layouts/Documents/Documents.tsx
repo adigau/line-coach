@@ -141,6 +141,7 @@ export function DocumentsLayout({
               { value: "sitcom", title: "Sitcom" },
               { value: "play", title: "Play" },
               { value: "movie", title: "Movie" },
+              { value: "qa", title: "Q&A" },
             ]}
             onChange={(value: "all" | DocumentType) => {
               setDocumentType(value);

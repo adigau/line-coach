@@ -79,6 +79,15 @@ export function DocumentCreatePopover({
           >
             Movie
           </Button>
+          <Button
+            icon={<PlusIcon />}
+            onClick={() => {
+              createNewDocument(documentName, "qa");
+            }}
+            variant="subtle"
+          >
+            QA
+          </Button>
         </div>
       }
       modal
