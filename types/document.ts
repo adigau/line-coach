@@ -28,11 +28,15 @@ export type Document = {
   // If the room is a draft (which has no groups or public access) or not
   draft: boolean;
 
-  // The type of document e.g. "canvas"
+  // The type of document
   type: DocumentType;
+
+  // The language of document
+  lang: DocumentLanguage;
 };
 
 export type DocumentType = "play" | "sitcom" | "movie" | "qa" | "script";
+export type DocumentLanguage = "fr-FR" | "fr-CA" | "en-GB" | "en-US" | "en-CA";
 
 export type DocumentGroup = Group & {
   access: DocumentAccess;
@@ -67,6 +71,7 @@ export type DocumentAccesses = {
 export interface DocumentRoomMetadata extends RoomMetadata {
   name: Document["name"];
   type: DocumentType;
+  lang: DocumentLanguage;
   owner: User["id"];
   draft: "yes" | "no";
 }

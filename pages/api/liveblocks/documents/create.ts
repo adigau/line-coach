@@ -11,19 +11,21 @@ import { CreateDocumentRequest } from "../../../../types";
  * @param req
  * @param req.body - JSON string, as defined below
  * @param req.body.name - The name of the new document
- * @param req.body.type - The type of document e.g. "canvas",
+ * @param req.body.type - The type of document
+ * @param req.body.lang - The lang of document
  * @param req.body.userId - The creator of the document
  * @param [req.body.groupIds] - Optional, limit access to room to just these groups
  * @param [req.body.draft] - Optional, if the document is a draft
  * @param res
  */
 async function POST(req: NextApiRequest, res: NextApiResponse) {
-  const { name, type, userId, groupIds, draft }: CreateDocumentRequest =
+  const { name, type, lang, userId, groupIds, draft }: CreateDocumentRequest =
     JSON.parse(req.body);
 
   const { data, error } = await createDocument(req, res, {
     name: name,
     type: type,
+    lang: lang,
     userId: userId,
     groupIds: groupIds ? groupIds.split(",") : undefined,
     draft: draft,

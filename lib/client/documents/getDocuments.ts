@@ -14,6 +14,7 @@ import { fetchApiEndpoint } from "../utils";
  * @param groupIds - The groups to filter for
  * @param userId - The user to filter for
  * @param documentType - The document type to filter for
+ * @param documentLanguage - The document lang to filter for
  * @param drafts - Get only drafts
  * @param limit - The amount of documents to retrieve
  */
@@ -21,6 +22,7 @@ export async function getDocuments({
   groupIds,
   userId,
   documentType,
+  documentLanguage,
   drafts = false,
   limit,
 }: GetDocumentsProps): Promise<FetchApiResult<GetDocumentsResponse>> {
@@ -36,6 +38,10 @@ export async function getDocuments({
 
   if (documentType) {
     url += `&documentType=${documentType}`;
+  }
+
+  if (documentLanguage) {
+    url += `&documentLanguage=${documentLanguage}`;
   }
 
   if (drafts === true) {

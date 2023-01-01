@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getDocuments } from "../../../../lib/server";
-import { DocumentType } from "../../../../types";
+import { DocumentType, DocumentLanguage } from "../../../../types";
 
 /**
  * GET Documents
@@ -12,7 +12,8 @@ import { DocumentType } from "../../../../types";
  * @param req
  * @param [req.query.userId] - Optional, filter to rooms with this userAccess set
  * @param [req.query.groupIds] - Optional, filter to rooms with these groupIds set (comma separated)
- * @param [req.query.documentType] - Optional, filter for this type of document e.g. "canvas"
+ * @param [req.query.documentType] - Optional, filter for this type of document
+ * @param [req.query.documentLanguage] - Optional, filter for this language of document
  * @param [req.query.drafts] - Optional, retrieve only draft documents
  * @param [req.query.limit] - Optional, the amount of documents to retrieve
  * @param res
@@ -21,6 +22,7 @@ async function GET(req: NextApiRequest, res: NextApiResponse) {
   const userId = (req.query.userId as string) ?? undefined;
   const groupIds = (req.query.groupIds as string) ?? undefined;
   const documentType = (req.query.documentType as DocumentType) ?? undefined;
+  const documentLanguage = (req.query.documentLanguage as DocumentLanguage) ?? undefined;
   const drafts = !!req.query.drafts;
   const limit = parseInt(req.query.limit as string);
 
@@ -30,6 +32,7 @@ async function GET(req: NextApiRequest, res: NextApiResponse) {
     userId: userId,
     groupIds: groupIdsArray,
     documentType: documentType,
+    documentLanguage: documentLanguage,
     drafts: drafts,
     limit: limit,
   });

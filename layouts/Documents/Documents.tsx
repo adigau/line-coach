@@ -1,6 +1,7 @@
 import { ComponentProps, useMemo, useState } from "react";
 import {
   DocumentType,
+  DocumentLanguage,
   DocumentGroup,
   GetDocumentsProps,
   GetDocumentsResponse,
@@ -38,6 +39,7 @@ export function DocumentsLayout({
   const { data: session } = useSession();
 
   const [documentType, setDocumentType] = useState<DocumentType | "all">("all");
+  const [documentLanguage, setDocumentLanguage] = useState<DocumentLanguage | "all">("all");
 
   // Return `getDocuments` params for the current filters/group
   const getDocumentsOptions: GetDocumentsProps | null = useMemo(() => {
@@ -48,10 +50,14 @@ export function DocumentsLayout({
     const currentDocumentType =
       documentType === "all" ? undefined : documentType;
 
+    const currentDocumentLanguage =
+      documentLanguage === "all" ? undefined : documentLanguage;
+
     // Get the current user's drafts
     if (filter === "drafts") {
       return {
         documentType: currentDocumentType,
+        documentLanguage: currentDocumentLanguage,
         userId: session.user.info.id,
         drafts: true,
         limit: DOCUMENT_LOAD_LIMIT,
@@ -62,6 +68,7 @@ export function DocumentsLayout({
     if (filter === "group" && groupId) {
       return {
         documentType: currentDocumentType,
+        documentLanguage: currentDocumentLanguage,
         groupIds: [groupId],
         limit: DOCUMENT_LOAD_LIMIT,
       };
@@ -70,11 +77,12 @@ export function DocumentsLayout({
     // Get all documents for the current user
     return {
       documentType: currentDocumentType,
+      documentLanguage: currentDocumentLanguage,
       userId: session.user.info.id,
       groupIds: session.user.info.groupIds,
       limit: DOCUMENT_LOAD_LIMIT,
     };
-  }, [filter, groupId, session, documentType]);
+  }, [filter, groupId, session, documentType, documentLanguage]);
 
   // When session is found, find pages of documents with the above document options
   const {
@@ -137,7 +145,7 @@ export function DocumentsLayout({
           <Select
             initialValue="all"
             items={[
-              { value: "all", title: "All" },
+              { value: "all", title: "All types" },
               { value: "sitcom", title: "Sitcom" },
               { value: "play", title: "Play" },
               { value: "movie", title: "Movie" },
@@ -145,6 +153,21 @@ export function DocumentsLayout({
             ]}
             onChange={(value: "all" | DocumentType) => {
               setDocumentType(value);
+              revalidateDocuments();
+            }}
+            className={styles.headerSelect}
+          />
+          <Select
+            initialValue="all"
+            items={[
+              { value: "all", title: "All languages" },
+              { value: "en-US", title: "🇺🇸 American" },
+              { value: "en-GB", title: "🇬🇧 English" },
+              { value: "fr-CA", title: "🇨🇦 Canadian" },
+              { value: "fr-FR", title: "🇫🇷 French" }
+            ]}
+            onChange={(value: "all" | DocumentLanguage) => {
+              setDocumentLanguage(value);
               revalidateDocuments();
             }}
             className={styles.headerSelect}

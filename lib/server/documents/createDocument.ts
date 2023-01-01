@@ -18,6 +18,7 @@ import { getDraftsGroupName } from "../utils";
  *
  * @param name - The name of the new document
  * @param type - The type of the new document e.g. "canvas"
+ * @param lang - The lang of the new document
  * @param userId - The user creating the document
  * @param [groupIds] - The new document's initial groups
  * @param [draft] - If the document is a draft (no public or group access, but can invite)
@@ -27,7 +28,7 @@ import { getDraftsGroupName } from "../utils";
 export async function createDocument(
   req: GetServerSidePropsContext["req"],
   res: GetServerSidePropsContext["res"],
-  { name, type, userId, groupIds, draft }: CreateDocumentProps
+  { name, type, lang, userId, groupIds, draft }: CreateDocumentProps
 ): Promise<FetchApiResult<Document>> {
   // Check user is logged in
   const session = await getServerSession(req, res);
@@ -48,6 +49,7 @@ export async function createDocument(
   const metadata: DocumentRoomMetadata = {
     name: name,
     type: type,
+    lang: lang,
     owner: userId,
     draft: draft ? "yes" : "no",
   };

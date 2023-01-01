@@ -28,7 +28,7 @@ export function DocumentRow({
   revalidateDocuments,
   ...props
 }: Props) {
-  const { id, name, type, lastConnection, accesses } = document;
+  const { id, name, type, lastConnection, accesses, lang } = document;
   const [groups, setGroups] = useState<Group[]>([]);
 
   const { data: session } = useSession();
@@ -75,6 +75,21 @@ export function DocumentRow({
     }
   }, []);
 
+  const renderLangEmoji = (lang: string) => {
+    switch (lang) {
+      case 'en-US':
+        return '🇺🇸';
+      case 'en-GB':
+        return '🇬🇧';
+      case 'fr-CA':
+        return '🇨🇦';
+      case 'fr-FR':
+        return '🇫🇷';
+      default:
+        return '';
+    }
+  }
+
   return (
     <div className={clsx(className, styles.row)} {...props}>
       <Link className={clsx(styles.container, styles.link)} href={url}>
@@ -84,6 +99,7 @@ export function DocumentRow({
         <div className={styles.info}>
           <span className={styles.documentName}>
             <span>{name}</span>
+            <span> {renderLangEmoji(lang)}</span>
             {groups.length > 0 ? (
               <span className={styles.groups}>
                 {groups.map((group) => (

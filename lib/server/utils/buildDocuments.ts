@@ -67,6 +67,7 @@ export function buildDocument(room: Room): Document {
     ).toString(),
     lastConnection: new Date(room.lastConnectionAt).toString(),
     type: metadata.type,
+    lang: metadata.lang,
     name,
     owner,
     draft,

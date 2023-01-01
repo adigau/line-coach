@@ -9,6 +9,7 @@ import {
   Document,
   DocumentGroup,
   DocumentType,
+  DocumentLanguage,
   DocumentUser,
 } from "../../types";
 import styles from "./DocumentCreatePopover.module.css";
@@ -31,10 +32,11 @@ export function DocumentCreatePopover({
   const router = useRouter();
 
   // Create a new document, then navigate to the document's URL location
-  async function createNewDocument(name: string, type: DocumentType) {
+  async function createNewDocument(name: string, type: DocumentType, lang: DocumentLanguage) {
     const { data, error } = await createDocument({
       name: documentName,
       type: type,
+      lang: lang,
       userId: userId,
       draft: draft,
       groupIds: draft ? undefined : groupIds,
@@ -55,7 +57,7 @@ export function DocumentCreatePopover({
           <Button
             icon={<PlusIcon />}
             onClick={() => {
-              createNewDocument(documentName, "play");
+              createNewDocument(documentName, "play", "en-US");
             }}
             variant="subtle"
           >
@@ -64,7 +66,7 @@ export function DocumentCreatePopover({
           <Button
             icon={<PlusIcon />}
             onClick={() => {
-              createNewDocument(documentName, "sitcom");
+              createNewDocument(documentName, "sitcom", "en-US");
             }}
             variant="subtle"
           >
@@ -73,7 +75,7 @@ export function DocumentCreatePopover({
           <Button
             icon={<PlusIcon />}
             onClick={() => {
-              createNewDocument(documentName, "movie");
+              createNewDocument(documentName, "movie", "en-US");
             }}
             variant="subtle"
           >
@@ -82,7 +84,7 @@ export function DocumentCreatePopover({
           <Button
             icon={<PlusIcon />}
             onClick={() => {
-              createNewDocument(documentName, "qa");
+              createNewDocument(documentName, "qa", "en-US");
             }}
             variant="subtle"
           >

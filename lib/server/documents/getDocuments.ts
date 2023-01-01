@@ -19,20 +19,25 @@ import { getDraftsGroupName } from "../utils";
  * @param res
  * @param [userId] - Optional, filter to rooms with this userAccess set
  * @param [groupIds] - Optional, filter to rooms with these groupIds set (comma separated)
- * @param [documentType] - Optional, filter for this type of document e.g. "canvas"
+ * @param [documentType] - Optional, filter for this type of document
+ * @param [documentLanguage] - Optional, filter for this lang of document
  * @param [drafts] - Optional, retrieve only draft documents
  * @param [limit] - Optional, the amount of documents to retrieve
  */
 export async function getDocuments(
   req: GetServerSidePropsContext["req"],
   res: GetServerSidePropsContext["res"],
-  { userId = "", groupIds = [], documentType, drafts, limit }: GetDocumentsProps
+  { userId = "", groupIds = [], documentType, documentLanguage, drafts, limit }: GetDocumentsProps
 ) {
   // Build getRooms arguments
   const metadata: RoomMetadata = {};
 
   if (documentType) {
     metadata["type"] = documentType;
+  }
+
+  if (documentLanguage) {
+    metadata["lang"] = documentLanguage;
   }
 
   let getRoomsOptions: Parameters<typeof getRooms>[0] = {

@@ -2,6 +2,7 @@ import {
   Document,
   DocumentAccess,
   DocumentType,
+  DocumentLanguage,
   DocumentGroup,
   DocumentUser,
 } from "./document";
@@ -21,6 +22,7 @@ export type GetStorageResponse = Record<string, unknown>;
 export type CreateDocumentRequest = {
   name: Document["name"];
   type: DocumentType;
+  lang: DocumentLanguage;
   userId: DocumentUser["id"];
   groupIds?: string; // Comma separated list of groupIds
   draft?: boolean;
@@ -70,10 +72,10 @@ export type ErrorData = {
 
 export type FetchApiResult<T = unknown> =
   | {
-      data: T;
-      error?: never;
-    }
+    data: T;
+    error?: never;
+  }
   | {
-      error: ErrorData;
-      data?: never;
-    };
+    error: ErrorData;
+    data?: never;
+  };

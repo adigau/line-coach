@@ -13,7 +13,8 @@ import { fetchApiEndpoint } from "../utils";
  * Uses custom API endpoint
  *
  * @param name - The name of the new document
- * @param type - The type of the new document e.g. "canvas"
+ * @param type - The type of the new document
+ * @param lang - The lang of the new document
  * @param groupIds - The new document's initial groups
  * @param userId - The user creating the document
  * @param draft - If the document is a draft (no public or group access, but can invite)
@@ -21,6 +22,7 @@ import { fetchApiEndpoint } from "../utils";
 export async function createDocument({
   name,
   type,
+  lang,
   groupIds,
   userId,
   draft = false,
@@ -30,6 +32,7 @@ export async function createDocument({
   const request: CreateDocumentRequest = {
     name,
     type,
+    lang,
     userId,
     groupIds: draft ? undefined : groupIds?.join(","),
     draft,

@@ -2,6 +2,7 @@ import {
   Document,
   DocumentAccess,
   DocumentGroup,
+  DocumentLanguage,
   DocumentType,
   DocumentUser,
 } from "./document";
@@ -15,6 +16,7 @@ import {
 export type CreateDocumentProps = {
   name: Document["name"];
   type: DocumentType;
+  lang: DocumentLanguage;
   userId: DocumentUser["id"];
   groupIds?: DocumentGroup["id"][];
   draft?: boolean;
@@ -68,6 +70,7 @@ export type GetDocumentsProps = {
   groupIds?: DocumentGroup["id"][];
   userId?: DocumentUser["id"];
   documentType?: DocumentType;
+  documentLanguage?: DocumentLanguage;
   drafts?: boolean;
   limit?: number;
 };
