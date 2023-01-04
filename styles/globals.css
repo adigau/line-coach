@@ -1,20 +1,14 @@
 @import "./normalize.css";
 
 :root {
-
-  --color-black: 0 0 0;
-  --color-white: 255 255 255;
-  --color-red: 239 67 67;
-
   --color-red-light: 246 137 135;
   --color-red-dark: 181 102 100;
 
   --color-yellow-light: 244 210 79;
   --color-yellow-dark: 174 152 57;
 
-  --color-bluepale-light: 145 205 244;
-  --color-bluepale-dark: 106 149 179;
-  --color-green: 132 204 22;
+  --color-black: 0 0 0;
+  --color-white: 255 255 255;
   --color-gray-50: 250 250 250;
   --color-gray-100: 244 244 245;
   --color-gray-150: 236 236 238;
@@ -35,22 +29,6 @@
   --color-gray-900: 24 24 27;
   --color-gray-950: 18 18 21;
   --color-overlay: rgb(var(--color-black) / 60%);
-  --color-accent: rgb(var(--color-gray-900));
-  --color-surface: rgb(var(--color-gray-100));
-  --color-surface-hover: rgb(var(--color-gray-150));
-  --color-surface-elevated: rgb(var(--color-white));
-  --color-border: rgb(var(--color-gray-150));
-  --color-border-contrasted: rgb(var(--color-gray-250));
-  --color-border-transparent: rgb(var(--color-gray-900) / 10%);
-  --color-skeleton: rgb(var(--color-gray-150));
-  --color-skeleton-shine: rgb(var(--color-gray-50));
-  --color-tooltip: rgb(var(--color-gray-950));
-  --color-tooltip-text: rgb(var(--color-white));
-  --color-tooltip-border: rgb(var(--color-gray-750));
-  --color-text: rgb(var(--color-gray-900));
-  --color-text-light: rgb(var(--color-gray-600));
-  --color-text-lighter: rgb(var(--color-gray-500));
-  --color-text-lightest: rgb(var(--color-gray-400));
   --space-0: 0;
   --space-1: 0.125rem;
   --space-2: 0.25rem;
@@ -104,10 +82,37 @@
   --opacity-hover: 0.8;
   --opacity-disabled: 0.5;
 
+  accent-color: var(--color-accent);
+}
+
+/* Light theme */
+:root {
+  --color-red: 239 67 67;
+  --color-green: 132 204 22;
+  --color-accent: rgb(var(--color-gray-900));
+  --color-surface: rgb(var(--color-gray-100));
+  --color-surface-hover: rgb(var(--color-gray-150));
+  --color-surface-elevated: rgb(var(--color-white));
+  --color-border: rgb(var(--color-gray-150));
+  --color-border-contrasted: rgb(var(--color-gray-250));
+  --color-border-transparent: rgb(var(--color-gray-900) / 10%);
+  --color-skeleton: rgb(var(--color-gray-150));
+  --color-skeleton-shine: rgb(var(--color-gray-50));
+  --color-tooltip: rgb(var(--color-gray-950));
+  --color-tooltip-text: rgb(var(--color-white));
+  --color-tooltip-border: rgb(var(--color-gray-750));
+  --color-text: rgb(var(--color-gray-900));
+  --color-text-light: rgb(var(--color-gray-600));
+  --color-text-lighter: rgb(var(--color-gray-500));
+  --color-text-lightest: rgb(var(--color-gray-400));
+  --color-line-text-highlighted: rgb(var(--color-red-light));
+  --color-line-character-highlighted: rgb(var(--color-yellow-light));
+
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: light) {
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
   :root {
     --color-red: 248 113 113;
     --color-green: 162 230 53;
@@ -124,8 +129,10 @@
     --color-text-light: rgb(var(--color-gray-300));
     --color-text-lighter: rgb(var(--color-gray-400));
     --color-text-lightest: rgb(var(--color-gray-500));
+    --color-line-text-highlighted: rgb(var(--color-red-dark));
+    --color-line-character-highlighted: rgb(var(--color-yellow-dark));
 
-    color-scheme: light;
+    color-scheme: dark;
   }
 }
 
@@ -150,28 +157,4 @@ html.grabbing {
 
 html.grabbing * {
   user-select: none;
-}
-
-@media print {
-
-  html,
-  body {
-    background-color: transparent;
-    color: black;
-  }
-
-  @page {
-    /* auto is the initial value */
-    size: auto;
-
-    /* this affects the margin in the printer settings */
-    margin: 20mm 10mm 20mm 10mm;
-  }
-}
-
-@media print and (color) {
-  * {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
 }
