@@ -7,7 +7,13 @@ interface Props extends Omit<ComponentProps<"svg">, "type"> {
 
 function SitcomDocumentIcon() {
   return (
-    <svg width="800px" height="800px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="#000000" fill="none"><path d="M58.94,43.28a2,2,0,0,1-2,2H7.16a2,2,0,0,1-2-2V10.63a2,2,0,0,1,2-2H56.93a2,2,0,0,1,2,2Z" /><rect x="10.1" y="13.7" width="43.8" height="26.5" rx=".5" /><line x1="27.53" y1="45.55" x2="27.53" y2="51.41" /><line x1="37.04" y1="45.55" x2="37.04" y2="51.41" /><line x1="18.82" y1="51.54" x2="45.66" y2="51.54" /></svg>
+    <svg width="800px" height="800px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="#000000" fill="none">
+      <path d="M58.94,43.28a2,2,0,0,1-2,2H7.16a2,2,0,0,1-2-2V10.63a2,2,0,0,1,2-2H56.93a2,2,0,0,1,2,2Z" />
+      <rect x="10.1" y="13.7" width="43.8" height="26.5" rx=".5" />
+      <line x1="27.53" y1="45.55" x2="27.53" y2="51.41" />
+      <line x1="37.04" y1="45.55" x2="37.04" y2="51.41" />
+      <line x1="18.82" y1="51.54" x2="45.66" y2="51.54" />
+    </svg>
   );
 }
 
@@ -17,12 +23,9 @@ function PlayDocumentIcon() {
       version="1.1"
       id="Layer_1"
       xmlns="http://www.w3.org/2000/svg"
-      // xmlns:xlink="http://www.w3.org/1999/xlink"
       x="0px"
       y="0px"
       viewBox="0 0 512 512"
-    // style="enable-background:new 0 0 512 512;"
-    // xml:space="preserve"
     >
       <g>
         <g>
@@ -79,21 +82,6 @@ function PlayDocumentIcon() {
           </g>
         </g>
       </g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
     </svg>
   );
 }
@@ -179,21 +167,6 @@ function MovieDocumentIcon() {
           </g>
         </g>
       </g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
     </svg>
   );
 }
