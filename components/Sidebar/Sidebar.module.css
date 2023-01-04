@@ -120,7 +120,7 @@
 .presenceIndicator {
     width: 5px;
     height: 5px;
-    background: #99CC00;
+    background: var(--color-green);
     position: absolute;
     border-radius: 100%;
     top: -5px;

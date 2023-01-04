@@ -40,12 +40,12 @@
 }
 
 .highlighted .character {
-    background-color: rgb(var(--color-red-light));
+    background-color: var(--color-line-character-highlighted);
     font-weight: bold;
 }
 
 .highlighted .text {
-    background-color: rgb(var(--color-yellow-light));
+    background-color: var(--color-line-text-highlighted);
     font-weight: bold;
     padding: 3px;
 }
@@ -108,7 +108,7 @@
 .presenceIndicator {
     width: 5px;
     height: 5px;
-    background: #99CC00;
+    background: rgb(var(--color-green));
     /* border: 2px solid white; */
     position: absolute;
     border-radius: 100%;
