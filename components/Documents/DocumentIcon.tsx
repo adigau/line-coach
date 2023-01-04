@@ -5,9 +5,10 @@ interface Props extends Omit<ComponentProps<"svg">, "type"> {
   type?: DocumentType;
 }
 
-function SitcomDocumentIcon() {
+function SitcomDocumentIcon(props: ComponentProps<"svg">) {
   return (
-    <svg width="800px" height="800px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="#000000" fill="none">
+    <svg width="800px" height="800px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="#000000" fill="none"
+      {...props}>
       <path d="M58.94,43.28a2,2,0,0,1-2,2H7.16a2,2,0,0,1-2-2V10.63a2,2,0,0,1,2-2H56.93a2,2,0,0,1,2,2Z" />
       <rect x="10.1" y="13.7" width="43.8" height="26.5" rx=".5" />
       <line x1="27.53" y1="45.55" x2="27.53" y2="51.41" />
@@ -17,7 +18,7 @@ function SitcomDocumentIcon() {
   );
 }
 
-function PlayDocumentIcon() {
+function PlayDocumentIcon(props: ComponentProps<"svg">) {
   return (
     <svg
       version="1.1"
@@ -26,6 +27,7 @@ function PlayDocumentIcon() {
       x="0px"
       y="0px"
       viewBox="0 0 512 512"
+      {...props}
     >
       <g>
         <g>
@@ -86,7 +88,7 @@ function PlayDocumentIcon() {
   );
 }
 
-function MovieDocumentIcon() {
+function MovieDocumentIcon(props: ComponentProps<"svg">) {
   return (
     <svg
       version="1.1"
@@ -95,6 +97,7 @@ function MovieDocumentIcon() {
       x="0px"
       y="0px"
       viewBox="0 0 210.233 210.233"
+      {...props}
     >
       <g>
         <g>
@@ -168,10 +171,11 @@ function MovieDocumentIcon() {
   );
 }
 
-function QADocumentIcon() {
+function QADocumentIcon(props: ComponentProps<"svg">) {
   return (
     <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-      width="800px" height="800px" viewBox="0 0 100 100" enable-background="new 0 0 100 100">
+      width="800px" height="800px" viewBox="0 0 100 100" enable-background="new 0 0 100 100"
+      {...props}>
       <g>
         <path d="M20.074,69H23v12.32c0,0.747,0.416,1.432,1.08,1.775c0.289,0.15,0.605,0.225,0.92,0.225c0.405,0,0.81-0.063,1.153-0.306
 		L46.102,69h18.476l9.294,6.292c0.339,0.232,0.733,0.319,1.129,0.319c0.319,0,0.641-0.092,0.934-0.247
