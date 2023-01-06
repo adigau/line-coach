@@ -17,7 +17,6 @@ type SectionProps = {
 
 export function Section({
     section,
-    cast,
     isHiddenLines,
     isAnnotationMode,
     isAnnotationModeOnlyMine

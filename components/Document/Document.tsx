@@ -1,7 +1,7 @@
-import { ComponentProps, forwardRef, ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { ComponentProps, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import styles from "./Document.module.css";
-import { CharacterSelectionStorage, OptionsSelectionStorage, SectionSelectionStorage } from "../../types/storage";
+import { CharacterSelectionStorage, OptionsSelectionStorage } from "../../types/storage";
 import { users } from "../../data/users";
 import { useMutation, useRoom, useSelf, useStorage } from "../../liveblocks.config";
 import { User } from "../../types";
@@ -45,15 +45,13 @@ export function Practice({ isOpen, roomDocument, className, scene, ...props }: P
 
   //////// Liveblocks - Presence
   const self = useSelf()
-  const room = useRoom();
 
   //////// Liveblocks - Storage
   const characterSelections = useStorage((root) => root.characterSelections.get(self.id));
-  const sectionSelections = useStorage((root) => root.sectionSelections.get(self.id));
   const optionsSelections = useStorage((root) => root.optionsSelections.get(self.id));
-  const characters = useStorage((root) => root.characters);
-  const sections = useStorage((root) => root.sections);
-  const lines = useStorage((root) => root.lines);
+  const charactersStorage = useStorage((root) => root.characters);
+  const sectionsStorage = useStorage((root) => root.sections);
+  const linesStorage = useStorage((root) => root.lines);
 
   //////// Liveblocks - Mutation
   const addOrUpdateOptionsSelection = useMutation(({ storage }, options: OptionsSelectionStorage) => {
@@ -62,13 +60,9 @@ export function Practice({ isOpen, roomDocument, className, scene, ...props }: P
   const addOrUpdateCharacterSelection = useMutation(({ storage }, characterSelection: CharacterSelectionStorage) => {
     storage.get("characterSelections").set(characterSelection.userId, characterSelection)
   }, []);
-  const addOrUpdateSectionSelection = useMutation(({ storage }, sectionSelection: SectionSelectionStorage) => {
-    storage.get("sectionSelections").set(sectionSelection.userId, sectionSelection)
-  }, []);
-
   //////// States
-  const [script, setScript] = useState<ScriptType>(null as any)
-  const [cast, setCast] = useState<Character[]>([])
+  const [sections, setSections] = useState<Section[]>()
+  const [characters, setCharacters] = useState<Character[]>()
   const [isHiddenLines, setIsHiddenLines] = useState(optionsSelections != null ? optionsSelections.isHiddenLines : false)
   const [isAnnotationMode, setIsAnnotationMode] = useState(optionsSelections != null ? optionsSelections.isAnnotationMode : false)
   const [isAnnotationModeOnlyMine, setIsAnnotationModeOnlyMine] = useState(optionsSelections != null ? optionsSelections.isAnnotationModeOnlyMine : true)
@@ -79,17 +73,8 @@ export function Practice({ isOpen, roomDocument, className, scene, ...props }: P
   const isHiddenLinesChanged = (data: boolean) => setIsHiddenLines(data)
   const isAnnotationModeChanged = (data: boolean) => setIsAnnotationMode(data)
   const isAnnotationModeOnlyMineChanged = (data: boolean) => setIsAnnotationModeOnlyMine(data)
-  const scriptChanged = (data: ScriptType) => {
-    setScript(data)
-    const userToSections: SectionSelectionStorage =
-    {
-      userId: self.id,
-      hiddenSectionIds: data.sections.map(c => c.id)
-    }
-    addOrUpdateSectionSelection(userToSections)
-  }
   const castChanged = (data: Character[]) => {
-    setCast(data)
+    setCharacters(data)
 
     const userToCharacters: CharacterSelectionStorage =
     {
@@ -101,16 +86,16 @@ export function Practice({ isOpen, roomDocument, className, scene, ...props }: P
 
   //////// useCallBack
   function loadScript() {
-    const castEnriched = characters.map(x => (
+    const castEnriched = charactersStorage.map(x => (
       {
         isHighlighted: getIsCharacterHighlightedFromStorage(characterSelections, x.id),
         ...x
       }))
 
-    const sectionsEnriched = sections.map(x => (
+    const sectionsEnriched = sectionsStorage.map(x => (
       {
         href: "section" + x.id,
-        lines: lines.filter(y => y.sectionId == x.id)
+        lines: linesStorage.filter(y => y.sectionId == x.id)
           .map(x => (
             {
               href: "line" + x.id + "_" + x.characterId,
@@ -120,16 +105,8 @@ export function Practice({ isOpen, roomDocument, className, scene, ...props }: P
         ...x
       } as Section))
 
-    const script: ScriptType =
-      {
-        id: room.id,
-        cast: castEnriched,
-        sections: sectionsEnriched,
-      } as ScriptType
-
-    //CALLING ONE OF THOSE TWO BREAKS THE ROUTER AND WE CAN'T NAVIGATE FROM HEADER
-    setScript(script)
-    setCast(script.cast)
+    setSections(sectionsEnriched)
+    setCharacters(castEnriched)
   }
 
   //////// useEffect
@@ -166,9 +143,9 @@ export function Practice({ isOpen, roomDocument, className, scene, ...props }: P
         }
       }
     }
-  }, [script, cast, asPath, hash]);
+  }, [sections, characters, asPath, hash]);
 
-  if (script == null || cast == null) {
+  if (sections == null || characters == null) {
     return (<Spinner />)
   }
 
@@ -180,9 +157,8 @@ export function Practice({ isOpen, roomDocument, className, scene, ...props }: P
       <div className={clsx(className, styles.container)} {...props}>
         <aside className={styles.aside} data-open={isOpen || undefined}>
           <Sidebar
-            script={script}
-            scriptChanged={scriptChanged}
-            cast={cast}
+            sections={sections}
+            cast={characters}
             castChanged={castChanged}
             searchTerm={searchTerm}
             searchTermChanged={onSearchTermChanged}
@@ -196,8 +172,8 @@ export function Practice({ isOpen, roomDocument, className, scene, ...props }: P
         </aside>
         <main className={styles.main}>
           <ScriptNavigator
-            script={script}
-            cast={cast}
+            sections={sections}
+            characters={characters}
             scene={scene}
             searchTerm={searchTerm}
             isHiddenLines={isHiddenLines}
@@ -223,5 +199,4 @@ function getIsCharacterHighlightedFromStorage(
 function getCharacterById(id: string, list: Character[]): Character {
   const result = list.find(x => x.id == id)
   return result != null ? result : {} as Character
-
 }

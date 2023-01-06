@@ -14,8 +14,7 @@ import { Checkbox } from '../../primitives/Checkbox';
 
 type SidebarProps = {
 
-    script: ScriptType,
-    scriptChanged: (data: ScriptType) => void,
+    sections: Section[],
     cast: Character[],
     castChanged: (data: Character[]) => void,
 
@@ -29,7 +28,7 @@ type SidebarProps = {
     isAnnotationModeOnlyMineChanged: (data: boolean) => void
 }
 
-export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, searchTermChanged, isHiddenLines, isHiddenLinesChanged, isAnnotationMode, isAnnotationModeChanged, isAnnotationModeOnlyMine, isAnnotationModeOnlyMineChanged }: SidebarProps) {
+export function Sidebar({ sections, cast, castChanged, searchTerm, searchTermChanged, isHiddenLines, isHiddenLinesChanged, isAnnotationMode, isAnnotationModeChanged, isAnnotationModeOnlyMine, isAnnotationModeOnlyMineChanged }: SidebarProps) {
 
     const self = useSelf()
     const others = useOthers()
@@ -108,7 +107,7 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
         if (charactersToWatchers == null)
             return
 
-        const allCharactersInThatSection: { characterId: string, displayName: string }[] = script.sections
+        const allCharactersInThatSection: { characterId: string, displayName: string }[] = sections
             .filter(x => x.id == sectionId)
             .flatMap(x => x.lines)
             .flatMap(x => { return { characterId: x.characterId as string, displayName: x.character.displayName as string } })
@@ -193,8 +192,8 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
                     </Accordion.Header>
                     <Accordion.Content className={clsx(styles.AccordionContent, styles.AccordionContentText)}>
                         <DataWidget
-                            script={script}
-                            cast={cast}
+                            sections={sections}
+                            characters={cast}
                         />
                     </Accordion.Content>
                 </Accordion.Item>

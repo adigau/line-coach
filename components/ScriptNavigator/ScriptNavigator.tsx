@@ -16,9 +16,9 @@ import { Select } from "../../primitives/Select";
 import Router, { useRouter } from "next/router";
 
 type ScriptNavigatorProps = {
-    script: ScriptType;
+    sections: Section[];
     scene?: string;
-    cast: Character[];
+    characters: Character[];
     searchTerm: string;
     isHiddenLines: boolean;
     isAnnotationMode: boolean;
@@ -26,9 +26,9 @@ type ScriptNavigatorProps = {
 };
 
 export function ScriptNavigator({
-    script,
+    sections,
     searchTerm,
-    cast,
+    characters,
     scene,
     isHiddenLines,
     isAnnotationMode,
@@ -42,11 +42,11 @@ export function ScriptNavigator({
     );
     const router = useRouter()
 
-    const index = script.sections.findIndex(x => x.id == scene)
+    const index = sections.findIndex(x => x.id == scene)
 
     const [activeSectionIndex, setActiveSectionIndex] = useState<number>(index < 0 ? 0 : index)
-    const [previousSectionIndex, setPreviousSectionIndex] = useState<number | undefined>(script.sections[activeSectionIndex - 1] != null ? activeSectionIndex - 1 : undefined)
-    const [nextSectionIndex, setNextSectionIndex] = useState<number | undefined>(script.sections[activeSectionIndex + 1] != null ? activeSectionIndex + 1 : undefined)
+    const [previousSectionIndex, setPreviousSectionIndex] = useState<number | undefined>(sections[activeSectionIndex - 1] != null ? activeSectionIndex - 1 : undefined)
+    const [nextSectionIndex, setNextSectionIndex] = useState<number | undefined>(sections[activeSectionIndex + 1] != null ? activeSectionIndex + 1 : undefined)
 
 
     const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
@@ -59,7 +59,7 @@ export function ScriptNavigator({
     useEffect(() => {
         const fetchData = () => {
             const tempWatchers = new Map<string, (User | null)[]>()
-            cast.map(x => {
+            characters.map(x => {
                 const id = x.id
                 const watchers = othersCharacterSelections
                     .filter(y => y.characterIds.some(z => z == x.id))
@@ -73,7 +73,7 @@ export function ScriptNavigator({
             setCharactersToWatchers(tempWatchers)
         }
         fetchData();
-    }, [cast, othersCharacterSelections, others, users])
+    }, [characters, othersCharacterSelections, others, users])
 
     const renderActiveSection = (sections: Section[]) => {
         const sectionsToDisplay = sections
@@ -88,7 +88,7 @@ export function ScriptNavigator({
 
         return (<SectionComponent
             section={sectionsToDisplay[activeSectionIndex]}
-            cast={cast}
+            cast={characters}
             isHiddenLines={isHiddenLines}
             isAnnotationMode={isAnnotationMode}
             isAnnotationModeOnlyMine={isAnnotationModeOnlyMine} />
@@ -99,7 +99,7 @@ export function ScriptNavigator({
         if (charactersToWatchers == null)
             return
 
-        const allCharactersInThatSection: { characterId: string, displayName: string }[] = script.sections[activeSectionIndex].lines
+        const allCharactersInThatSection: { characterId: string, displayName: string }[] = sections[activeSectionIndex].lines
             .flatMap(x => { return { characterId: x.characterId as string, displayName: x.character.displayName as string } })
             .filter((value, index, self) => onlyUniqueCharacterIds(value, index, self))
         const isSectionFullOfWatchers = allCharactersInThatSection.every(x => isCharacterOnline(x.characterId))
@@ -128,15 +128,14 @@ export function ScriptNavigator({
     }
 
     function changeScene(value: string) {
-        router.replace("/script/bigbangtheorys01e01?scene=" + value)
-        router.reload()
+        router.push("/script/bigbangtheorys01e01?scene=" + value)
     }
 
     return <div>
         <div className={styles.sectionHeaderContainer}>
             <div><LinkButton href="#">Previous</LinkButton></div>
             <h2 className={styles.sectionName}>
-                <a className={styles.sectionLink} href={"#" + script.sections[activeSectionIndex].href}>
+                <a className={styles.sectionLink} href={"#" + sections[activeSectionIndex].href}>
                     <span className={styles.sectionLinkIconContainer}>
                         <span className={styles.sectionLinkIcon}>
                             <LinkIcon />
@@ -146,11 +145,11 @@ export function ScriptNavigator({
                         aboveOverlay
                         name="sectionId"
                         className={styles.sectionSelect}
-                        items={script.sections.map((section) => ({
+                        items={sections.map((section) => ({
                             value: section.id,
                             title: section.displayName,
                         }))}
-                        initialValue={script.sections[activeSectionIndex].id}
+                        initialValue={sections[activeSectionIndex].id}
                         placeholder="Choose a section…"
                         onChange={(value) => {
                             changeScene(value);
@@ -162,7 +161,7 @@ export function ScriptNavigator({
             </h2>
             <div><LinkButton href="#">Next</LinkButton></div>
         </div>
-        {renderActiveSection(script.sections)}
+        {renderActiveSection(sections)}
     </div>
 }
 

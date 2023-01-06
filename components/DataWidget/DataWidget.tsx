@@ -1,11 +1,11 @@
 
 import React from 'react'
-import { ScriptType, Character } from "../../types/script"
+import { Character, Section } from "../../types/script"
 import styles from "./DataWidget.module.css";
 
 type DataWidgetProps = {
-    script: ScriptType,
-    cast: Character[]
+    sections: Section[],
+    characters: Character[]
 }
 
 type FlattenedLine = {
@@ -45,9 +45,8 @@ function renderDataCharacter(character: FlattenedCharacter) {
 }
 
 export function DataWidget(props: DataWidgetProps) {
-    const { script, cast } = props;
+    const { sections, characters } = props;
 
-    const sections = script.sections
     const flattenedListOfLines: FlattenedLine[] = []
     const flattenedListOfCharacters: FlattenedCharacter[] = []
 
@@ -59,7 +58,7 @@ export function DataWidget(props: DataWidgetProps) {
             text: line.text
         })))
 
-    cast.forEach(character => {
+    characters.forEach(character => {
         const numberOfLines = getNumberOfLinesPerCharacter(character.id, flattenedListOfLines)
         if (numberOfLines > 0) {
             flattenedListOfCharacters.push(

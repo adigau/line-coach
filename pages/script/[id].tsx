@@ -15,7 +15,7 @@ import * as Server from "../../lib/server";
 import { Presence, RoomProvider } from "../../liveblocks.config";
 import { Document, ErrorData } from "../../types";
 import { CharacterStorage, LineStorage, SectionStorage } from "../../types/script";
-import { NoteStorage, CharacterSelectionStorage, OptionsSelectionStorage, SectionSelectionStorage } from "../../types/storage";
+import { NoteStorage, CharacterSelectionStorage, OptionsSelectionStorage } from "../../types/storage";
 
 export default function ScriptDocumentView({
   initialDocument,
@@ -69,7 +69,6 @@ export default function ScriptDocumentView({
     characters: new LiveList<CharacterStorage>([]),
     characterSelections: new LiveMap<string, CharacterSelectionStorage>([]),
     sections: new LiveList<SectionStorage>([]),
-    sectionSelections: new LiveMap<string, SectionSelectionStorage>([]),
     optionsSelections: new LiveMap<string, OptionsSelectionStorage>([]),
     lines: new LiveList<LineStorage>([]),
     annotations: new LiveMap<string, NoteStorage>([])
