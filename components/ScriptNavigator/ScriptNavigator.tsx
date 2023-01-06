@@ -8,12 +8,13 @@ import { User } from "../../types";
 import { Section as SectionComponent } from "../Section";
 import styles from "./ScriptNavigator.module.css";
 import { LinkIcon } from "../../icons";
-import { useOthers, useSelf, useStorage } from "../../liveblocks.config";
+import { useOthers, useRoom, useSelf, useStorage } from "../../liveblocks.config";
 import { CharacterSelectionStorage } from "../../types/storage";
 import { shallow } from "@liveblocks/client";
-import { LinkButton } from "../../primitives/Button";
+import { Button, LinkButton } from "../../primitives/Button";
 import { Select } from "../../primitives/Select";
 import Router, { useRouter } from "next/router";
+import { SCENE_URL } from "../../constants";
 
 type ScriptNavigatorProps = {
     sections: Section[];
@@ -35,6 +36,7 @@ export function ScriptNavigator({
     isAnnotationModeOnlyMine }: ScriptNavigatorProps) {
 
     const self = useSelf()
+    const room = useRoom()
     const others = useOthers()
     const users = useMemo(
         () => (self ? [self, ...others] : others),
@@ -128,12 +130,29 @@ export function ScriptNavigator({
     }
 
     function changeScene(value: string) {
-        router.push("/script/bigbangtheorys01e01?scene=" + value)
+        setActiveSectionIndex(sections.findIndex(x => x.id == value));
+        router.push(getSceneUrl(value))
+    }
+
+    function getSceneUrl(value: string) {
+        const url = SCENE_URL("script", room.id, value)
+        return url;
+    }
+
+    function goToPreviousSection(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+        if (previousSectionIndex == null || previousSectionIndex < 0)
+            return;
+        changeScene(sections[previousSectionIndex].id)
+    }
+    function goToNextSection(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+        if (nextSectionIndex == null || nextSectionIndex < 0)
+            return;
+        changeScene(sections[nextSectionIndex].id)
     }
 
     return <div>
         <div className={styles.sectionHeaderContainer}>
-            <div><LinkButton variant="secondary" href="/script/bigbangtheorys01e01?scene=s01e01_scene_10">Previous</LinkButton></div>
+            <Button aria-disabled={previousSectionIndex != undefined} onClick={(event) => goToPreviousSection(event)} variant="secondary">Previous</Button>
             <h2 className={styles.sectionName}>
                 <Select
                     aboveOverlay
@@ -145,17 +164,14 @@ export function ScriptNavigator({
                     }))}
                     initialValue={sections[activeSectionIndex].id}
                     placeholder="Choose a section…"
-                    onChange={(value) => {
-                        setActiveSectionIndex(sections.findIndex(x => x.id == value));
-                        changeScene(value);
-                    }}
+                    onChange={(value) => { changeScene(value) }}
                     required
                 />
                 {displayPresenceIndicatorSection()}
             </h2>
-            <div><LinkButton variant="secondary" href="#">Next</LinkButton></div>
+            <Button aria-disabled={nextSectionIndex != undefined} onClick={(event) => goToNextSection(event)} variant="secondary">Next</Button>
         </div>
         {renderActiveSection(sections)}
-    </div>
+    </div >
 }
 
