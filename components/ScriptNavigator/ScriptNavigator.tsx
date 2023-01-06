@@ -19,7 +19,6 @@ type ScriptNavigatorProps = {
     script: ScriptType;
     scene?: string;
     cast: Character[];
-    users: Omit<User, "color">[];
     searchTerm: string;
     isHiddenLines: boolean;
     isAnnotationMode: boolean;

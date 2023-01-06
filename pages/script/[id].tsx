@@ -1,5 +1,4 @@
-import { LiveList, LiveMap, LiveObject } from "@liveblocks/client";
-import { ClientSideSuspense } from "@liveblocks/react";
+import { LiveList, LiveMap } from "@liveblocks/client";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { Session } from "next-auth";
 import { useRouter } from "next/router";
@@ -9,11 +8,11 @@ import {
   DocumentHeaderSkeleton,
 } from "../../components/Document";
 import { DocumentLayout } from "../../layouts/Document";
+import { Document as DocumentComponent } from "../../components/Document";
 import { ErrorLayout } from "../../layouts/Error";
 import { updateDocumentName } from "../../lib/client";
 import * as Server from "../../lib/server";
 import { Presence, RoomProvider } from "../../liveblocks.config";
-import { Spinner } from "../../primitives/Spinner";
 import { Document, ErrorData } from "../../types";
 import { CharacterStorage, LineStorage, SectionStorage } from "../../types/script";
 import { NoteStorage, CharacterSelectionStorage, OptionsSelectionStorage, SectionSelectionStorage } from "../../types/storage";
@@ -63,7 +62,7 @@ export default function ScriptDocumentView({
   }
 
   if (!document) {
-    return <DocumentLayout isOpen={isMenuOpen} header={<DocumentHeaderSkeleton />} />;
+    return <DocumentLayout header={<DocumentHeaderSkeleton />} />;
   }
 
   const initialStorage = () => ({
@@ -82,21 +81,18 @@ export default function ScriptDocumentView({
       initialPresence={{} as Presence}
       initialStorage={initialStorage}
     >
-      <ClientSideSuspense fallback={<Spinner />}>
-        {() =>
-          <DocumentLayout
+      <DocumentLayout
+        header={
+          <DocumentHeader
             isOpen={isMenuOpen}
-            roomDocument={document}
-            scene={scene as string}
-            header={
-              <DocumentHeader
-                isOpen={isMenuOpen}
-                onMenuClick={handleMenuClick}
-                document={document}
-                onDocumentRename={updateName} />}
-          />
-        }
-      </ClientSideSuspense>
+            onMenuClick={handleMenuClick}
+            document={document}
+            onDocumentRename={updateName} />} >
+        <DocumentComponent
+          scene={scene as string}
+          roomDocument={document}
+          isOpen={isMenuOpen} />
+      </DocumentLayout>
     </RoomProvider>
   );
 }
