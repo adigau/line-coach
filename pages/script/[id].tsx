@@ -1,4 +1,4 @@
-import { LiveList, LiveMap } from "@liveblocks/client";
+import { LiveList, LiveMap, LiveObject } from "@liveblocks/client";
 import { ClientSideSuspense } from "@liveblocks/react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { Session } from "next-auth";
@@ -73,7 +73,7 @@ export default function ScriptDocumentView({
     sectionSelections: new LiveMap<string, SectionSelectionStorage>([]),
     optionsSelections: new LiveMap<string, OptionsSelectionStorage>([]),
     lines: new LiveList<LineStorage>([]),
-    annotations: new LiveList<NoteStorage>([])
+    annotations: new LiveMap<string, NoteStorage>([])
   });
 
   return (

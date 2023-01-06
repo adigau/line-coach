@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import styles from "./Line.module.css";
 import Switch from "@mui/material/Switch";
 import { Line } from "../../types/script";
-import { Note, NoteStorage, CharacterSelectionStorage } from "../../types/storage";
-import { useMutation, useOthers, useSelf, useStorage } from "../../liveblocks.config";
+import { NoteStorage, CharacterSelectionStorage } from "../../types/storage";
+import { useOthers, useSelf, useStorage } from "../../liveblocks.config";
 import clsx from "clsx";
 import { User } from "../../types";
 import { shallow } from "@liveblocks/react";
 import { LinkIcon } from "../../icons";
-import { users } from "../../data/users";
 import { Note as NoteComponent, NoteType } from "../Note";
 
 type LineProps = {
@@ -20,13 +19,13 @@ type LineProps = {
 };
 
 function renderOtherAnnotation(
-  annotations: Note[],
+  annotations: NoteStorage[],
   isAnnotationModeOnlyMine: boolean
 ) {
   if (annotations == null || isAnnotationModeOnlyMine)
     return;
   else
-    return annotations.map((a) => { return <NoteComponent key={a.key} note={a} type={NoteType.Others} /> });
+    return annotations.map((a) => { return <NoteComponent lineId={a.lineId} userId={a.userId} type={NoteType.Others} /> });
 }
 
 export function Line(props: LineProps) {
@@ -39,29 +38,10 @@ export function Line(props: LineProps) {
 
   const self = useSelf();
   const others = useOthers();
-  const annotations = useStorage((root) => root.annotations
-    .filter(x => x.lineId == line.id)
-    .map(x => {
-      return { user: users.filter(y => y.id == x.userId)[0], key: generateNoteKey(x.userId, x.lineId), ...x } as Note
-    })
-    , shallow);
 
-  const [draftAnnotation] = useState<string>(annotations.filter(x => x.userId == self.id).map(x => x.text)[0] ?? "");
   const [watchers, setWatchers] = useState<(User | null)[]>();
 
-  //TODO: Understand why others only receive updates when a new annotation is added witht he first letter, but not the rest when more text is typed
-  const addOrUpdateAnnotation = useMutation(({ storage, self }, value: string) => {
-    const newAnnotation = { lineId: line.id, userId: self.id, text: value } as NoteStorage
-    const index = storage.get("annotations").findIndex(x => x.userId == newAnnotation.userId && x.lineId == newAnnotation.lineId)
-    if (index < 0) {
-      console.log("PUSH, index: " + index + ", lineId:" + newAnnotation.lineId + ", userId:" + newAnnotation.userId)
-      storage.get("annotations").push(newAnnotation)
-    }
-    else {
-      console.log("SET, index: " + index + ", lineId:" + newAnnotation.lineId + ", userId:" + newAnnotation.userId)
-      storage.get("annotations").set(index, newAnnotation)
-    }
-  }, []);
+  const annotations = useStorage((root) => Array.from(root.annotations.values()).filter(x => x.lineId == line.id))
 
   const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
     (root) =>
@@ -92,20 +72,12 @@ export function Line(props: LineProps) {
 
   const [isTextForcedVisible, setIsTextForcedVisible] = useState(false);
 
-
   const renderYourAnnotation = () => {
-    const note =
-      {
-        key: generateNoteKey(self.id, line.id),
-        lineId: line.id,
-        text: draftAnnotation,
-        userId: self.id,
-        user: users.filter(y => y.id == self.id)[0]
-      } as Note
-
     return (
-      <NoteComponent key={note.key} note={note} type={NoteType.Yours} onNoteChange={addOrUpdateAnnotation} />
-
+      <NoteComponent
+        lineId={line.id}
+        userId={self.id}
+        type={NoteType.Yours} />
     );
   };
 
@@ -183,8 +155,3 @@ export function Line(props: LineProps) {
     </div>
   );
 }
-
-function generateNoteKey(userId: string, lineId: string): string {
-  return "note-line" + lineId + "-by" + userId;
-}
-

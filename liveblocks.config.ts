@@ -1,4 +1,4 @@
-import { createClient, LiveList, LiveMap } from "@liveblocks/client";
+import { createClient, LiveList, LiveMap, LiveObject } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
 import Router from "next/router";
 import { User } from "./types";
@@ -65,7 +65,7 @@ type Storage = {
   characters: LiveList<CharacterStorage>
   sections: LiveList<SectionStorage>
   lines: LiveList<LineStorage>
-  annotations: LiveList<NoteStorage>
+  annotations: LiveMap<string, NoteStorage>
 };
 
 export type UserInfo = Pick<User, "name" | "avatar" | "color">;
