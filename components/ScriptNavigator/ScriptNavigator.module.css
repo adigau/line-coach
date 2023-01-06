@@ -9,31 +9,6 @@
     font-weight: bold;
 }
 
-.sectionLink {
-    position: relative;
-}
-
-.sectionLinkIconContainer {
-    position: absolute;
-    left: 0px;
-}
-
-.sectionLinkIcon {
-    position: absolute;
-    left: -18px;
-    top: 9px;
-    height: 14px;
-    width: 14px;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.sectionLink:hover .sectionLinkIcon {
-    opacity: 1;
-    transition: opacity 0.3s;
-
-}
-
 
 
 

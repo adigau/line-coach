@@ -133,33 +133,27 @@ export function ScriptNavigator({
 
     return <div>
         <div className={styles.sectionHeaderContainer}>
-            <div><LinkButton href="#">Previous</LinkButton></div>
+            <div><LinkButton variant="secondary" href="/script/bigbangtheorys01e01?scene=s01e01_scene_10">Previous</LinkButton></div>
             <h2 className={styles.sectionName}>
-                <a className={styles.sectionLink} href={"#" + sections[activeSectionIndex].href}>
-                    <span className={styles.sectionLinkIconContainer}>
-                        <span className={styles.sectionLinkIcon}>
-                            <LinkIcon />
-                        </span>
-                    </span>
-                    <Select
-                        aboveOverlay
-                        name="sectionId"
-                        className={styles.sectionSelect}
-                        items={sections.map((section) => ({
-                            value: section.id,
-                            title: section.displayName,
-                        }))}
-                        initialValue={sections[activeSectionIndex].id}
-                        placeholder="Choose a section…"
-                        onChange={(value) => {
-                            changeScene(value);
-                        }}
-                        required
-                    />
-                    {displayPresenceIndicatorSection()}
-                </a>
+                <Select
+                    aboveOverlay
+                    name="sectionId"
+                    className={styles.sectionSelect}
+                    items={sections.map((section) => ({
+                        value: section.id,
+                        title: section.displayName,
+                    }))}
+                    initialValue={sections[activeSectionIndex].id}
+                    placeholder="Choose a section…"
+                    onChange={(value) => {
+                        setActiveSectionIndex(sections.findIndex(x => x.id == value));
+                        changeScene(value);
+                    }}
+                    required
+                />
+                {displayPresenceIndicatorSection()}
             </h2>
-            <div><LinkButton href="#">Next</LinkButton></div>
+            <div><LinkButton variant="secondary" href="#">Next</LinkButton></div>
         </div>
         {renderActiveSection(sections)}
     </div>
