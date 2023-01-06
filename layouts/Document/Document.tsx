@@ -8,10 +8,10 @@ import { User } from "../../types";
 import { ScriptType, Section, Character, Line } from "../../types/script";
 import { Spinner } from "../../primitives/Spinner";
 import { Sidebar } from "../../components/Sidebar";
-import { Script } from "../../components/Script";
 import { useRouter } from "next/router";
 import Head from 'next/head'
 import { Document } from "../../types";
+import { ScriptNavigator } from "../../components/ScriptNavigator";
 
 interface Props extends ComponentProps<"div"> {
   header: ReactNode;
@@ -68,7 +68,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
       const userToSections: SectionSelectionStorage =
       {
         userId: currentUser.id,
-        hiddenSectionIds: data.sections.filter(c => !c.isDisplayed).map(c => c.id)
+        hiddenSectionIds: data.sections.map(c => c.id)
       }
       addOrUpdateSectionSelection(userToSections)
     }
@@ -94,7 +94,6 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
 
         const sectionsEnriched = sections.map(x => (
           {
-            isDisplayed: getIsSectionDisplayedFromStorage(sectionSelections, x.id),
             href: "section" + x.id,
             lines: lines.filter(y => y.sectionId == x.id)
               .map(x => (
@@ -191,7 +190,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
             />
           </aside>
           <main className={styles.main}>
-            <Script
+            <ScriptNavigator
               script={script}
               cast={cast}
               searchTerm={searchTerm}
@@ -214,16 +213,6 @@ function getIsCharacterHighlightedFromStorage(
   return (
     characterSelections != null &&
     characterSelections.characterIds.some((x) => x == characterId)
-  )
-}
-
-function getIsSectionDisplayedFromStorage(
-  sectionSelections: SectionSelectionStorage | undefined,
-  sectionId: string
-): boolean {
-  return !(
-    sectionSelections != null &&
-    sectionSelections.hiddenSectionIds.some((x) => x == sectionId)
   )
 }
 

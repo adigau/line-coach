@@ -82,7 +82,7 @@ export function ScriptNavigator({
             .filter((x) => x.lines.length > 0);
 
         return (<SectionComponent
-            sections={[sectionsToDisplay[activeSectionIndex]]}
+            section={sectionsToDisplay[activeSectionIndex]}
             cast={cast}
             isHiddenLines={isHiddenLines}
             isAnnotationMode={isAnnotationMode}

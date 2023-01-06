@@ -125,7 +125,7 @@ export function Line(props: LineProps) {
         )}
       >
         {renderOtherAnnotation(
-          annotations.filter(x => x.userId != self.id),
+          annotations?.filter(x => x.userId != self.id),
           isAnnotationModeOnlyMine
         )}
         {renderYourAnnotation()}

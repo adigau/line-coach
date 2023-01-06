@@ -47,7 +47,7 @@ function renderDataCharacter(character: FlattenedCharacter) {
 export function DataWidget(props: DataWidgetProps) {
     const { script, cast } = props;
 
-    const sections = script.sections.filter(s => s.isDisplayed)
+    const sections = script.sections
     const flattenedListOfLines: FlattenedLine[] = []
     const flattenedListOfCharacters: FlattenedCharacter[] = []
 
