@@ -13,9 +13,11 @@ import { CharacterSelectionStorage } from "../../types/storage";
 import { shallow } from "@liveblocks/client";
 import { LinkButton } from "../../primitives/Button";
 import { Select } from "../../primitives/Select";
+import Router, { useRouter } from "next/router";
 
 type ScriptNavigatorProps = {
     script: ScriptType;
+    scene?: string;
     cast: Character[];
     users: Omit<User, "color">[];
     searchTerm: string;
@@ -28,6 +30,7 @@ export function ScriptNavigator({
     script,
     searchTerm,
     cast,
+    scene,
     isHiddenLines,
     isAnnotationMode,
     isAnnotationModeOnlyMine }: ScriptNavigatorProps) {
@@ -38,8 +41,11 @@ export function ScriptNavigator({
         () => (self ? [self, ...others] : others),
         [self, others]
     );
+    const router = useRouter()
 
-    const [activeSectionIndex, setActiveSectionIndex] = useState<number>(0)
+    const index = script.sections.findIndex(x => x.id == scene)
+
+    const [activeSectionIndex, setActiveSectionIndex] = useState<number>(index < 0 ? 0 : index)
     const [previousSectionIndex, setPreviousSectionIndex] = useState<number | undefined>(script.sections[activeSectionIndex - 1] != null ? activeSectionIndex - 1 : undefined)
     const [nextSectionIndex, setNextSectionIndex] = useState<number | undefined>(script.sections[activeSectionIndex + 1] != null ? activeSectionIndex + 1 : undefined)
 
@@ -122,6 +128,11 @@ export function ScriptNavigator({
         return onlineUsers != null && onlineUsers.length > 0
     }
 
+    function changeScene(value: string) {
+        router.replace("/script/bigbangtheorys01e01?scene=" + value)
+        router.reload()
+    }
+
     return <div>
         <div className={styles.sectionHeaderContainer}>
             <div><LinkButton href="#">Previous</LinkButton></div>
@@ -142,7 +153,9 @@ export function ScriptNavigator({
                         }))}
                         initialValue={script.sections[activeSectionIndex].id}
                         placeholder="Choose a section…"
-                        // onChange={}
+                        onChange={(value) => {
+                            changeScene(value);
+                        }}
                         required
                     />
                     {displayPresenceIndicatorSection()}

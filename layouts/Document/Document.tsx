@@ -15,12 +15,13 @@ import { ScriptNavigator } from "../../components/ScriptNavigator";
 
 interface Props extends ComponentProps<"div"> {
   header: ReactNode;
+  scene?: string;
   isOpen: boolean;
   roomDocument?: Document;
 }
 
 export const DocumentLayout = forwardRef<HTMLElement, Props>(
-  ({ header, isOpen, roomDocument, className, ...props }) => {
+  ({ header, isOpen, roomDocument, className, scene, ...props }) => {
 
     //////// Next - Router
     const { asPath } = useRouter();
@@ -193,6 +194,7 @@ export const DocumentLayout = forwardRef<HTMLElement, Props>(
             <ScriptNavigator
               script={script}
               cast={cast}
+              scene={scene}
               searchTerm={searchTerm}
               users={allUsers}
               isHiddenLines={isHiddenLines}

@@ -23,7 +23,7 @@ export default function ScriptDocumentView({
   initialError,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
-  const { id, error: queryError } = router.query;
+  const { id, scene, error: queryError } = router.query;
   const [document, setDocument] = useState<Document | null>(initialDocument);
   const [error, setError] = useState<ErrorData | null>(initialError);
 
@@ -83,7 +83,19 @@ export default function ScriptDocumentView({
       initialStorage={initialStorage}
     >
       <ClientSideSuspense fallback={<Spinner />}>
-        {() => <DocumentLayout isOpen={isMenuOpen} roomDocument={document} header={<DocumentHeader isOpen={isMenuOpen} onMenuClick={handleMenuClick} document={document} onDocumentRename={updateName} />} />}
+        {() =>
+          <DocumentLayout
+            isOpen={isMenuOpen}
+            roomDocument={document}
+            scene={scene as string}
+            header={
+              <DocumentHeader
+                isOpen={isMenuOpen}
+                onMenuClick={handleMenuClick}
+                document={document}
+                onDocumentRename={updateName} />}
+          />
+        }
       </ClientSideSuspense>
     </RoomProvider>
   );
