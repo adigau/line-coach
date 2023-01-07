@@ -9,8 +9,9 @@
     font-weight: bold;
 }
 
-
-
+h2 .sectionSelect {
+    font-size: larger;
+}
 
 @media print {
     .separatorContainer {

@@ -143,7 +143,7 @@ export function Practice({ isOpen, roomDocument, className, scene, ...props }: P
         }
       }
     }
-  }, [sections, characters, asPath, hash]);
+  }, [sections, characters, asPath, hash, scene]);
 
   if (sections == null || characters == null) {
     return (<Spinner />)
