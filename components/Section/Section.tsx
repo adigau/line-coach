@@ -8,7 +8,7 @@ import {
 } from "../../types/script";
 
 type SectionProps = {
-    section: Section
+    section: Section | undefined
     cast: Character[];
     isHiddenLines: boolean;
     isAnnotationMode: boolean;
@@ -38,9 +38,9 @@ export function Section({
 
     return (
         <div>
-            <div className={styles.section} id={section.href} key={section.id}>
+            <div className={styles.section} id={section?.href} key={section?.id}>
                 <ul className={styles.linesul}>
-                    {section.lines.map((line) => renderLine(line))}
+                    {section?.lines.map((line) => renderLine(line))}
                 </ul>
             </div>
         </div>

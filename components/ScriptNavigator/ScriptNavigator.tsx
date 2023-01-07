@@ -44,12 +44,25 @@ export function ScriptNavigator({
     );
     const router = useRouter()
 
-    const index = sections.findIndex(x => x.id == scene)
+    const [sceneId, setSceneId] = useState<string>(scene ?? sections[0].id)
 
-    const [activeSectionIndex, setActiveSectionIndex] = useState<number>(index < 0 ? 0 : index)
-    const [previousSectionIndex, setPreviousSectionIndex] = useState<number | undefined>(sections[activeSectionIndex - 1] != null ? activeSectionIndex - 1 : undefined)
-    const [nextSectionIndex, setNextSectionIndex] = useState<number | undefined>(sections[activeSectionIndex + 1] != null ? activeSectionIndex + 1 : undefined)
+    const [activeSection, setActiveSection] = useState<Section>()
+    const [previousSection, setPreviousSection] = useState<Section>()
+    const [nextSection, setNextSection] = useState<Section>()
 
+    useEffect(() => {
+        if (sections == null || sections.length <= 0 || sceneId == null) {
+            setActiveSection(undefined)
+            setPreviousSection(undefined)
+            setNextSection(undefined)
+        }
+        const activeIndex = sections.findIndex(x => x.id == sceneId)
+
+        setActiveSection(sections[activeIndex])
+        setPreviousSection(sections[activeIndex - 1])
+        setNextSection(sections[activeIndex + 1])
+
+    }, [sceneId])
 
     const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
         root => Array.from(root.characterSelections.values()).filter((x) => users.some(y => y.id == x.userId)),
@@ -77,19 +90,9 @@ export function ScriptNavigator({
         fetchData();
     }, [characters, othersCharacterSelections, others, users])
 
-    const renderActiveSection = (sections: Section[]) => {
-        const sectionsToDisplay = sections
-            .map((element) => {
-                return {
-                    ...element,
-                    lines: element.lines.filter((subElement) => subElement.text.toLowerCase().includes(searchTerm.toLowerCase())
-                    ),
-                };
-            })
-            .filter((x) => x.lines.length > 0);
-
+    const renderActiveSection = () => {
         return (<SectionComponent
-            section={sectionsToDisplay[activeSectionIndex]}
+            section={activeSection}
             cast={characters}
             isHiddenLines={isHiddenLines}
             isAnnotationMode={isAnnotationMode}
@@ -98,12 +101,13 @@ export function ScriptNavigator({
     };
 
     const displayPresenceIndicatorSection = () => {
-        if (charactersToWatchers == null)
+        if (charactersToWatchers == null || activeSection == null)
             return
 
-        const allCharactersInThatSection: { characterId: string, displayName: string }[] = sections[activeSectionIndex].lines
+        const allCharactersInThatSection: { characterId: string, displayName: string }[] = activeSection?.lines
             .flatMap(x => { return { characterId: x.characterId as string, displayName: x.character.displayName as string } })
-            .filter((value, index, self) => onlyUniqueCharacterIds(value, index, self))
+            .filter((value, index, self) => onlyUniqueCharacterIds(value, index, self));
+
         const isSectionFullOfWatchers = allCharactersInThatSection.every(x => isCharacterOnline(x.characterId))
 
         if (isSectionFullOfWatchers == null || !isSectionFullOfWatchers)
@@ -130,7 +134,7 @@ export function ScriptNavigator({
     }
 
     function changeScene(value: string) {
-        setActiveSectionIndex(sections.findIndex(x => x.id == value));
+        setSceneId(value);
         router.push(getSceneUrl(value))
     }
 
@@ -140,19 +144,19 @@ export function ScriptNavigator({
     }
 
     function goToPreviousSection(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-        if (previousSectionIndex == null || previousSectionIndex < 0)
+        if (previousSection == null)
             return;
-        changeScene(sections[previousSectionIndex].id)
+        changeScene(previousSection.id)
     }
     function goToNextSection(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-        if (nextSectionIndex == null || nextSectionIndex < 0)
+        if (nextSection == null)
             return;
-        changeScene(sections[nextSectionIndex].id)
+        changeScene(nextSection.id)
     }
 
-    return <div>
+    return <>
         <div className={styles.sectionHeaderContainer}>
-            <Button aria-disabled={previousSectionIndex != undefined} onClick={(event) => goToPreviousSection(event)} variant="secondary">Previous</Button>
+            <Button aria-disabled={previousSection == null} onClick={(event) => goToPreviousSection(event)} variant="secondary">Previous</Button>
             <h2 className={styles.sectionName}>
                 <Select
                     aboveOverlay
@@ -162,16 +166,16 @@ export function ScriptNavigator({
                         value: section.id,
                         title: section.displayName,
                     }))}
-                    initialValue={sections[activeSectionIndex].id}
+                    initialValue={sceneId}
                     placeholder="Choose a section…"
                     onChange={(value) => { changeScene(value) }}
                     required
                 />
                 {displayPresenceIndicatorSection()}
             </h2>
-            <Button aria-disabled={nextSectionIndex != undefined} onClick={(event) => goToNextSection(event)} variant="secondary">Next</Button>
+            <Button aria-disabled={nextSection == null} onClick={(event) => goToNextSection(event)} variant="secondary">Next</Button>
         </div>
-        {renderActiveSection(sections)}
-    </div >
+        {renderActiveSection()}
+    </>
 }
 
