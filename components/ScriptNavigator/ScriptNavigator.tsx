@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
     Character,
     Section,
@@ -162,20 +162,29 @@ export function ScriptNavigator({
         return SCENE_URL("script", room.id, value)
     }
 
-    function goToPreviousSection(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+    function goToPreviousSection(): void {
         if (previousSection == null)
             return;
         changeScene(previousSection.id)
     }
-    function goToNextSection(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+    function goToNextSection(): void {
         if (nextSection == null)
             return;
         changeScene(nextSection.id)
     }
 
-    return <>
+    useEffect(() => {
+        window.addEventListener('keyup', (event) => {
+            if (event.key == "ArrowRight")
+                goToNextSection()
+            else if (event.key == "ArrowLeft")
+                goToPreviousSection()
+        })
+    }, [nextSection, previousSection, activeSection, sceneId]);
+
+    return <div>
         <div className={styles.sectionHeaderContainer}>
-            <Button disabled={previousSection == null} onClick={(event) => goToPreviousSection(event)} variant="secondary">Previous</Button>
+            <Button disabled={previousSection == null} onClick={goToPreviousSection} variant="secondary">⏮️ Previous</Button>
             <h2 className={styles.sectionName}>
                 <Select
                     aboveOverlay
@@ -192,9 +201,9 @@ export function ScriptNavigator({
                     required
                 />
             </h2>
-            <Button disabled={nextSection == null} onClick={(event) => goToNextSection(event)} variant="secondary">Next</Button>
+            <Button disabled={nextSection == null} onClick={goToNextSection} variant="secondary">Next ⏭️</Button>
         </div>
         {renderActiveSection()}
-    </>
+    </div>
 }
 
