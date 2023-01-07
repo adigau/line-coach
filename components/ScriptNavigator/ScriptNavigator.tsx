@@ -167,6 +167,7 @@ export function ScriptNavigator({
                         title: section.displayName,
                     }))}
                     initialValue={sceneId}
+                    value={sceneId}
                     placeholder="Choose a section…"
                     onChange={(value) => { changeScene(value) }}
                     required
