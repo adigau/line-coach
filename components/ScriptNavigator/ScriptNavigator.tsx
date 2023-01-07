@@ -104,26 +104,42 @@ export function ScriptNavigator({
         );
     };
 
-    const displayPresenceIndicatorSection = () => {
-        if (charactersToWatchers == null || activeSection == null)
-            return
+    function isAllPresencePerSection(sectionId: string): boolean {
+        if (sections == null)
+            return false;
 
-        const allCharactersInThatSection: { characterId: string, displayName: string }[] = activeSection?.lines
-            .flatMap(x => { return { characterId: x.characterId as string, displayName: x.character.displayName as string } })
+        const section = sections.find(x => x.id == sectionId);
+
+        if (section == null)
+            return false;
+
+        const allCharactersInThatSection: { characterId: string; displayName: string; }[] = section.lines
+            .flatMap(x => { return { characterId: x.characterId as string, displayName: x.character.displayName as string }; })
             .filter((value, index, self) => onlyUniqueCharacterIds(value, index, self));
 
-        const isSectionFullOfWatchers = allCharactersInThatSection.every(x => isCharacterOnline(x.characterId))
+        const isSectionFullOfWatchers = allCharactersInThatSection.every(x => isCharacterOnline(x.characterId));
 
         if (isSectionFullOfWatchers == null || !isSectionFullOfWatchers)
-            return
+            return false;
 
-        const title = allCharactersInThatSection.map(x => x.displayName).join(", ")
+        else
+            return true;
+    }
 
-        return (
-            <div className={styles.presenceIndicatorContainer} title={title}>
-                <div className={styles.presenceIndicator}>&nbsp;</div>
-            </div>
-        )
+    function isAssignedPerSection(sectionId: string): boolean {
+        if (charactersToWatchers == null || sections == null)
+            return false;
+
+        const section = sections.find(x => x.id == sectionId);
+
+        if (section == null)
+            return false;
+
+        const allCharactersAssignedInThatSection: { characterId: string; displayName: string; }[] = section.lines
+            .flatMap(x => { return { characterId: x.characterId as string, displayName: x.character.displayName as string, isAssigned: x.character.isHighlighted }; })
+            .filter(x => x.isAssigned)
+
+        return allCharactersAssignedInThatSection.length > 0
     }
 
     function onlyUniqueCharacterIds(value: { characterId: string, displayName: string }, index: number, self: { characterId: string, displayName: string }[]) {
@@ -167,7 +183,7 @@ export function ScriptNavigator({
                     className={styles.sectionSelect}
                     items={sections.map((section) => ({
                         value: section.id,
-                        title: section.displayName,
+                        title: (isAssignedPerSection(section.id) ? "👉 " : "") + section.displayName + (isAllPresencePerSection(section.id) ? " 🟢" : ""),
                     }))}
                     initialValue={sceneId}
                     value={sceneId}
@@ -175,7 +191,6 @@ export function ScriptNavigator({
                     onChange={(value) => { changeScene(value) }}
                     required
                 />
-                {displayPresenceIndicatorSection()}
             </h2>
             <Button disabled={nextSection == null} onClick={(event) => goToNextSection(event)} variant="secondary">Next</Button>
         </div>
