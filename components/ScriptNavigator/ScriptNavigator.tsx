@@ -44,7 +44,14 @@ export function ScriptNavigator({
     );
     const router = useRouter()
 
-    const [sceneId, setSceneId] = useState<string>(scene ?? sections[0].id)
+    const [sceneId, setSceneId] = useState<string>(initSceneId())
+
+    function initSceneId(): string {
+        if (scene == null || sections.find(x => x.id == scene) == null)
+            return sections[0].id
+        else
+            return scene
+    }
 
     const [activeSection, setActiveSection] = useState<Section>()
     const [previousSection, setPreviousSection] = useState<Section>()
@@ -52,9 +59,7 @@ export function ScriptNavigator({
 
     useEffect(() => {
         if (sections == null || sections.length <= 0 || sceneId == null) {
-            setActiveSection(undefined)
-            setPreviousSection(undefined)
-            setNextSection(undefined)
+            return;
         }
         const activeIndex = sections.findIndex(x => x.id == sceneId)
 
