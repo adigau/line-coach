@@ -1,19 +1,17 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
     Character,
-    ScriptType,
     Section,
 } from "../../types/script";
 import { User } from "../../types";
 import { Section as SectionComponent } from "../Section";
 import styles from "./ScriptNavigator.module.css";
-import { LinkIcon } from "../../icons";
 import { useOthers, useRoom, useSelf, useStorage } from "../../liveblocks.config";
 import { CharacterSelectionStorage } from "../../types/storage";
 import { shallow } from "@liveblocks/client";
-import { Button, LinkButton } from "../../primitives/Button";
+import { Button } from "../../primitives/Button";
 import { Select } from "../../primitives/Select";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { SCENE_URL } from "../../constants";
 
 type ScriptNavigatorProps = {
@@ -47,8 +45,9 @@ export function ScriptNavigator({
     const [sceneId, setSceneId] = useState<string>(initSceneId())
 
     function initSceneId(): string {
-        if (scene == null || sections.find(x => x.id == scene) == null)
+        if (scene == null || sections.find(x => x.id == scene) == null) {
             return sections[0].id
+        }
         else
             return scene
     }
@@ -144,8 +143,7 @@ export function ScriptNavigator({
     }
 
     function getSceneUrl(value: string) {
-        const url = SCENE_URL("script", room.id, value)
-        return url;
+        return SCENE_URL("script", room.id, value)
     }
 
     function goToPreviousSection(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
@@ -161,7 +159,7 @@ export function ScriptNavigator({
 
     return <>
         <div className={styles.sectionHeaderContainer}>
-            <Button aria-disabled={previousSection == null} onClick={(event) => goToPreviousSection(event)} variant="secondary">Previous</Button>
+            <Button disabled={previousSection == null} onClick={(event) => goToPreviousSection(event)} variant="secondary">Previous</Button>
             <h2 className={styles.sectionName}>
                 <Select
                     aboveOverlay
@@ -179,7 +177,7 @@ export function ScriptNavigator({
                 />
                 {displayPresenceIndicatorSection()}
             </h2>
-            <Button aria-disabled={nextSection == null} onClick={(event) => goToNextSection(event)} variant="secondary">Next</Button>
+            <Button disabled={nextSection == null} onClick={(event) => goToNextSection(event)} variant="secondary">Next</Button>
         </div>
         {renderActiveSection()}
     </>
