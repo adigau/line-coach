@@ -16,7 +16,7 @@ import { SCENE_URL } from "../../constants";
 
 type ScriptNavigatorProps = {
     sections: Section[];
-    scene?: string;
+    sectionIdUrl?: string;
     characters: Character[];
     searchTerm: string;
     isHiddenLines: boolean;
@@ -28,7 +28,7 @@ export function ScriptNavigator({
     sections,
     searchTerm,
     characters,
-    scene,
+    sectionIdUrl,
     isHiddenLines,
     isAnnotationMode,
     isAnnotationModeOnlyMine }: ScriptNavigatorProps) {
@@ -45,11 +45,11 @@ export function ScriptNavigator({
     const [sceneId, setSceneId] = useState<string>(initSceneId())
 
     function initSceneId(): string {
-        if (scene == null || sections.find(x => x.id == scene) == null) {
+        if (sectionIdUrl == null || sections.find(x => x.id == sectionIdUrl) == null) {
             return sections[0].id
         }
         else
-            return scene
+            return sectionIdUrl
     }
 
     const [activeSection, setActiveSection] = useState<Section>()
@@ -67,6 +67,15 @@ export function ScriptNavigator({
         setNextSection(sections[activeIndex + 1])
 
     }, [sceneId])
+
+    useEffect(() => {
+        window.addEventListener('keyup', (event) => {
+            if (event.key == "ArrowRight")
+                goToNextSection()
+            else if (event.key == "ArrowLeft")
+                goToPreviousSection()
+        })
+    }, [nextSection, previousSection, activeSection, sceneId]);
 
     const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
         root => Array.from(root.characterSelections.values()).filter((x) => users.some(y => y.id == x.userId)),
@@ -173,14 +182,31 @@ export function ScriptNavigator({
         changeScene(nextSection.id)
     }
 
+
+    //Support for ScrollTo anchor
+    //////// Next - Router
+    const { asPath } = useRouter();
+    const scrolledRef = useRef(false);
+    const hash = asPath.split('#')[1];
+    const hashRef = useRef(hash);
     useEffect(() => {
-        window.addEventListener('keyup', (event) => {
-            if (event.key == "ArrowRight")
-                goToNextSection()
-            else if (event.key == "ArrowLeft")
-                goToPreviousSection()
-        })
-    }, [nextSection, previousSection, activeSection, sceneId]);
+        if (hash) {
+            // We want to reset if the hash has changed
+            if (hashRef.current !== hash) {
+                hashRef.current = hash;
+                scrolledRef.current = false;
+            }
+            // only attempt to scroll if we haven't yet (this could have just reset above if hash changed)
+            if (!scrolledRef.current) {
+                const id = hash.replace('#', '');
+                const element = document.getElementById(id);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                    scrolledRef.current = true;
+                }
+            }
+        }
+    }, [activeSection, hash]);
 
     return <div>
         <div className={styles.sectionHeaderContainer}>

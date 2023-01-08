@@ -22,7 +22,7 @@ export default function ScriptDocumentView({
   initialError,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
-  const { id, scene, error: queryError } = router.query;
+  const { id, scene: sectionIdUrl, error: queryError } = router.query;
   const [document, setDocument] = useState<Document | null>(initialDocument);
   const [error, setError] = useState<ErrorData | null>(initialError);
 
@@ -88,7 +88,7 @@ export default function ScriptDocumentView({
             document={document}
             onDocumentRename={updateName} />} >
         <DocumentComponent
-          scene={scene as string}
+          sectionIdUrl={sectionIdUrl as string}
           roomDocument={document}
           isOpen={isMenuOpen} />
       </DocumentLayout>

@@ -2,10 +2,8 @@ import { ComponentProps, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import styles from "./Document.module.css";
 import { CharacterSelectionStorage, OptionsSelectionStorage } from "../../types/storage";
-import { users } from "../../data/users";
-import { useMutation, useRoom, useSelf, useStorage } from "../../liveblocks.config";
-import { User } from "../../types";
-import { ScriptType, Section, Character, Line } from "../../types/script";
+import { useMutation, useSelf, useStorage } from "../../liveblocks.config";
+import { Section, Character, Line } from "../../types/script";
 import { Spinner } from "../../primitives/Spinner";
 import { Sidebar } from "../Sidebar";
 import { useRouter } from "next/router";
@@ -16,7 +14,7 @@ import { useSession } from "next-auth/react";
 import { ClientSideSuspense } from "@liveblocks/react";
 
 interface Props extends ComponentProps<"div"> {
-  scene?: string;
+  sectionIdUrl?: string;
   isOpen: boolean;
   roomDocument?: Document;
 }
@@ -39,9 +37,7 @@ export function Document({ ...props }: Props) {
   );
 }
 
-export function Practice({ isOpen, roomDocument, className, scene, ...props }: Props) {
-  //////// Next - Router
-  const { asPath } = useRouter();
+export function Practice({ isOpen, roomDocument, className, sectionIdUrl, ...props }: Props) {
 
   //////// Liveblocks - Presence
   const self = useSelf()
@@ -67,6 +63,7 @@ export function Practice({ isOpen, roomDocument, className, scene, ...props }: P
   const [isAnnotationMode, setIsAnnotationMode] = useState(optionsSelections != null ? optionsSelections.isAnnotationMode : false)
   const [isAnnotationModeOnlyMine, setIsAnnotationModeOnlyMine] = useState(optionsSelections != null ? optionsSelections.isAnnotationModeOnlyMine : true)
   const [searchTerm, setSearchTerm] = useState<string>("")
+  const [activeSectionId] = useState<string>(sectionIdUrl ?? "")
 
   //////// Events
   const onSearchTermChanged = (e: React.ChangeEvent<HTMLInputElement>) => { setSearchTerm(e.target.value) }
@@ -122,29 +119,6 @@ export function Practice({ isOpen, roomDocument, className, scene, ...props }: P
     loadScript()
   }, [])
 
-  //Support for ScrollTo anchor
-  const scrolledRef = useRef(false);
-  const hash = asPath.split('#')[1];
-  const hashRef = useRef(hash);
-  useEffect(() => {
-    if (hash) {
-      // We want to reset if the hash has changed
-      if (hashRef.current !== hash) {
-        hashRef.current = hash;
-        scrolledRef.current = false;
-      }
-      // only attempt to scroll if we haven't yet (this could have just reset above if hash changed)
-      if (!scrolledRef.current) {
-        const id = hash.replace('#', '');
-        const element = document.getElementById(id);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-          scrolledRef.current = true;
-        }
-      }
-    }
-  }, [sections, characters, asPath, hash, scene]);
-
   if (sections == null || characters == null) {
     return (<Spinner />)
   }
@@ -174,7 +148,7 @@ export function Practice({ isOpen, roomDocument, className, scene, ...props }: P
           <ScriptNavigator
             sections={sections}
             characters={characters}
-            scene={scene}
+            sectionIdUrl={activeSectionId}
             searchTerm={searchTerm}
             isHiddenLines={isHiddenLines}
             isAnnotationMode={isAnnotationMode}
