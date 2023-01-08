@@ -6,7 +6,6 @@ import { useMutation, useSelf, useStorage } from "../../liveblocks.config";
 import { Section, Character, Line } from "../../types/script";
 import { Spinner } from "../../primitives/Spinner";
 import { Sidebar } from "../Sidebar";
-import { useRouter } from "next/router";
 import Head from 'next/head'
 import { Document } from "../../types";
 import { ScriptNavigator } from "../ScriptNavigator";

@@ -13,7 +13,7 @@ export default function App({
   return (
     <>
       <Head>
-        <title>Starter Kit</title>
+        <title>Line Coach: the actor's best friend</title>
         <link href="/favicon.svg" rel="icon" type="image/svg" />
       </Head>
       <TooltipProvider>
