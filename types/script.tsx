@@ -17,7 +17,6 @@ export type SectionStorage = {
     displayName: string;
 }
 export interface Section extends SectionStorage {
-    isDisplayed: boolean;
     lines: Line[];
     href: string;
 }

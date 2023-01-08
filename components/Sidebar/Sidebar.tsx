@@ -14,8 +14,7 @@ import { Checkbox } from '../../primitives/Checkbox';
 
 type SidebarProps = {
 
-    script: ScriptType,
-    scriptChanged: (data: ScriptType) => void,
+    sections: Section[],
     cast: Character[],
     castChanged: (data: Character[]) => void,
 
@@ -29,7 +28,7 @@ type SidebarProps = {
     isAnnotationModeOnlyMineChanged: (data: boolean) => void
 }
 
-export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, searchTermChanged, isHiddenLines, isHiddenLinesChanged, isAnnotationMode, isAnnotationModeChanged, isAnnotationModeOnlyMine, isAnnotationModeOnlyMineChanged }: SidebarProps) {
+export function Sidebar({ sections, cast, castChanged, searchTerm, searchTermChanged, isHiddenLines, isHiddenLinesChanged, isAnnotationMode, isAnnotationModeChanged, isAnnotationModeOnlyMine, isAnnotationModeOnlyMineChanged }: SidebarProps) {
 
     const self = useSelf()
     const others = useOthers()
@@ -74,14 +73,6 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
         newCast[castKey].isHighlighted = checked
         castChanged(newCast)
     }
-    const onHighlightSectionClick = (checked: boolean, value?: string) => {
-        const newSections: Section[] = script.sections.slice()
-        const sectionKey = newSections.findIndex((x) => x.id == value)
-        newSections[sectionKey].isDisplayed = checked
-        const newScript = { ...script }
-        newScript.sections = newSections
-        scriptChanged(newScript)
-    }
 
     function isCharacterOnline(characterId: string): boolean {
         if (charactersToWatchers == null)
@@ -116,7 +107,7 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
         if (charactersToWatchers == null)
             return
 
-        const allCharactersInThatSection: { characterId: string, displayName: string }[] = script.sections
+        const allCharactersInThatSection: { characterId: string, displayName: string }[] = sections
             .filter(x => x.id == sectionId)
             .flatMap(x => x.lines)
             .flatMap(x => { return { characterId: x.characterId as string, displayName: x.character.displayName as string } })
@@ -132,16 +123,6 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
             <div className={styles.presenceIndicatorContainer} title={title}>
                 <div className={styles.presenceIndicator}>&nbsp;</div>
             </div>
-        )
-    }
-
-    const renderSections = (section: Section) => {
-        return (
-            <li key={section.id}>
-                <Checkbox checked={section.isDisplayed} id={section.id} name={section.id} value={section.id}
-                    onValueChange={onHighlightSectionClick} initialValue={section.isDisplayed} label={section.displayName} />
-                {displayPresenceIndicatorSection(section.id)}
-            </li>
         )
     }
 
@@ -180,24 +161,6 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
                         </ul>
                     </Accordion.Content>
                 </Accordion.Item>
-                <Accordion.Item className={styles.AccordionItem} value="item-2">
-                    <Accordion.Header className={styles.AccordionHeader}>
-                        <Accordion.Trigger className={styles.AccordionTrigger}>
-                            <div className={styles.AccordionTriggerText}>Select sections</div>
-                            <div className={styles.AccordionTriggerInfo}>
-                                <div className={styles.AccordionTriggerInfoCount}>
-                                    ({script.sections.filter(x => x.isDisplayed).length}/{script.sections.length})
-                                </div>
-                                <ChevronDownIcon className={styles.AccordionChevron} aria-hidden />
-                            </div>
-                        </Accordion.Trigger>
-                    </Accordion.Header>
-                    <Accordion.Content className={clsx(styles.AccordionContent, styles.AccordionContentText)}>
-                        <ul>
-                            {script.sections.map(section => renderSections(section))}
-                        </ul>
-                    </Accordion.Content>
-                </Accordion.Item>
                 <Accordion.Item className={styles.AccordionItem} value="item-3">
                     <Accordion.Header className={styles.AccordionHeader}>
                         <Accordion.Trigger className={styles.AccordionTrigger}>
@@ -229,8 +192,8 @@ export function Sidebar({ script, scriptChanged, cast, castChanged, searchTerm, 
                     </Accordion.Header>
                     <Accordion.Content className={clsx(styles.AccordionContent, styles.AccordionContentText)}>
                         <DataWidget
-                            script={script}
-                            cast={cast}
+                            sections={sections}
+                            characters={cast}
                         />
                     </Accordion.Content>
                 </Accordion.Item>

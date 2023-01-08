@@ -1,0 +1,25 @@
+.sectionHeaderContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sectionName {
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+h2 .sectionSelect {
+    font-size: larger;
+}
+
+@media print {
+    .separatorContainer {
+        display: none;
+    }
+
+    .sectionName {
+        page-break-before: always;
+        text-align: center;
+    }
+}

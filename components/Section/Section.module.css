@@ -2,12 +2,6 @@
     padding-inline-start: 0px;
 }
 
-.sectionName {
-    font-size: 22px;
-    margin-bottom: 20px;
-    font-weight: bold;
-}
-
 .separatorContainer {
     display: flex;
     align-items: center;
@@ -20,17 +14,6 @@
     margin-bottom: 40px;
     height: 1px;
     width: 90%;
-}
-
-@media print {
-    .separatorContainer {
-        display: none;
-    }
-
-    .sectionName {
-        page-break-before: always;
-        text-align: center;
-    }
 }
 
 .presenceIndicatorContainer {
@@ -54,29 +37,4 @@
 .section {
     scroll-margin: 60px;
     scroll-behavior: smooth;
-}
-
-.sectionLink {
-    position: relative;
-}
-
-.sectionLinkIconContainer {
-    position: absolute;
-    left: 0px;
-}
-
-.sectionLinkIcon {
-    position: absolute;
-    left: -18px;
-    top: 9px;
-    height: 14px;
-    width: 14px;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.sectionLink:hover .sectionLinkIcon {
-    opacity: 1;
-    transition: opacity 0.3s;
-
 }

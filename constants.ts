@@ -9,3 +9,6 @@ export const DASHBOARD_GROUP_URL = (id: string) =>
 
 export const DOCUMENT_URL = (type: DocumentType, id: string) =>
   `/${type}/${id}`;
+
+export const SCENE_URL = (type: DocumentType, id: string, scene: string) =>
+  `/${type}/${id}?scene=${scene}`;

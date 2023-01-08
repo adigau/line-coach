@@ -1,5 +1,4 @@
 import { LiveList, LiveMap } from "@liveblocks/client";
-import { ClientSideSuspense } from "@liveblocks/react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { Session } from "next-auth";
 import { useRouter } from "next/router";
@@ -9,21 +8,21 @@ import {
   DocumentHeaderSkeleton,
 } from "../../components/Document";
 import { DocumentLayout } from "../../layouts/Document";
+import { Document as DocumentComponent } from "../../components/Document";
 import { ErrorLayout } from "../../layouts/Error";
 import { updateDocumentName } from "../../lib/client";
 import * as Server from "../../lib/server";
 import { Presence, RoomProvider } from "../../liveblocks.config";
-import { Spinner } from "../../primitives/Spinner";
 import { Document, ErrorData } from "../../types";
 import { CharacterStorage, LineStorage, SectionStorage } from "../../types/script";
-import { NoteStorage, CharacterSelectionStorage, OptionsSelectionStorage, SectionSelectionStorage } from "../../types/storage";
+import { NoteStorage, CharacterSelectionStorage, OptionsSelectionStorage } from "../../types/storage";
 
 export default function ScriptDocumentView({
   initialDocument,
   initialError,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
-  const { id, error: queryError } = router.query;
+  const { id, scene: sectionIdUrl, error: queryError } = router.query;
   const [document, setDocument] = useState<Document | null>(initialDocument);
   const [error, setError] = useState<ErrorData | null>(initialError);
 
@@ -63,17 +62,16 @@ export default function ScriptDocumentView({
   }
 
   if (!document) {
-    return <DocumentLayout isOpen={isMenuOpen} header={<DocumentHeaderSkeleton />} />;
+    return <DocumentLayout header={<DocumentHeaderSkeleton />} />;
   }
 
   const initialStorage = () => ({
     characters: new LiveList<CharacterStorage>([]),
     characterSelections: new LiveMap<string, CharacterSelectionStorage>([]),
     sections: new LiveList<SectionStorage>([]),
-    sectionSelections: new LiveMap<string, SectionSelectionStorage>([]),
     optionsSelections: new LiveMap<string, OptionsSelectionStorage>([]),
     lines: new LiveList<LineStorage>([]),
-    annotations: new LiveList<NoteStorage>([])
+    annotations: new LiveMap<string, NoteStorage>([])
   });
 
   return (
@@ -82,9 +80,18 @@ export default function ScriptDocumentView({
       initialPresence={{} as Presence}
       initialStorage={initialStorage}
     >
-      <ClientSideSuspense fallback={<Spinner />}>
-        {() => <DocumentLayout isOpen={isMenuOpen} roomDocument={document} header={<DocumentHeader isOpen={isMenuOpen} onMenuClick={handleMenuClick} document={document} onDocumentRename={updateName} />} />}
-      </ClientSideSuspense>
+      <DocumentLayout
+        header={
+          <DocumentHeader
+            isOpen={isMenuOpen}
+            onMenuClick={handleMenuClick}
+            document={document}
+            onDocumentRename={updateName} />} >
+        <DocumentComponent
+          sectionIdUrl={sectionIdUrl as string}
+          roomDocument={document}
+          isOpen={isMenuOpen} />
+      </DocumentLayout>
     </RoomProvider>
   );
 }
