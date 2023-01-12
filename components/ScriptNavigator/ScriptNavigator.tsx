@@ -70,10 +70,15 @@ export function ScriptNavigator({
 
     useEffect(() => {
         window.addEventListener('keyup', (event) => {
-            if (event.key == "ArrowRight")
+            if (document.activeElement?.nodeName == "TEXTAREA")
+                return;
+            console.log(document.activeElement)
+            if (event.key == "ArrowRight") {
                 goToNextSection()
-            else if (event.key == "ArrowLeft")
+            }
+            else if (event.key == "ArrowLeft") {
                 goToPreviousSection()
+            }
         })
     }, [nextSection, previousSection, activeSection, sceneId]);
 

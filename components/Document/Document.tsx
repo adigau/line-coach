@@ -6,7 +6,6 @@ import { useMutation, useSelf, useStorage } from "../../liveblocks.config";
 import { Section, Character, Line } from "../../types/script";
 import { Spinner } from "../../primitives/Spinner";
 import { Sidebar } from "../Sidebar";
-import { useRouter } from "next/router";
 import Head from 'next/head'
 import { Document } from "../../types";
 import { ScriptNavigator } from "../ScriptNavigator";
@@ -72,7 +71,6 @@ export function Practice({ isOpen, roomDocument, className, sectionIdUrl, ...pro
   const isAnnotationModeOnlyMineChanged = (data: boolean) => setIsAnnotationModeOnlyMine(data)
   const castChanged = (data: Character[]) => {
     setCharacters(data)
-
     const userToCharacters: CharacterSelectionStorage =
     {
       userId: self.id,
@@ -115,6 +113,10 @@ export function Practice({ isOpen, roomDocument, className, sectionIdUrl, ...pro
       isAnnotationModeOnlyMine: isAnnotationModeOnlyMine,
     }
     addOrUpdateOptionsSelection(optionsSelection)
+
+  }, [isHiddenLines, isAnnotationMode, isAnnotationModeOnlyMine])
+
+  useEffect(() => {
 
     loadScript()
   }, [])
