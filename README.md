@@ -43,7 +43,7 @@ _🎭 That's why in LineCoach, if other actors are logged in at the same time as
 
 # Features
 
-- Show data about your text: number of lines and words for each character
+- See data about a text, like the list of characters, and for each one of them the number of lines and words
 - Select your characters so that they visually stand-out
 - Hide your lines, so that you can practice without any clue, with the ability to temporarly show one that you have doubts about
 - For each line, you can take notes to help your next practice
@@ -51,3 +51,4 @@ _🎭 That's why in LineCoach, if other actors are logged in at the same time as
 - You can share a script with anyone at any time, or make it public if your partners don't have emails
 - When someone is online at the same time as you, you'll see a green dot next to their character name. IF everybody from a scene is online, the scene will display a green dot next to it.
 - If you want to practice with your partners, a session will start where you will see your partners' lines so that you can correct them in case of a mistake, and you won't see yours. If someone is missing from a scene, an artificial intelligence will read their lines
+- Print a text in the mode you chose (showing or not your lines, displaying or not the notes...)
