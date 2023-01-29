@@ -40,3 +40,14 @@ _🎭 This is why in LineCoach we have a feature that allows an actor to randoml
 Every actor has a different memory, and some remember a text better when they simply read it, when they recite it aloud, when they hear it or when they are in a group. Every actor should find the right technique in a learning tool.
 
 _🎭 That's why in LineCoach, if other actors are logged in at the same time as you, you will be informed and you can start a huddle with them to practice as a group._
+
+# Features
+
+- Show data about your text: number of lines and words for each character
+- Select your characters so that they visually stand-out
+- Hide your lines, so that you can practice without any clue, with the ability to temporarly show one that you have doubts about
+- For each line, you can take notes to help your next practice
+- (Soon!) At any time you can start a practice session, when lines from other characters will be read by artificial intelligence, and give you the right time to say yours. You can pause and resume at any time.
+- You can share a script with anyone at any time, or make it public if your partners don't have emails
+- When someone is online at the same time as you, you'll see a green dot next to their character name. IF everybody from a scene is online, the scene will display a green dot next to it.
+- If you want to practice with your partners, a session will start where you will see your partners' lines so that you can correct them in case of a mistake, and you won't see yours. If someone is missing from a scene, an artificial intelligence will read their lines
