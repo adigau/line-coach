@@ -7,7 +7,7 @@
 
 # LineCoach
 
-LineCoach is a tool designed to help actors memorize their lines more
+LineCoach helps actors memorize their lines more
 efficiently.
 
 Learning lines is a tedious task that can take a lot of time. Most actors hate
