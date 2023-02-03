@@ -1,3 +1,10 @@
+- [LineCoach](#linecoach)
+  - [Why](#why)
+    - [Current features](#current-features)
+    - [Roadmap](#roadmap)
+  - [Installation](#installation)
+  - [Contributing](#contributing)
+
 # LineCoach
 
 LineCoach is a tool designed to help actors memorize their lines more
@@ -11,16 +18,6 @@ the memorization process. You can work on your own or with your partners if
 they're online, making the learning process collaborative and human-centered.
 This makes LineCoach an essential tool for actors who want to focus on their
 craft and improve their performance.
-
-## Table of Contents
-
-- [LineCoach](#linecoach)
-  - [Table of Contents](#table-of-contents)
-  - [Why](#why)
-    - [Current features](#current-features)
-    - [Roadmap](#roadmap)
-  - [Installation](#installation)
-  - [Contributing](#contributing)
 
 ## Why
 
