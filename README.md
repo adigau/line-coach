@@ -1,54 +1,99 @@
-
 # LineCoach
 
-LineCoach is a tool designed to help actors memorize their lines more efficiently. 
+LineCoach is a tool designed to help actors memorize their lines more
+efficiently.
 
-Learning lines is a tedious task that can take a lot of time. Most actors hate that part and want to focus solely on the acting one, but with LineCoach, the process is quicker, easier and funnier. 
+Learning lines is a tedious task that can take a lot of time. Most actors hate
+that part and want to focus solely on the acting one. LineCoach make this
+quicker, easier and funnier. LineCoach uses advanced techniques to assist actors
+in remembering their lines, reducing the stress and frustration associated with
+the memorization process. You can work on your own or with your partners if
+they're online, making the learning process collaborative and human-centered.
+This makes LineCoach an essential tool for actors who want to focus on their
+craft and improve their performance.
 
-LineCoach uses advanced techniques to assist actors in remembering their lines, reducing the stress and frustration associated with the memorization process. 
+## Table of Contents
 
-You can work on your own or with your partners if they're online, making the learning process collaborative and human-centred.
+- [LineCoach](#linecoach)
+  - [Table of Contents](#table-of-contents)
+  - [Why](#why)
+    - [Current features](#current-features)
+    - [Roadmap](#roadmap)
+  - [Installation](#installation)
+  - [Contributing](#contributing)
 
-This makes LineCoach an essential tool for actors who want to focus on their craft and improve their performance.
+## Why
 
-# Philosophy
+> The gist of the matter is not in the text. The text will come of itself when I
+> feel the role.
 
-> The gist of the matter is not in the text. The text will come of itself when I feel the role.
+_Konstantin Stanislavski_ Learning a text is too complicated, and the experience
+for the actor needs to be fixed and updated.
 
-_Konstantin Stanislavski_
+The intense emotions and aesthetics that an actor offers on stage cannot be
+replaced by artificial intelligence. Still, technology can help the actor get
+closer to mastering their text to focus on the actual acting and genuine
+emotions.
 
+When a script is printed, it's easier to remember, but it won't be available on
+stage. An actor needs to be able to recite their lines in any situation, with
+any style, and continue them from any phrase. Everyone has a different memory;
+they need to find the proper technique and tool to learn the text.
 
-Learning a text is too complicated, the experience for the actor is broken and outdated. The strong emotions and aesthetics that an actor offers on stage cannot be replaced by artificial intelligence, but technology can help the actor to get closer and closer to mastering the text in order to concentrate on the play and the feeling.
+### Current features
 
-
-The first and most apparent problem with learning is that when we read a paper script, we can easily see the first few words of our line, giving an easy clue as to what we should say at that moment. Even if we can cleverly hide with our hand the line we are practicing, we can easily guess the size of it, helping us to remember whether it is the moment of the long monologue or the one where our character nods with an onomatopoeia.
-When the text is printed, our spatial memory comes on board and helps us remember what we are saying when we get to the bottom of page 3, or just before the start of scene 4 of Act II.
-This is all part of a normal process of our brain using techniques to remember. But the sheet will not be on stage on the day of the performance, so all these tricks will become useless, a convenient shortcut in our rehearsals will handicap us at the most opportune moment: the scene
-
-_🎭 This is why in LineCoach we can change the format of the text in order to lose the bearings we have acquired in our learning. This is also why we can hide our lines; once hidden, it is impossible to know the initial size of the line. But don't panic; if our memory fails us, we click a button to display it temporarily, validate what we say and continue practicing._
-
-A text should be known at the tip of one's fingers. An actor should be able to recite it while cooking or playing sports. An actor should be able to recite it with equal accuracy and precision by varying the style, for example, by singing it, declaiming it very slowly or very quickly, or reciting it with an exaggerated accent.
-
-_🎭 This is why in LineCoach we have a module that allows you to practice an entire scene by yourself. When you start a practice session, other people's lines will be read by artificial intelligence, and when it's time for your line, you'll have all the time in the world to make different variations to break the routine of the text._
-
-
-In the comfort of your bedroom or the peace and quiet of a rehearsal room, the actor will start over if he or she makes a mistake or if an external element has disturbed the session. But not on stage. On stage, anything can happen. An audience member can have a heart attack, the show will be paused, and they will have to start again 30 minutes later, out of context. An actor must know his lines inside out and be able to continue his lines from any phrase in another line or from his own.
-
-_🎭 This is why in LineCoach we have a feature that allows an actor to randomly prompt the last sentence of a line so that he continues from there. This game reinforces the memory and reassures the actor that he can handle events that may happen on stage._
-
-
-Every actor has a different memory, and some remember a text better when they simply read it, when they recite it aloud, when they hear it or when they are in a group. Every actor should find the right technique in a learning tool.
-
-_🎭 That's why in LineCoach, if other actors are logged in at the same time as you, you will be informed and you can start a huddle with them to practice as a group._
-
-# Features
-
-- See data about a text, like the list of characters, and for each one of them the number of lines and words
-- Select your characters so that they visually stand-out
-- Hide your lines, so that you can practice without any clue, with the ability to temporarly show one that you have doubts about
+- See data about a script, like the list of characters, and for each one of them
+  the number of lines and words
+- Select the characters you're impersonating so that they visually stand-out
+- Hide the lines of your characters, so that you can truly practice, with the
+  ability to temporarily show one that you have doubts about
 - For each line, you can take notes to help your next practice
-- _(Soon!)_ At any time you can start a practice session, when lines from other characters will be read by artificial intelligence, and give you the right time to say yours. You can pause and resume at any time.
-- _(Soon!)_ You can share a script with anyone at any time, or make it public if your partners don't have emails
-- When someone is online at the same time as you, you'll see a green dot next to their character name. IF everybody from a scene is online, the scene will display a green dot next to it.
-- _(Soon!)_ If you want to practice with your partners, a session will start where you will see your partners' lines so that you can correct them in case of a mistake, and you won't see yours. If someone is missing from a scene, an artificial intelligence will read their lines
-- Print a text in the mode you chose (showing or not your lines, displaying or not the notes...)
+- When someone is online at the same time as you, you'll see a green dot next to
+  their character name.
+- If everybody from a scene is online, it will display a green dot next to it.
+- Print a text in the mode you chose (showing or not your lines, displaying or
+  not the notes...)
+
+### Roadmap
+
+- At any time, you can start a practice session. Artificial intelligence will
+  read lines from other characters, and you'll have time to say yours. You can
+  pause and resume at any time.
+- You can share a script with anyone at any time, or make it public if your
+  partners don't have emails
+- You can start an audio huddle if you want to practice with your partners. You
+  will see your partners' lines, and they'll see yours. That way, you can
+  correct each other's and practice your lines. If someone is missing from a
+  scene, an artificial intelligence will read their lines
+
+## Installation
+
+- Install all dependencies with `npm install`
+- Create an account on [liveblocks.io](https://liveblocks.io/dashboard)
+- Copy your **secret** key from the
+  [dashboard](https://liveblocks.io/dashboard/apikeys)
+- Create an `.env.local` file and add your **secret** key as the
+  `LIVEBLOCKS_SECRET_KEY` environment variable
+- Run
+  [this Postman's collection of API](https://www.postman.com/linecoach/workspace/linecoach/overview)
+  to initialize your Liveblocks' storage with sample data (select the
+  `Localhost` environment, and don't forget to provide your
+  `LIVEBLOCKS_SECRET_KEY`)
+- Run `npm run dev` and go to [http://localhost:3000](http://localhost:3000)
+
+## Contributing
+
+LineCoach is currently only available on a desktop, and the vision is to
+integrate collaborative experiences with Liveblocks.io and voice-over
+technologies with Google's
+[Text-to-Speech client libraries](https://cloud.google.com/text-to-speech/docs/libraries).
+
+Here's where we need help:
+
+- Implement voice-over features
+- Implement a huddle feature
+- Porting LineCoach as a native app for both Android and iOS
+- Design those features with amazing UX/UI
+- Development, code refactoring, code review
+
+🙏

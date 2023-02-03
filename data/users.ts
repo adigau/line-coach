@@ -24,12 +24,6 @@ export const users: Omit<User, "color">[] = [
     groupIds: ["theatre.parenthese", "warner.bros", "the.old.vic"],
   },
   {
-    id: "alain.arthapignet",
-    name: "Alain Arthapignet",
-    avatar: "/images/alain.arthapignet.jpeg",
-    groupIds: ["theatre.parenthese", "warner.bros", "the.old.vic"],
-  },
-  {
     id: "ali.benarbia",
     name: "Ali Benarbia",
     avatar: "https://liveblocks.io/avatars/avatar-2.png",
