@@ -81,8 +81,8 @@ they need to find the proper technique and tool to learn the text.
 ## Contributing
 
 LineCoach is currently only available on a desktop, and the vision is to
-integrate collaborative experiences with Liveblocks.io and voice-over
-technologies with Google's
+integrate collaborative experiences with [Liveblocks](liveblocks.io) and
+voice-over technologies with Google's
 [Text-to-Speech client libraries](https://cloud.google.com/text-to-speech/docs/libraries).
 
 Here's where we need help:
