@@ -22,10 +22,10 @@ craft and improve their performance.
 ## Why
 
 > The gist of the matter is not in the text. The text will come of itself when I
-> feel the role.
+> feel the role. _Konstantin Stanislavski_
 
-_Konstantin Stanislavski_ Learning a text is too complicated, and the experience
-for the actor needs to be fixed and updated.
+Learning a text is too complicated, and the experience for the actor needs to be
+fixed and updated.
 
 The intense emotions and aesthetics that an actor offers on stage cannot be
 replaced by artificial intelligence. Still, technology can help the actor get
