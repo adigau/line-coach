@@ -10,6 +10,8 @@
 LineCoach helps actors memorize their lines more
 efficiently.
 
+Note: The base of this app, has been built using [Liveblocks' Starter Kit](https://liveblocks.io/starter-kit)
+
 Learning lines is a tedious task that can take a lot of time. Most actors hate
 that part and want to focus solely on the acting one. LineCoach make this
 quicker, easier and funnier. LineCoach uses advanced techniques to assist actors
@@ -80,10 +82,10 @@ they need to find the proper technique and tool to learn the text.
 
 ## Contributing
 
-LineCoach is currently only available on a desktop, and the vision is to
-integrate collaborative experiences with [Liveblocks](https://liveblocks.io) and
+LineCoach is currently only available on browsers, and is using [Liveblocks](https://liveblocks.io) to power its collaborative experiences.
+In the future, the vision is to leverage
 voice-over technologies with Google's
-[Text-to-Speech client libraries](https://cloud.google.com/text-to-speech/docs/libraries).
+[Text-to-Speech client libraries](https://cloud.google.com/text-to-speech/docs/libraries) to simulate the presence of missing actors.
 
 Here's where we need help:
 
@@ -91,6 +93,6 @@ Here's where we need help:
 - Implement a huddle feature
 - Porting LineCoach as a native app for both Android and iOS
 - Design those features with amazing UX/UI
-- Development, code refactoring, code review
+- Development, code refactoring, code review, mental support, anything I can't do
 
 🙏
