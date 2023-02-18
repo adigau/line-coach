@@ -1,7 +1,18 @@
 
+import { TextToSpeech, Positions, Sizes } from 'tts-react'
+
 export default function VoiceOver() {
-    return (<>hello</>)
+    return (
+        <TextToSpeech
+            markTextAsSpoken
+            align="vertical"
+            size={Sizes.SMALL}
+            position={Positions.TL}>
+            <p>Je suis content d'être là.</p>
+        </TextToSpeech>
+    )
 }
+
 
 
 // fr	French
