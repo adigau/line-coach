@@ -1,111 +1,145 @@
-import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { ComponentProps, useCallback, useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { Dialog } from "../../primitives/Dialog";
 import styles from "./PracticeDialog.module.css";
 import { Section } from "../../types/script";
+import { Button } from "../../primitives/Button";
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
-import { Button } from "../../primitives/Button";
-import { Dialog } from "../../primitives/Dialog";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
 
-type PracticeDialogProps = {
-    section: Section
-    practiceMode: boolean,
-    onPracticeClick: () => void
-};
+interface Props
+  extends Omit<ComponentProps<typeof Dialog>, "content" | "title"> {
+  title: string;
+  section: Section;
+}
 
 export function PracticeDialog({
-    section,
-    practiceMode,
-    onPracticeClick,
-}: PracticeDialogProps) {
+  children,
+  title,
+  section,
+  ...props
+}: Props) {
+  const router = useRouter();
 
-    const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
-    const [speaking, setSpeaking] = useState<boolean>(false);
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const { data: session } = useSession();
 
-    useEffect(() => {
-        const tempSynth = window.speechSynthesis
-        tempSynth.onvoiceschanged = () => {
-            console.log("🗣️ onvoiceschanged")
-            const newVoices = tempSynth.getVoices().filter(voice => voice.lang.startsWith("fr-FR"));
-            setVoices(newVoices);
-        }
-    }, [])
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [speaking, setSpeaking] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-    const speakItem = (text: string) => {
-        const utterance = new SpeechSynthesisUtterance(text);
+  console.log("currentIndex: " + currentIndex)
 
-        // const index = randomInteger(0, voices.length);
+  useEffect(() => {
+    const tempSynth = window.speechSynthesis
+    tempSynth.onvoiceschanged = () => {
+      console.log("🗣️ onvoiceschanged")
+      const newVoices = tempSynth.getVoices().filter(voice => voice.lang.startsWith("fr-FR"));
+      setVoices(newVoices);
+    }
+  }, [])
 
-        const index = 0;
-        const selectedVoice = voices[index];
+  const speakItem = (text: string) => {
+    const utterance = new SpeechSynthesisUtterance(text);
 
-        utterance.voice = selectedVoice;
-        // utterance.rate = 0.6;
-        // utterance.pitch = 1;
-        window.speechSynthesis.speak(utterance);
+    // const index = randomInteger(0, voices.length);
 
-        utterance.onend = () => { setSpeaking(false) };
+    const index = 0;
+    const selectedVoice = voices[index];
+
+    utterance.voice = selectedVoice;
+    // utterance.rate = 0.6;
+    // utterance.pitch = 1;
+    window.speechSynthesis.speak(utterance);
+
+    utterance.onend = () => {
+      console.log("onend");
+      setSpeaking(false);
+      Next();
     };
+  };
 
 
-    function randomInteger(min: number, max: number) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+  function randomInteger(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+
+  function Next(): void {
+    console.log("Next");
+    Stop();
+    //Check availability of next track
+    setCurrentIndex(currentIndex + 1)
+    //Delay 2 seconds
+    // Play();
+  }
+  function Play(): void {
+    console.log("Play");
+    var line = section.lines[currentIndex]
+    if (line == null)
+      return;
+    setSpeaking(true);
+    speakItem(line.text);
+  }
+  function Pause(): void {
+    console.log("Pause");
+    const synth = window.speechSynthesis;
+    synth.pause();
+    setSpeaking(false);
+
+  }
+  function Resume(): void {
+    console.log("Resume");
+    const synth = window.speechSynthesis;
+    synth.resume();
+  }
+  function Stop() {
+    console.log("Stop");
+    const synth = window.speechSynthesis;
+    synth.cancel();
+    setSpeaking(false);
+  }
+  function Previous(): void {
+    console.log("Previous");
+    Stop();
+    //Check availability of previous track
+    setCurrentIndex(currentIndex - 1)
+    //Delay 2 seconds
+    //Play
+  }
+
+  function onPlayPauseClick(): void {
+    if (speaking) {
+      Pause();
     }
-
-
-    function onPreviousClick(): void {
-        stopSpeaking();
-        setCurrentIndex(currentIndex - 1);
+    else {
+      const synth = window.speechSynthesis;
+      synth.paused ? Resume() : Play();
     }
-    function onPlayPauseClick(): void {
-        if (speaking) {
-            stopSpeaking();
-        }
-        else {
-            var line = section.lines[currentIndex]
-            if (line == null)
-                return;
-            setSpeaking(true);
-            speakItem(line.text);
-        }
-    }
-    function stopSpeaking() {
-        const synth = window.speechSynthesis;
-        synth.cancel();
-        setSpeaking(false);
-    }
-
-    function onNextClick(): void {
-        stopSpeaking();
-        setCurrentIndex(currentIndex + 1)
-    }
-
-    return (
-
-        // <Dialog title={"Practice:" + section.displayName} content={undefined} />
+  }
 
 
-        <Modal
-            open={practiceMode}
-            onClose={onPracticeClick}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-        >
-            <Box className={styles.boxModal}>
-                <div className={styles.characterDisplayName}>{section.lines[currentIndex].character.displayName}</div>
-                <div className={styles.lineText}>{section.lines[currentIndex].text}</div>
-                <div className={styles.buttonGroup}>
-                    <Button disabled={currentIndex == 0} onClick={onPreviousClick}><NavigateBeforeIcon />Previous</Button>
-                    <Button onClick={onPlayPauseClick}>
-                        {speaking ? <PauseIcon /> : <PlayArrowIcon />}
-                    </Button>
-                    <Button disabled={currentIndex >= section.lines.length - 1} onClick={onNextClick}><NavigateNextIcon />Next</Button>
-                </div>
-            </Box>
-        </Modal>
-    );
+  return (
+    <Dialog
+      content={
+        <div className={styles.dialog}>
+          <div className={styles.characterDisplayName}>{section.lines[currentIndex].character.displayName}</div>
+          <div className={styles.lineText}>{section.lines[currentIndex].text}</div>
+          <div className={styles.buttonGroup}>
+            <Button disabled={currentIndex == 0} onClick={Previous}><NavigateBeforeIcon />Previous</Button>
+            <Button onClick={onPlayPauseClick}>
+              {speaking ? <PauseIcon /> : <PlayArrowIcon />}
+            </Button>
+            <Button disabled={currentIndex >= section.lines.length - 1} onClick={Next}><NavigateNextIcon />Next</Button>
+          </div>
+        </div>
+      }
+      title={title}
+      {...props}
+    >
+      {children}
+    </Dialog>
+  );
 }

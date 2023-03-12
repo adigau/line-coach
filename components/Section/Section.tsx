@@ -8,6 +8,7 @@ import {
 } from "../../types/script";
 import { Button } from "../../primitives/Button";
 import { PracticeDialog } from "../PracticeDialog";
+import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
 
 type SectionProps = {
     section: Section
@@ -23,11 +24,11 @@ export function Section({
     isAnnotationMode,
     isAnnotationModeOnlyMine
 }: SectionProps) {
-    const [practiceMode, setPracticeMode] = useState(false);
+    // const [practiceMode, setPracticeMode] = useState(false);
 
-    const onPracticeClick = () => {
-        setPracticeMode(!practiceMode);
-    }
+    // const onPracticeClick = () => {
+    //     setPracticeMode(!practiceMode);
+    // }
 
     const renderLine = (line: Line) => {
 
@@ -45,11 +46,9 @@ export function Section({
 
     return (
         <div>
-
-            <Button onClick={onPracticeClick}>
-                🎧 Practice
-            </Button>
-            <PracticeDialog section={section} practiceMode={practiceMode} onPracticeClick={onPracticeClick} />
+            <PracticeDialog title={"Practicing: " + section.displayName} section={section}>
+                <Button icon={<HeadsetMicIcon />}>Practice</Button>
+            </PracticeDialog>
             <div className={styles.section} id={section.href} key={section?.id}>
                 <ul className={styles.linesul}>
                     {section.lines.map((line) => renderLine(line))}

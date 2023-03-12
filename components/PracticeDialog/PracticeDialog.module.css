@@ -1,34 +1,21 @@
-.boxModal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    min-height: 25%;
-    border: 2px solid var(--color-surface-elevated);
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    background: var(--color-surface);
-    /* flex: 1; */
-
-    /* --color-surface: rgb(var(--color-gray-100));
-    --color-surface-hover: rgb(var(--color-gray-150));
-    --color-surface-elevated: rgb(var(--color-white)); */
+.dialog {
+  width: 400px;
+  padding: 0 var(--space-8);
+  margin: var(--space-8) 0;
 }
 
 .characterDisplayName {
-    text-transform: uppercase;
-    text-decoration: none;
-    font-weight: bold;
-    margin-bottom: 10px;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .lineText {}
 
 .buttonGroup {
 
-    margin-top: auto;
-    display: flex;
-    justify-content: space-around;
+  margin-top: auto;
+  display: flex;
+  justify-content: space-around;
 }
