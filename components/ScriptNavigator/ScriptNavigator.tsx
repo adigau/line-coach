@@ -3,7 +3,7 @@ import {
     Character,
     Section,
 } from "../../types/script";
-import { User } from "../../types";
+import { DocumentLanguage, User } from "../../types";
 import { Section as SectionComponent } from "../Section";
 import styles from "./ScriptNavigator.module.css";
 import { useOthers, useRoom, useSelf, useStorage } from "../../liveblocks.config";
@@ -22,6 +22,7 @@ type ScriptNavigatorProps = {
     isHiddenLines: boolean;
     isAnnotationMode: boolean;
     isAnnotationModeOnlyMine: boolean;
+    lang: DocumentLanguage;
 };
 
 export function ScriptNavigator({
@@ -31,7 +32,8 @@ export function ScriptNavigator({
     sectionIdUrl,
     isHiddenLines,
     isAnnotationMode,
-    isAnnotationModeOnlyMine }: ScriptNavigatorProps) {
+    isAnnotationModeOnlyMine,
+    lang }: ScriptNavigatorProps) {
 
     const self = useSelf()
     const room = useRoom()
@@ -114,7 +116,8 @@ export function ScriptNavigator({
             cast={characters}
             isHiddenLines={isHiddenLines}
             isAnnotationMode={isAnnotationMode}
-            isAnnotationModeOnlyMine={isAnnotationModeOnlyMine} />
+            isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
+            lang={lang} />
         ) : <></>;
     };
 

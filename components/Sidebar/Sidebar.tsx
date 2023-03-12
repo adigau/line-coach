@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Character, ScriptType, Section } from "../../types/script"
+import { Character, Section } from "../../types/script"
 import { CharacterSelectionStorage } from "../../types/storage"
 import styles from "./Sidebar.module.css"
 import { User } from '../../types';

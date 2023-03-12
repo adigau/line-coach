@@ -12,7 +12,6 @@ import { Note as NoteComponent, NoteType } from "../Note";
 
 type LineProps = {
   line: Line;
-  scriptLang?: string;
   isHiddenLines: boolean;
   isAnnotationMode: boolean;
   isAnnotationModeOnlyMine: boolean;

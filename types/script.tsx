@@ -1,8 +1,12 @@
+import { DocumentLanguage } from "./document";
+
 export type ScriptType = {
     id: string;
     cast: Character[];
     sections: Section[];
     groupIds: string[];
+    lang: DocumentLanguage;
+    type: DocumentType;
 };
 
 export type CharacterStorage = {

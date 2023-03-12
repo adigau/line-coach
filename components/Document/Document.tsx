@@ -15,7 +15,7 @@ import { ClientSideSuspense } from "@liveblocks/react";
 interface Props extends ComponentProps<"div"> {
   sectionIdUrl?: string;
   isOpen: boolean;
-  roomDocument?: Document;
+  roomDocument: Document;
 }
 
 export function Document({ ...props }: Props) {
@@ -155,6 +155,7 @@ function DocumentDetails({ isOpen, roomDocument, className, sectionIdUrl, ...pro
             isHiddenLines={isHiddenLines}
             isAnnotationMode={isAnnotationMode}
             isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
+            lang={roomDocument.lang}
           />
         </main>
       </div>
