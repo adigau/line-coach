@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { ComponentProps, useCallback, useEffect, useState } from "react";
+import { ComponentProps, useCallback, useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Dialog } from "../../primitives/Dialog";
 import styles from "./PracticeDialog.module.css";
@@ -9,6 +9,7 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
+import React from "react";
 
 interface Props
   extends Omit<ComponentProps<typeof Dialog>, "content" | "title"> {
@@ -30,7 +31,9 @@ export function PracticeDialog({
   const [speaking, setSpeaking] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  console.log("currentIndex: " + currentIndex)
+
+  const [read, setRead] = useState<string>("");
+  const [unread, setUnread] = useState<string>(section.lines[currentIndex].text);
 
   useEffect(() => {
     const tempSynth = window.speechSynthesis
@@ -50,7 +53,7 @@ export function PracticeDialog({
     const selectedVoice = voices[index];
 
     utterance.voice = selectedVoice;
-    // utterance.rate = 0.6;
+    utterance.rate = 0.6;
     // utterance.pitch = 1;
     window.speechSynthesis.speak(utterance);
 
@@ -59,13 +62,26 @@ export function PracticeDialog({
       setSpeaking(false);
       Next();
     };
+
+    utterance.onboundary = (event: SpeechSynthesisEvent) => {
+      var readTextDiv = readTextRef.current;
+      var unreadTextDiv = unreadTextRef.current;
+      if (readTextDiv == null || unreadTextDiv == null) return;
+
+      var read = getReadWords(section.lines[currentIndex].text, event.charIndex, event.charLength);
+      var unread = getUnreadWords(section.lines[currentIndex].text, event.charIndex, event.charLength);
+      readTextDiv.innerHTML = read;
+      unreadTextDiv.innerHTML = unread;
+    }
   };
 
-
-  function randomInteger(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  function getReadWords(str: string, pos: number = 0, len: number) {
+    return str.substring(0, pos + len)
   }
 
+  function getUnreadWords(str: string, pos: number = 0, len: number) {
+    return str.substring(pos + len, str.length + 1)
+  }
 
   function Next(): void {
     console.log("Next");
@@ -120,13 +136,19 @@ export function PracticeDialog({
     }
   }
 
-
+  const readTextRef = useRef<HTMLSpanElement>(null);
+  const unreadTextRef = useRef<HTMLDivElement>(null);
+  const wordRef = useRef<HTMLDivElement>(null);
   return (
     <Dialog
       content={
         <div className={styles.dialog}>
+          <div ref={wordRef}></div>
           <div className={styles.characterDisplayName}>{section.lines[currentIndex].character.displayName}</div>
-          <div className={styles.lineText}>{section.lines[currentIndex].text}</div>
+          <div className={styles.lineText}>
+            <span className={styles.readText} ref={readTextRef}></span>
+            <span className={styles.unreadText} ref={unreadTextRef}>{section.lines[currentIndex].text}</span>
+          </div>
           <div className={styles.buttonGroup}>
             <Button disabled={currentIndex == 0} onClick={Previous}><NavigateBeforeIcon />Previous</Button>
             <Button onClick={onPlayPauseClick}>
