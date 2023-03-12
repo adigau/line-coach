@@ -40,7 +40,6 @@ export function Line(props: LineProps) {
 
   const [watchers, setWatchers] = useState<(User | null)[]>();
 
-
   const annotations = useStorage((root) => Array.from(root.annotations.values()).filter(x => x.lineId == line.id))
 
   const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(

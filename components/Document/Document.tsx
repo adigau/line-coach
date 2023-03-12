@@ -45,6 +45,7 @@ function DocumentDetails({ isOpen, roomDocument, className, sectionIdUrl, ...pro
   const characterSelections = useStorage((root) => root.characterSelections.get(self.id));
   const optionsSelections = useStorage((root) => root.optionsSelections.get(self.id));
   const charactersStorage = useStorage((root) => root.characters);
+  console.log(charactersStorage)
   const sectionsStorage = useStorage((root) => root.sections);
   const linesStorage = useStorage((root) => root.lines);
 
@@ -124,6 +125,7 @@ function DocumentDetails({ isOpen, roomDocument, className, sectionIdUrl, ...pro
   if (sections == null || characters == null) {
     return (<Spinner />)
   }
+
 
   return (
     <>

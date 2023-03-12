@@ -14,7 +14,6 @@ import { DocumentLanguage } from "../../types";
 type SectionProps = {
     section: Section;
 
-    cast: Character[];
     isHiddenLines: boolean;
     isAnnotationMode: boolean;
     isAnnotationModeOnlyMine: boolean;

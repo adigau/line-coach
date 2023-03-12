@@ -12,6 +12,7 @@ export type ScriptType = {
 export type CharacterStorage = {
     id: string;
     displayName: string;
+    voiceId: string;
 }
 export interface Character extends CharacterStorage {
     isHighlighted: boolean;

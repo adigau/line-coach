@@ -10,6 +10,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import React from "react";
 import { DocumentLanguage } from "../../types";
+import { supportedVoices } from "../../data/supportedVoices";
 
 interface Props
   extends Omit<ComponentProps<typeof Dialog>, "content" | "title"> {
@@ -27,6 +28,8 @@ export function PracticeDialog({
 }: Props) {
   const router = useRouter();
 
+  console.log(section.lines.flatMap(x => x.characterId))
+
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [speaking, setSpeaking] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -36,13 +39,9 @@ export function PracticeDialog({
   useEffect(() => {
     const tempSynth = window.speechSynthesis
     tempSynth.onvoiceschanged = () => {
-      console.log("🗣️ onvoiceschanged");
-
-      console.log("Lang: " + lang);
-      const newVoices = tempSynth.getVoices().filter(voice => voice.lang.startsWith(lang));
+      const newVoices = tempSynth.getVoices().filter(voice => voice.lang.startsWith(lang.substring(0, 2)));
       setVoices(newVoices);
-      console.log("List of voices: ");
-      console.log(newVoices);
+      const lala = newVoices.map(x => { return (x.lang + "\t" + x.name) });
     }
   }, [])
 
@@ -51,19 +50,19 @@ export function PracticeDialog({
     setRead("");
   }, [currentIndex])
 
-  const speakItem = (text: string) => {
+  const speakItem = (voiceId: string, text: string) => {
     const utterance = new SpeechSynthesisUtterance(text);
 
     const index = 0;
-    const selectedVoice = voices[index];
+    const voiceDetail = supportedVoices.filter(x => x.id == voiceId)[0]
+    const selectedVoice = voices.filter(x => x.lang == voiceDetail.lang && x.name == voiceDetail.name)[0];
 
-    utterance.voice = selectedVoice;
+    utterance.voice = selectedVoice ?? voices[0];
     utterance.rate = 0.8;
     // utterance.pitch = 1;
     window.speechSynthesis.speak(utterance);
 
     utterance.onend = () => {
-      console.log("onend");
       setSpeaking(false);
       Next();
     };
@@ -73,7 +72,6 @@ export function PracticeDialog({
       var unread = getUnreadWords(section.lines[currentIndex].text, event.charIndex, event.charLength);
       setRead(read);
       setUnread(unread)
-
     }
   };
 
@@ -88,10 +86,10 @@ export function PracticeDialog({
   function Next(): void {
     console.log("Next");
     Stop();
-    //Check availability of next track
+    // There's no next line
+    if (currentIndex >= section.lines.length - 1) return;
     setCurrentIndex(currentIndex + 1)
     //Delay 2 seconds
-    // Play();
   }
   function Play(): void {
     console.log("Play");
@@ -99,7 +97,7 @@ export function PracticeDialog({
     if (line == null)
       return;
     setSpeaking(true);
-    speakItem(line.text);
+    speakItem(line.character.voiceId, line.text);
   }
   function Pause(): void {
     console.log("Pause");
@@ -147,13 +145,17 @@ export function PracticeDialog({
         <div className={styles.dialog}>
           <div ref={wordRef}></div>
           <div className={styles.characterDisplayName}>{section.lines[currentIndex].character.displayName}</div>
-          <div className={styles.lineText}>
-            <span className={styles.readText} ref={readTextRef}>{read}</span>
-            <span className={styles.unreadText} ref={unreadTextRef}>{unread}</span>
-          </div>
+          {section.lines[currentIndex].character.isHighlighted ?
+            <></>
+            :
+            <div className={styles.lineText}>
+              <span className={styles.readText} ref={readTextRef}>{read}</span>
+              <span className={styles.unreadText} ref={unreadTextRef}>{unread}</span>
+            </div>
+          }
           <div className={styles.buttonGroup}>
             <Button disabled={currentIndex == 0} onClick={Previous}><NavigateBeforeIcon />Previous</Button>
-            <Button onClick={onPlayPauseClick}>
+            <Button disabled={section.lines[currentIndex].character.isHighlighted} onClick={onPlayPauseClick}>
               {speaking ? <PauseIcon /> : <PlayArrowIcon />}
             </Button>
             <Button disabled={currentIndex >= section.lines.length - 1} onClick={Next}><NavigateNextIcon />Next</Button>

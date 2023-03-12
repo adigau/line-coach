@@ -113,7 +113,6 @@ export function ScriptNavigator({
     const renderActiveSection = () => {
         return activeSection != null ? (<SectionComponent
             section={activeSection}
-            cast={characters}
             isHiddenLines={isHiddenLines}
             isAnnotationMode={isAnnotationMode}
             isAnnotationModeOnlyMine={isAnnotationModeOnlyMine}
