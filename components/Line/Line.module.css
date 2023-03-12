@@ -109,7 +109,6 @@
     width: 5px;
     height: 5px;
     background: rgb(var(--color-green));
-    /* border: 2px solid white; */
     position: absolute;
     border-radius: 100%;
     top: -5px;

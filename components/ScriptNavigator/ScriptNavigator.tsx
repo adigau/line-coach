@@ -109,13 +109,13 @@ export function ScriptNavigator({
     }, [characters, othersCharacterSelections, others, users])
 
     const renderActiveSection = () => {
-        return (<SectionComponent
+        return activeSection != null ? (<SectionComponent
             section={activeSection}
             cast={characters}
             isHiddenLines={isHiddenLines}
             isAnnotationMode={isAnnotationMode}
             isAnnotationModeOnlyMine={isAnnotationModeOnlyMine} />
-        );
+        ) : <></>;
     };
 
     function isAllPresencePerSection(sectionId: string): boolean {

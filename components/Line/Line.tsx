@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./Line.module.css";
 import Switch from "@mui/material/Switch";
 import { Line } from "../../types/script";
@@ -12,7 +12,7 @@ import { Note as NoteComponent, NoteType } from "../Note";
 
 type LineProps = {
   line: Line;
-
+  scriptLang?: string;
   isHiddenLines: boolean;
   isAnnotationMode: boolean;
   isAnnotationModeOnlyMine: boolean;
@@ -41,6 +41,7 @@ export function Line(props: LineProps) {
 
   const [watchers, setWatchers] = useState<(User | null)[]>();
 
+
   const annotations = useStorage((root) => Array.from(root.annotations.values()).filter(x => x.lineId == line.id))
 
   const othersCharacterSelections: CharacterSelectionStorage[] = useStorage(
@@ -68,6 +69,8 @@ export function Line(props: LineProps) {
       setWatchers(tempWatchers);
     };
     fetchData();
+
+
   }, [othersCharacterSelections, others]);
 
   const [isTextForcedVisible, setIsTextForcedVisible] = useState(false);

@@ -30,13 +30,13 @@ export function Document({ ...props }: Props) {
   return (
     <ClientSideSuspense fallback={loading}>
       {() =>
-        <Practice {...props} />
+        <DocumentDetails {...props} />
       }
     </ClientSideSuspense>
   );
 }
 
-export function Practice({ isOpen, roomDocument, className, sectionIdUrl, ...props }: Props) {
+function DocumentDetails({ isOpen, roomDocument, className, sectionIdUrl, ...props }: Props) {
 
   //////// Liveblocks - Presence
   const self = useSelf()
