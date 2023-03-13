@@ -136,11 +136,17 @@ export function PracticeDialog({
     }
   }
 
+  function onOpenChange(open: boolean) {
+    if (!open) {
+      Stop();
+    }
+  }
+
   const readTextRef = useRef<HTMLSpanElement>(null);
   const unreadTextRef = useRef<HTMLDivElement>(null);
   const wordRef = useRef<HTMLDivElement>(null);
   return (
-    <Dialog
+    <Dialog onOpenChange={onOpenChange}
       content={
         <div className={styles.dialog}>
           <div ref={wordRef}></div>
